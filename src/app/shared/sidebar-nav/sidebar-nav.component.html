@@ -1,0 +1,67 @@
+<nav class="sidebar" [class.collapsed]="isCollapsed">
+  <!-- Toggle Button -->
+  <button class="sidebar-toggle" (click)="toggleCollapse()">
+    <mat-icon>{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+  </button>
+
+  <!-- Logo Section -->
+  <div class="logo-container">
+    <div class="logo">
+      <div class="logo-primary">E-learning</div>
+      <div class="logo-secondary">college-de-teste</div>
+    </div>
+  </div>
+
+  <!-- Main Navigation -->
+  <ul class="nav-menu">
+    <li class="nav-item active">
+      <a routerLink="/">
+        <mat-icon class="nav-icon">home</mat-icon>
+        <span class="nav-text">Accueil</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="/dashboard">
+        <mat-icon class="nav-icon">dashboard</mat-icon>
+        <span class="nav-text">Tableau de bord</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="/communication">
+        <mat-icon class="nav-icon">chat</mat-icon>
+        <span class="nav-text">Communication</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="/case-management">
+        <mat-icon class="nav-icon">assignment</mat-icon>
+        <span class="nav-text">Gestion des cas</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="/support">
+        <mat-icon class="nav-icon">support_agent</mat-icon>
+        <span class="nav-text">Accompagnement</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="/training">
+        <mat-icon class="nav-icon">school</mat-icon>
+        <span class="nav-text">Formations</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="/reports">
+        <mat-icon class="nav-icon">assessment</mat-icon>
+        <span class="nav-text">Rapports</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="/more">
+        <mat-icon class="nav-icon">more_horiz</mat-icon>
+        <span class="nav-text">Plus</span>
+      </a>
+    </li>
+  </ul>
+
+</nav>

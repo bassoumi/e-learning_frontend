@@ -1,0 +1,14 @@
+<ng-container *ngIf="showLayout">
+  <app-sidebar-nav [isCollapsed]="isCollapsed" (toggle)="toggleSidebar()"></app-sidebar-nav>
+  <app-navbar [isCollapsed]="isCollapsed" (toggle)="toggleSidebar()"></app-navbar>
+</ng-container>
+
+<div
+  class="main-content"
+  [ngStyle]="{
+    'margin-left.px': showLayout ? (isCollapsed ? 80 : 280) : 0,
+    'margin-top.px': showLayout ? 70 : 0
+  }"
+>
+  <router-outlet></router-outlet>
+</div>

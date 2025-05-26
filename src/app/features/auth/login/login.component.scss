@@ -1,0 +1,110 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 2rem;
+  }
+  
+  .login-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 440px;
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  
+    h1 {
+      color: #2c3e50;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+  
+    .subtitle {
+      color: #7f8c8d;
+      font-size: 0.95rem;
+    }
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  
+    mat-form-field {
+      width: 100%;
+  
+      mat-icon {
+        color: #7f8c8d;
+      }
+    }
+  }
+  
+  .submit-btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    margin-top: 1rem;
+  }
+  
+  .additional-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+  
+    .forgot-password {
+      color: #2980b9;
+      text-decoration: none;
+      font-size: 0.9rem;
+  
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  
+    .signup-text {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+  
+      a {
+        color: #2980b9;
+        text-decoration: none;
+        font-weight: 500;
+  
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  
+  .error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #e74c3c;
+    background: #fdeded;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  
+    mat-icon {
+      font-size: 1.2rem;
+    }
+  }

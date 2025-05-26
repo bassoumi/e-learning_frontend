@@ -1,0 +1,158 @@
+├── app/
+│   ├── core/                    # Services “globaux” (auth, interceptors, guards)
+│   │   ├── auth/
+│   │   │   ├── auth.service.ts
+│   │   │   ├── auth.guard.ts
+│   │   │   └── auth.interceptor.ts
+│   │   ├── http/                # Intercepteurs HTTP (ex. ajout JWT)
+│   │   ├── models/              # Interfaces TypeScript pour les entités back-end
+│   │   │   ├── user.model.ts
+│   │   │   ├── course.model.ts
+│   │   │   ├── category.model.ts
+│   │   │   ├── content.model.ts
+│   │   │   ├── enrollment.model.ts
+│   │   │   ├── instructor.model.ts
+│   │   │   ├── student.model.ts
+│   │   │   ├── quiz.model.ts
+│   │   │   └── progression.model.ts
+│   │   └── core.module.ts       # Importé une seule fois dans AppModule
+│   │
+│   ├── shared/                  # Composants / pipes / directives réutilisables
+│   │   ├── components/
+│   │   │   ├── navbar/
+│   │   │   │   ├── navbar.component.ts
+│   │   │   │   └── navbar.component.html
+│   │   │   ├── footer/
+│   │   │   │   ├── footer.component.ts
+│   │   │   │   └── footer.component.html
+│   │   │   └── loading-spinner/
+│   │   │       ├── loading-spinner.component.ts
+│   │   │       └── loading-spinner.component.html
+│   │   ├── directives/
+│   │   │   └── … (ex. hasRole.directive.ts)
+│   │   ├── pipes/
+│   │   │   └── … (ex. date-format.pipe.ts)
+│   │   └── shared.module.ts     # Regroupe tous les composants/pipes/réutilisables
+│   │
+│   ├── features/                # Modules “métiers” correspondant aux entités back-end
+│   │   ├── auth/                # Authentification / Inscription / Login
+│   │   │   ├── login/
+│   │   │   │   ├── login.component.ts
+│   │   │   │   ├── login.component.html
+│   │   │   │   └── login.component.scss
+│   │   │   ├── register/
+│   │   │   │   ├── register.component.ts
+│   │   │   │   └── register.component.html
+│   │   │   └── auth-routing.module.ts
+│   │   │   └── auth.module.ts
+│   │   │
+│   │   ├── courses/             # Gestion des cours
+│   │   │   ├── list-courses/    # Affichage de la liste des cours
+│   │   │   │   ├── list-courses.component.ts
+│   │   │   │   └── list-courses.component.html
+│   │   │   ├── course-detail/   # Détail d’un cours (contenus, quizz, etc.)
+│   │   │   │   ├── course-detail.component.ts
+│   │   │   │   └── course-detail.component.html
+│   │   │   ├── create-edit/     # Formulaire création/édition de cours (pour admin/instructeur)
+│   │   │   │   ├── course-form.component.ts
+│   │   │   │   └── course-form.component.html
+│   │   │   ├── services/
+│   │   │   │   └── course.service.ts
+│   │   │   ├── courses-routing.module.ts
+│   │   │   └── courses.module.ts
+│   │   │
+│   │   ├── categories/         # Gestion des catégories
+│   │   │   ├── categories-list/
+│   │   │   │   ├── categories-list.component.ts
+│   │   │   │   └── categories-list.component.html
+│   │   │   ├── category-form/
+│   │   │   │   ├── category-form.component.ts
+│   │   │   │   └── category-form.component.html
+│   │   │   ├── services/
+│   │   │   │   └── category.service.ts
+│   │   │   ├── categories-routing.module.ts
+│   │   │   └── categories.module.ts
+│   │   │
+│   │   ├── contents/           # Gestion des contenus (chapitres, vidéos, etc.)
+│   │   │   ├── content-list/
+│   │   │   │   ├── content-list.component.ts
+│   │   │   │   └── content-list.component.html
+│   │   │   ├── content-form/
+│   │   │   │   ├── content-form.component.ts
+│   │   │   │   └── content-form.component.html
+│   │   │   ├── services/
+│   │   │   │   └── content.service.ts
+│   │   │   ├── contents-routing.module.ts
+│   │   │   └── contents.module.ts
+│   │   │
+│   │   ├── quizzes/            # Gestion des quizz
+│   │   │   ├── quiz-list/
+│   │   │   │   ├── quiz-list.component.ts
+│   │   │   │   └── quiz-list.component.html
+│   │   │   ├── quiz-detail/
+│   │   │   │   ├── quiz-detail.component.ts
+│   │   │   │   └── quiz-detail.component.html
+│   │   │   ├── services/
+│   │   │   │   └── quiz.service.ts
+│   │   │   ├── quizzes-routing.module.ts
+│   │   │   └── quizzes.module.ts
+│   │   │
+│   │   ├── instructors/        # Gestion des instructeurs
+│   │   │   ├── instructor-list/
+│   │   │   │   ├── instructor-list.component.ts
+│   │   │   │   └── instructor-list.component.html
+│   │   │   ├── instructor-detail/
+│   │   │   │   ├── instructor-detail.component.ts
+│   │   │   │   └── instructor-detail.component.html
+│   │   │   ├── services/
+│   │   │   │   └── instructor.service.ts
+│   │   │   ├── instructors-routing.module.ts
+│   │   │   └── instructors.module.ts
+│   │   │
+│   │   ├── students/           # Gestion des étudiants
+│   │   │   ├── student-list/
+│   │   │   │   ├── student-list.component.ts
+│   │   │   │   └── student-list.component.html
+│   │   │   ├── student-detail/
+│   │   │   │   ├── student-detail.component.ts
+│   │   │   │   └── student-detail.component.html
+│   │   │   ├── services/
+│   │   │   │   └── student.service.ts
+│   │   │   ├── students-routing.module.ts
+│   │   │   └── students.module.ts
+│   │   │
+│   │   ├── enrollments/        # Gestion des inscriptions (inscrire un étudiant à un cours)
+│   │   │   ├── enrollment-list/
+│   │   │   │   ├── enrollment-list.component.ts
+│   │   │   │   └── enrollment-list.component.html
+│   │   │   ├── enrollment-form/
+│   │   │   │   ├── enrollment-form.component.ts
+│   │   │   │   └── enrollment-form.component.html
+│   │   │   ├── services/
+│   │   │   │   └── enrollment.service.ts
+│   │   │   ├── enrollments-routing.module.ts
+│   │   │   └── enrollments.module.ts
+│   │   │
+│   │   ├── progression/        # Suivi de la progression des étudiants
+│   │   │   ├── progression-list/
+│   │   │   │   ├── progression-list.component.ts
+│   │   │   │   └── progression-list.component.html
+│   │   │   ├── services/
+│   │   │   │   └── progression.service.ts
+│   │   │   ├── progression-routing.module.ts
+│   │   │   └── progression.module.ts
+│   │   │
+│   │   └── dashboard/          # Vue d’ensemble (statistiques, graphiques…)
+│   │       ├── dashboard.component.ts
+│   │       ├── dashboard.component.html
+│   │       └── dashboard.module.ts
+│   │
+│   ├── app-routing.module.ts   # Routage principal (lazy loading des feature modules)
+│   ├── app.component.ts
+│   ├── app.component.html
+│   └── app.module.ts           # Import CoreModule, SharedModule, AppRoutingModule
+│
+├── assets/
+└── environments/
+    ├── environment.ts         # URL_API, clés, etc.
+    └── environment.prod.ts  

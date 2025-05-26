@@ -1,0 +1,52 @@
+<nav class="top-navbar" [style.left.px]="isCollapsed ? 80 : 280">
+  <div class="navbar-content">
+    <!-- Left Side -->
+    <div class="nav-left">
+      <div class="app-logo">
+        <span class="app-name">E-learning</span>
+        <span class="app-subname">college-de-teste</span>
+      </div>
+    </div>
+
+    <!-- Right Side -->
+    <div class="nav-right">
+      <div class="nav-actions">
+        <!-- Language Selector -->
+        <button class="nav-icon" (click)="toggleLanguageMenu()">
+          <mat-icon>language</mat-icon>
+        </button>
+
+        <!-- Settings Dropdown -->
+        <div class="settings-dropdown">
+          <button class="nav-icon" (click)="toggleSettingsMenu()">
+            <mat-icon>settings</mat-icon>
+          </button>
+          
+          <div class="dropdown-menu" [class.show]="showSettingsMenu">
+            <div class="menu-item" (click)="toggleDarkMode()">
+              <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+              <span>{{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}</span>
+            </div>
+            <div class="menu-item" (click)="toggleDirection()">
+              <mat-icon>swap_horiz</mat-icon>
+              <span>{{ isRTL ? 'LTR Direction' : 'RTL Direction' }}</span>
+            </div>
+            <div class="menu-item" (click)="openAccountSettings()">
+              <mat-icon>account_circle</mat-icon>
+              <span>Account Settings</span>
+            </div>
+            <div class="menu-item" (click)="changeLanguage()">
+              <mat-icon>translate</mat-icon>
+              <span>Language ({{ currentLanguage }})</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logout -->
+        <button class="nav-icon" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,159 @@
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 2rem;
+  }
+  
+  .register-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;  
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  
+    h1 {
+      color: #2c3e50;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+  
+    .subtitle {
+      color: #7f8c8d;
+      font-size: 0.95rem;
+    }
+  }
+  
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  
+    input,
+    select {
+        width: 100%;
+        padding: 0.75rem 1rem; /* padding left and right */
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+        box-sizing: border-box; 
+  
+      &:focus {
+        outline: none;
+        border-color: #2980b9;
+        box-shadow: 0 0 0 2px rgba(41, 128, 185, 0.2);
+      }
+    }
+  
+    /* messages d’erreur */
+    div[ng-reflect-ng-if] {
+      color: #e74c3c;
+      font-size: 0.85rem;
+      margin-top: -0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  .submit-btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    margin-top: 1rem;
+    cursor: pointer;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    transition: background-color 0.2s ease;
+  
+    &:hover:not(:disabled) {
+      background-color: #1f5f8b;
+    }
+  
+    &:disabled {
+      background-color: #7f8c8d;
+      cursor: not-allowed;
+    }
+  }
+  /* Ajustement du container de navigation */
+.pager {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  
+    button {
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background-color: #2980b9;
+      color: white;
+      transition: background-color 0.2s ease;
+  
+      &:disabled {
+        background-color: #7f8c8d;
+        cursor: not-allowed;
+      }
+  
+      &:not(:disabled):hover {
+        background-color: #1f5f8b;
+      }
+    }
+  }
+  .step-wrapper {
+    position: relative;
+    overflow: hidden;
+  
+    > div, ng-container {
+      /* chaque step prend tout l’espace pour animer proprement */
+      width: 100%;
+    }
+  }
+  
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  }
+  
+  .arrow-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+  
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  
+    &:not(:disabled):hover {
+      background: rgba(41, 128, 185, 0.1);
+    }
+  
+    mat-icon {
+      font-size: 1.5rem;
+      vertical-align: middle;
+      color: #2980b9;
+    }
+  }
+  

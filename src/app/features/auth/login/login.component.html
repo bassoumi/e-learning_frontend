@@ -1,0 +1,42 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="header">
+      <h1>Welcome Back</h1>
+      <p class="subtitle">Please sign in to continue your learning journey</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" required>
+        <mat-icon matPrefix>mail</mat-icon>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+          Email is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" required>
+        <mat-icon matPrefix>lock</mat-icon>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+          Password is required
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" class="submit-btn">
+        SIGN IN
+      </button>
+
+      <div class="additional-options">
+        <a href="#" class="forgot-password">Forgot Password?</a>
+        <p class="signup-text">Don't have an account? <a routerLink="/login/register">Sign Up</a></p>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        <mat-icon>error</mat-icon>
+        {{ errorMessage }}
+      </div>
+    </form>
+  </div>
+</div>

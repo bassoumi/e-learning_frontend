@@ -1,0 +1,125 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="header" [@slideAnimation]>
+      <ng-container [ngSwitch]="currentStep">
+        <div *ngSwitchCase="0">
+          <h1>Personal Information</h1>
+          <p class="subtitle">Create your account</p>
+        </div>
+        <div *ngSwitchCase="1">
+          <h1>Address</h1>
+          <p class="subtitle">Where do you live?</p>
+        </div>
+        <div *ngSwitchCase="2">
+          <h1>Credentials</h1>
+          <p class="subtitle">Secure your account</p>
+        </div>
+      </ng-container>
+    </div>
+    <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <!-- Étape 1 -->
+      <ng-container *ngIf="currentStep === 0">
+        <input formControlName="firstName" placeholder="First Name" />
+        <div *ngIf="registerForm.get('firstName')?.touched && registerForm.get('firstName')?.invalid">
+          First name is required.
+        </div>
+
+        <input formControlName="lastName" placeholder="Last Name" />
+        <div *ngIf="registerForm.get('lastName')?.touched && registerForm.get('lastName')?.invalid">
+          Last name is required.
+        </div>
+
+        <input formControlName="age" type="number" placeholder="Age" />
+        <div *ngIf="registerForm.get('age')?.touched && registerForm.get('age')?.invalid">
+          Valid age is required.
+        </div>
+
+        <select formControlName="gender">
+          <option value="" disabled>Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+        <div *ngIf="registerForm.get('gender')?.touched && registerForm.get('gender')?.invalid">
+          Gender is required.
+        </div>
+      </ng-container>
+
+      <!-- Étape 2 -->
+      <ng-container *ngIf="currentStep === 1">
+        <input formControlName="email" type="email" placeholder="Email" />
+        <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+          Valid email is required.
+        </div>
+
+        <input formControlName="phone" placeholder="Phone" />
+        <div *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid">
+          Phone is required.
+        </div>
+
+        <div formGroupName="address">
+          <input formControlName="street" placeholder="Street" />
+          <div *ngIf="registerForm.get('address.street')?.touched && registerForm.get('address.street')?.invalid">
+            Street is required.
+          </div>
+      
+          <input formControlName="city" placeholder="City" />
+          <div *ngIf="registerForm.get('address.city')?.touched && registerForm.get('address.city')?.invalid">
+            City is required.
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Étape 3 -->
+      <ng-container *ngIf="currentStep === 2">
+        <div formGroupName="address">
+          <input formControlName="state" placeholder="State" />
+          <div *ngIf="registerForm.get('address.state')?.touched && registerForm.get('address.state')?.invalid">
+            State is required.
+          </div>
+        </div>
+
+        <input formControlName="password" type="password" placeholder="Password" />
+        <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+          Password (min 6 characters) is required.
+        </div>
+      </ng-container>
+
+      <!-- Flèches de navigation -->
+      <div class="pager">
+        <button
+          type="button"
+          class="arrow-btn"
+          (click)="back()"
+          [disabled]="currentStep === 0"
+          aria-label="Previous Step"
+        >
+          <!-- Icône flèche gauche, tu peux remplacer par SVG si tu veux -->
+          &#9664;
+        </button>
+
+        <button
+          *ngIf="currentStep < maxStep"
+          type="button"
+          class="arrow-btn"
+          (click)="next()"
+          aria-label="Next Step"
+        >
+          <!-- Icône flèche droite -->
+          &#9654;
+        </button>
+
+        <button
+          *ngIf="currentStep === maxStep"
+          class="submit-btn"
+          type="submit"
+          [disabled]="registerForm.invalid"
+        >
+          Submit
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
