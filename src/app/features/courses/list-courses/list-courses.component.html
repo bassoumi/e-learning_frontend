@@ -1,26 +1,73 @@
-<div class="courses-grid">
-    <div *ngFor="let course of courses" class="course-card">
-      <div class="card-header" [style.backgroundImage]="'url(assets/images/istockphoto-643267108-612x612.jpg)'">
-        <div class="course-category">{{ course.categoryName }}</div>
-      </div>
-      <div class="card-body">
-        <h3 class="course-title">{{ course.title }}</h3>
-        
-        <!-- Add tags section -->
-        <div class="course-tags" *ngIf="course.metadata.tags">
-          <span class="tag" *ngFor="let tag of course.metadata.tags">{{ tag }}</span>
-        </div>
-  
-        <div class="course-meta">
-          <div class="meta-item">
-            <mat-icon>translate</mat-icon>
-            <span>{{ course.language }}</span>
-          </div>
-          <div class="meta-item">
-            <mat-icon>person</mat-icon>
-            <span>{{ course.instructorNames?.[0] || 'Unknown' }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="category-header">
+  <h2 class="category-title">Web Development</h2>
+  <div class="category-tags">
+    <span class="category-tag">Frontend</span>
+    <span class="category-tag">Backend</span>
+    <span class="category-tag">Full Stack</span>
   </div>
+</div>
+
+
+
+<!-- Add view toggle controls -->
+<div class="view-controls">
+  <button class="icon-button" (click)="isListView = false" [class.active]="!isListView">
+    <mat-icon>grid_view</mat-icon>
+  </button>
+  <button class="icon-button" (click)="isListView = true" [class.active]="isListView">
+    <mat-icon>view_list</mat-icon>
+  </button>
+</div>
+
+
+<!-- Modified courses grid -->
+
+<div class="courses-grid" 
+     [class.list-view]="isListView"
+     [@viewAnimation]="isListView ? 'list' : 'grid'">
+  <div *ngFor="let course of courses" class="course-card">
+    
+    <div class="card-header" [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
+      <div class="course-category">{{ course.categoryName }}</div>
+    </div>
+    <div class="card-body">
+      <h3 class="course-title">{{ course.title }}</h3>
+      
+      <div class="course-short-desc" *ngIf="course.shortDescription">
+        {{ course.shortDescription }}
+      </div>
+
+    
+      <div class="course-duration">
+        <span class="level">{{ course.level }}</span>
+        <span>·</span>
+        <span>Durée : {{ course.courseMetaData?.duration }} Min</span>
+      </div>
+      
+      
+      
+
+      <div class="course-meta">
+        <div class="meta-item">
+          <mat-icon>translate</mat-icon>
+          <span>{{ course.language }}</span>
+        </div>
+        <div class="meta-item">
+          <mat-icon>person</mat-icon>
+          <span>{{ course.instructorNames?.[0] || 'Unknown' }}</span>
+        </div>
+      </div>
+    </div>  </div>
+</div>
+
+
+
+
+
+
+<div class="courses-grid">
+
+  <div *ngFor="let course of courses" class="course-card">
+
+  </div>
+</div>

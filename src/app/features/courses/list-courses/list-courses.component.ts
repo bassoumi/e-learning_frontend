@@ -1,14 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { Course } from 'src/app/core/models/course.model';
 import { CourseService } from '../services/course.service';
+import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 
 @Component({
   selector: 'app-list-courses',
   templateUrl: './list-courses.component.html',
-  styleUrls: ['./list-courses.component.scss']
+  styleUrls: ['./list-courses.component.scss'],
+  animations: [
+    trigger('viewAnimation', [
+      transition('* <=> *', [
+        query(':enter', [
+          style({ opacity: 0, transform: 'translateY(20px)' }),
+          stagger('50ms', [
+            animate('300ms ease-out', style({ opacity: 1, transform: 'none' }))
+          ])
+        ], { optional: true })
+      ])
+    ])
+  ]
 })
 export class ListCoursesComponent implements OnInit {
   courses: Course[] = [];
+  isListView = false; // Control variable
 
   constructor(private coursesService: CourseService) {}
 
@@ -19,8 +33,13 @@ export class ListCoursesComponent implements OnInit {
   loadCourses(): void {
     this.coursesService.getCourses().subscribe({
       next: (data) => {
-        console.log('Courses loaded:', data); // ✅ Check the data here
+     // ✅ Check the instructors from the response
+        // ✅ Check the data here
         this.courses = data;
+        console.log('Courses loaded:', this.courses);
+        console.log("instructors from response", this.courses.map(course => course.instructorNames));
+        console.log("short desc : " ,this.courses.map(course => course.shortDescription));
+        console.log('cover image :',this.courses.map(course => course.coverImage)); // ✅ Check the short description
       },
       error: (err) => {
         console.error('Failed to load courses:', err); // ❌ Check if there's an error

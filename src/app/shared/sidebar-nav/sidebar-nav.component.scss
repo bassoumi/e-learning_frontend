@@ -1,166 +1,189 @@
-/* Sidebar Base Styles */
+$sidebar-width: 240px;
+$sidebar-collapsed-width: 64px;
+$toggle-size: 40px;
+$primary-color: #2c3e50;
+$active-color: #2980b9;
+$transition-timing: 0.3s ease;
+
+// Sidebar Container
 .sidebar {
   position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 280px;
-  background: #ffffff;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  width: $sidebar-width;
+  background: #fff;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  padding: 1.5rem 0;
-  transition: all 0.3s ease;
+  padding: 1rem 0;
+  transition: width $transition-timing;
   z-index: 1001;
+  overflow: visible; // Changed to visible for toggle visibility
 
-  /* Collapsed State */
+  // Collapsed State
   &.collapsed {
-    width: 80px;
+    width: $sidebar-collapsed-width;
 
     .logo-primary,
     .logo-secondary,
     .nav-text,
     .footer-links,
-    .copyright,
-    .separator {
-      display: none;
+    .copyright {
+      // Improved hiding technique
+      width: 0;
+      opacity: 0;
+      overflow: hidden;
+      pointer-events: none;
+      transition: 
+        opacity $transition-timing,
+        width $transition-timing;
     }
 
     .nav-menu {
-      padding: 0 0.5rem;
+      padding: 0 0.25rem;
 
       a {
         justify-content: center;
-        padding: 0.75rem;
+        padding: 0.5rem !important;
+        gap: 0;
+        
+        // Ensures icon centering
+        .nav-icon {
+          margin: 0 auto;
+        }
       }
     }
 
     .sidebar-toggle mat-icon {
       transform: rotate(180deg);
-      position: relative;  
-  z-index: 1001; 
     }
   }
 }
 
-/* Toggle Button */
+// Toggle Button
 .sidebar-toggle {
   position: absolute;
-  right: -40px;
+  right: -$toggle-size;
   top: 1rem;
-  background: #ffffff;
-  border: 1px solid #e0e0e0;  /* Added subtle border */
-  width: 40px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  width: $toggle-size;
   height: 30px;
   border-radius: 0 8px 8px 0;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);  /* Enhanced shadow */
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  box-sizing: border-box;  /* Ensures border doesn't affect dimensions */
+  display: grid;
+  place-items: center;
+  transition: all $transition-timing;
+  z-index: 1002;
+
+  // Keep toggle visible in both states
+  &:not(.collapsed) {
+    right: -$toggle-size;
+  }
 
   &:hover {
     background: #f8f9fa;
-    border-color: #cfd8dc;  /* Slightly darker border on hover */
-    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);  /* Enhanced shadow on hover */
+    border-color: #cfd8dc;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
   }
 
   mat-icon {
-    color: #2c3e50;
-    transition: transform 0.3s ease;
+    color: $primary-color;
+    transition: transform $transition-timing;
   }
 }
-/* Branding Styles */
+
+// Branding Section
 .logo-container {
-  padding: 0 1.5rem;
-  margin-bottom: 2rem;
-  
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+  min-height: 3rem; // Ensure consistent height
 
-  .logo {
-    &-primary {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #2c3e50;
-      line-height: 1.2;
-    }
+  .logo-primary {
+    font: 700 1.25rem/1.2 sans-serif;
+    color: $primary-color;
+    transition: opacity $transition-timing;
+  }
 
-    &-secondary {
-      font-size: 0.9rem;
-      color: #7f8c8d;
-      margin-top: 0.25rem;
-    }
+  .logo-secondary {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-top: 0.15rem;
+    transition: opacity $transition-timing;
   }
 }
 
-/* Navigation Menu */
+// Navigation Menu
 .nav-menu {
   flex: 1;
-  list-style: none;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
   margin: 0;
+  list-style: none;
 
   .nav-item {
-    margin: 0.25rem 0;
+    margin: 0.15rem 0;
 
     a {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      padding: 0.75rem 1rem;
+      gap: 0.75rem;
+      padding: 0.5rem 0.75rem;
       color: #34495e;
       text-decoration: none;
       border-radius: 6px;
-      transition: all 0.2s ease;
+      transition: background $transition-timing;
 
       &:hover {
         background: #f8f9fa;
-        color: #2980b9;
+        color: $active-color;
       }
     }
 
     &.active a {
       background: #ecf5fe;
-      color: #2980b9;
-      border-left: 4px solid #2980b9;
+      color: $active-color;
+      border-left: 4px solid $active-color;
       font-weight: 500;
     }
 
     .nav-icon {
-      font-size: 1.25rem;
-      width: 24px;
-      height: 24px;
+      font-size: 1.1rem;
+      min-width: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
 
-/* Footer Section */
+// Footer Section
 .nav-footer {
-  padding: 1.5rem;
+  padding: 1rem;
   border-top: 1px solid #ecf0f1;
   margin-top: auto;
 
   .footer-links {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.25rem;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 
     a {
       color: #7f8c8d;
+      font-size: 0.8rem;
       text-decoration: none;
-      font-size: 0.85rem;
 
       &:hover {
-        color: #2980b9;
+        color: $active-color;
       }
     }
   }
 
   .copyright {
     color: #95a5a6;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     line-height: 1.4;
   }
 }

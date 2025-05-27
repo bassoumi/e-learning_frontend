@@ -7,7 +7,7 @@ export interface Course {
     level: string;
     language: string;
     coverImage: string;
-    metadata: {
+    courseMetaData?: {
       createdAt: string;
       updatedAt: string;
       duration: number; // in hours
