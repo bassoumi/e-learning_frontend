@@ -1,0 +1,32 @@
+<div class="quiz-container" *ngIf="course?.quiz">
+    <h2>{{ course.title }} - Quiz</h2>
+    <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
+      <div
+        class="question-block"
+        *ngFor="let qCtrl of questions.controls; let i = index"
+        [formGroup]="qCtrl"
+      >
+        <p class="question-text">{{ qCtrl.get('question')?.value }}</p>
+        <div class="options">
+            <label *ngFor="let opt of qCtrl.get('options')?.value">
+                <input
+                  type="radio"
+                  [value]="opt"
+                  formControlName="selectedAnswer"
+                  name="selectedAnswer"
+                />
+                {{ opt }}
+              </label>
+              
+        </div>
+        <div
+          class="error"
+          *ngIf="submitted && qCtrl.get('selectedAnswer')?.invalid"
+        >
+          Please select an answer.
+        </div>
+      </div>
+  
+      <button type="submit" class="btn-submit">Submit Quiz</button>
+    </form>
+  </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Course } from 'src/app/core/models/course.model';
 import { CourseService } from '../services/course.service';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-courses',
@@ -24,7 +25,7 @@ export class ListCoursesComponent implements OnInit {
   courses: Course[] = [];
   isListView = false; // Control variable
 
-  constructor(private coursesService: CourseService) {}
+  constructor(private coursesService: CourseService ,private router: Router) {}
 
   ngOnInit(): void {
     this.loadCourses();
@@ -47,5 +48,9 @@ export class ListCoursesComponent implements OnInit {
     });
   }
   
+
+  goToCourse(courseId: number): void {
+    this.router.navigate(['courses/course-detail', courseId]);
+  }
 
 }

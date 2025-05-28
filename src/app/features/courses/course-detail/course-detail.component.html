@@ -1,1 +1,89 @@
-<p>course-detail works!</p>
+<div class="course-container" *ngIf="course">
+    <!-- Course Header -->
+    <div class="course-header">
+      <img class="course-cover" [src]="'http://localhost:8080/uploads/courses/' + course.coverImage" alt="Course cover">
+      <div class="header-content">
+        <div class="header-row">
+          <div class="header-top">
+            <h1 class="course-title">{{course.title}}</h1>
+            <div class="meta-info">
+              <span>{{course.level}}</span>
+              <span>{{ course.courseMetaData?.duration | durationPipe }} hours</span>
+              <span>{{ course.instructorNames.join(', ') || '' }}</span>
+            </div>
+          </div>
+          <div class="start-course-container">
+            <button class="start-course-btn" (click)="startCourse(course.id)">
+              Start Course
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   
+  
+    <!-- Course Details -->
+    <div class="course-grid">
+      <!-- Main Content -->
+      <div>
+        <div class="content-card">
+          <h2 class="section-title">Course Overview</h2>
+          <p>{{course.shortDescription}}</p>
+        </div>
+  
+        <div class="content-card">
+          <h2 class="section-title">Detailed Description</h2>
+          <p class="whitespace-pre-line">{{course.description}}</p>
+        </div>
+  
+        <div class="content-card">
+          <h2 class="section-title">Course Content</h2>
+          <div>
+            <div *ngFor="let content of (course.contents || []) | orderBy: 'orderContent'" 
+                 class="content-item">
+              <div class="content-item-inner">
+                <h3>{{content.title}}</h3>
+                <p>{{content.description}}</p>
+                <a [href]="content.videoUrl" class="watch-link">
+                  Watch Video
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Sidebar -->
+      <div>
+        <div class="content-card">
+          <h3 class="section-title">Skills You'll Gain</h3>
+          <div>
+            <span *ngFor="let tag of course.courseMetaData?.tags" class="tag">
+              {{tag}}
+            </span>
+          </div>
+        </div>
+  
+        <div class="content-card">
+          <h3 class="section-title">Learning Objectives</h3>
+          <ul class="objectives-list">
+            <li *ngFor="let obj of course.courseMetaData?.objectives" 
+                class="objective-item">
+              {{obj}}
+            </li>
+          </ul>
+        </div>
+  
+        <div *ngIf="course.quiz" class="content-card">
+          <h3 class="section-title">Course Quiz</h3>
+          <p>Test your knowledge with this course quiz</p>
+          <button class="quiz-button">
+            Start Quiz
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add this to your head tag -->

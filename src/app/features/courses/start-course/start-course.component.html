@@ -1,0 +1,95 @@
+<!-- start-course.component.html -->
+<div class="course-player-container" *ngIf="course">
+    <!-- Header -->
+    <div class="player-header">
+      <h1 class="course-title">{{ course.title }}</h1>
+      <div class="course-meta">
+        <span class="level-badge">{{ course.level }}</span>
+        <span>Instructor: {{ course.instructorNames.join(', ') }}</span>
+      </div>
+    </div>
+  
+    <div class="player-layout">
+      <!-- Main Video Player -->
+      <div class="video-container" *ngIf="currentVideo">
+        <div class="video-player">
+          <iframe
+            [src]="getSafeUrl(currentVideo.videoUrl)"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+  
+        <div class="instructor-section">
+          <img
+            class="instructor-avatar"
+            [src]="course.instructorAvatar || 'https://via.placeholder.com/36'"
+            alt="Instructor"
+          />
+          <div class="instructor-info">
+            <div class="instructor-name">{{ course.instructorNames.join(', ') }}</div>
+            <div class="instructor-role">Course Instructor</div>
+          </div>
+        </div>
+  
+        <div class="video-info">
+          <h2 class="video-title">{{ currentVideo.title }}</h2>
+          <p class="video-description">{{ currentVideo.description }}</p>
+        </div>
+      </div>
+  
+      <!-- Playlist + Quiz -->
+      <div class="playlist-container" *ngIf="course.contents?.length">
+        <div class="playlist-header">
+          <h3>Course Content</h3>
+          <span>{{ course.contents!.length }} videos</span>
+        </div>
+  
+        <div class="playlist-items">
+          <div
+            *ngFor="let content of course.contents; let i = index"
+            class="playlist-item"
+            [class.current]="content === currentVideo"
+            [class.completed]="isCompleted(content)"
+            (click)="setCurrentVideo(content)"
+          >
+            <div class="item-index">
+              <span *ngIf="content !== currentVideo">{{ i + 1 }}</span>
+              <mat-icon *ngIf="content === currentVideo">play_arrow</mat-icon>
+              <mat-icon *ngIf="isCompleted(content) && content !== currentVideo">check_circle</mat-icon>
+            </div>
+  
+            <div class="item-thumbnail">
+              <img [src]="getThumbnail(content.videoUrl)" alt="Thumbnail" />
+              <div class="video-duration">5:30</div>
+            </div>
+  
+            <div class="item-details">
+              <h4 class="item-title">{{ content.title }}</h4>
+              <div class="item-meta">
+                <span *ngIf="isCompleted(content)" class="completed-badge">
+                  <mat-icon>check_circle</mat-icon> Complete
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Quiz Section at bottom -->
+        <div class="quiz-section" *ngIf="isLastVideo()">
+          <div class="quiz-header">
+            <h3>Course Quiz</h3>
+            <div class="quiz-badge">Next Step</div>
+          </div>
+          <p class="quiz-description">
+            Test your knowledge with this quiz to complete the course.
+          </p>
+          <button class="quiz-button" (click)="navigateToQuiz()">
+            Go to Quiz <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,4 +1,5 @@
 export interface Course {
+     id: number;
     title: string;
     description: string;
     shortDescription: string;
@@ -7,6 +8,8 @@ export interface Course {
     level: string;
     language: string;
     coverImage: string;
+    contents?: Content[];
+    instructorAvatar?: string;
     courseMetaData?: {
       createdAt: string;
       updatedAt: string;
@@ -14,4 +17,23 @@ export interface Course {
       tags: string[];
       objectives: string[];
     };
+    quiz?: Quiz;
+  }
+
+  export interface Content {
+    id: number;
+    courseId: string;
+    title: string;
+    videoUrl: string;
+    description: string;
+    orderContent: number;
+  }
+
+  export interface Quiz {
+    id: number;
+    title: string;
+    questions: string[];
+    answers: string[];
+    options: string[][];  
+    courseId: number;
   }

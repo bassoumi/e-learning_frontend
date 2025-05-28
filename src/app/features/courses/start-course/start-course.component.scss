@@ -1,0 +1,431 @@
+@import '@angular/material/theming';
+
+$player-primary: #4285F4;
+$player-background: #f5f7fa;
+$sidebar-bg: #ffffff;
+$completed-color: #34A853;
+$text-primary: #202124;
+$text-secondary: #5f6368;
+$border-color: #dadce0;
+
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.course-player-container {
+    
+  background: $player-background;
+  color: $text-primary;
+  min-height: 100vh;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.player-header {
+  padding: 1rem 2rem; // Reduced padding
+  border-bottom: 1px solid $border-color;
+  background: white;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+  
+  .course-title {
+    font-size: 1.6rem; // Slightly smaller
+    margin-bottom: 0.25rem; // Reduced space
+    font-weight: 600;
+    color: $text-primary;
+  }
+  
+  .course-meta {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    color: $text-secondary;
+    font-size: 0.85rem; // Smaller font
+    
+    .level-badge {
+      background: rgba($player-primary, 0.1);
+      color: $player-primary;
+      padding: 0.2rem 0.6rem;
+      border-radius: 16px;
+      font-weight: 500;
+    }
+  }
+}
+
+.player-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 1.25rem; // Reduced padding
+  gap: 1.25rem; // Reduced gap
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: 3fr 1fr;
+    padding: 1.5rem; // Reduced padding
+  }
+}
+
+.video-container {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  border: 1px solid $border-color;
+  
+  .video-player {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    background: #f1f3f4;
+    
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  }
+  
+  .instructor-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s ease;
+  
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+  
+    .instructor-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #f0f0f0;
+    }
+  
+    .instructor-info {
+      display: flex;
+      flex-direction: column;
+  
+      .instructor-name {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #1e293b; // dark slate
+      }
+  
+      .instructor-role {
+        font-size: 0.85rem;
+        color: #64748b; // cool gray
+      }
+    }
+  }
+  
+  
+  .video-info {
+    padding: 1.25rem; // Reduced padding
+    
+    .video-title {
+      font-size: 1.3rem; // Slightly smaller
+      margin-bottom: 0.8rem; // Reduced space
+      font-weight: 600;
+      color: $text-primary;
+    }
+    
+    .video-description {
+      color: $text-secondary;
+      line-height: 1.6;
+      font-size: 0.92rem;
+    }
+  }
+}
+
+.playlist-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;             // make the container span the full viewport
+    max-height: 100vh;         // (optional—protect against overflow)
+    background: $sidebar-bg;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    border: 1px solid $border-color;
+  
+  .playlist-header {
+    padding: 1rem 1.25rem; // Reduced padding
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $border-color;
+    
+    h3 {
+      font-size: 1.15rem; // Slightly smaller
+      font-weight: 600;
+      margin: 0;
+      color: $text-primary;
+    }
+    
+    span {
+      background: rgba($player-primary, 0.1);
+      color: $player-primary;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+  }
+}
+
+.playlist-items {
+    height: 600px;        // ← fixed height
+      // ← up to 60% of the viewport height
+    overflow-y: auto;
+    padding: 0.5rem;
+    background: #fafafa;
+}
+
+.playlist-item {
+  display: flex;
+  padding: 0.7rem; // Reduced padding
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: white;
+  border: 1px solid $border-color;
+  align-items: center;         
+  
+  &:hover {
+    background: #f1f8ff;
+    border-color: rgba($player-primary, 0.3);
+  }
+  
+  &.current {
+    background: rgba($player-primary, 0.08);
+    border-left: 3px solid $player-primary;
+  }
+  
+  &.completed {
+    .item-index {
+      background: rgba($completed-color, 0.1);
+      color: $completed-color;
+    }
+    
+    .item-title {
+      color: $completed-color;
+    }
+  }
+  
+  .item-index {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; // Smaller
+    min-width: 26px;
+    height: 26px;
+    background: rgba(black, 0.05);
+    border-radius: 50%;
+    margin-right: 0.7rem;
+    font-size: 0.8rem; // Smaller
+    color: $text-secondary;
+    font-weight: 500;
+  }
+  
+  .item-thumbnail {
+    width: 90px; // Reduced width
+    min-width: 90px;
+    height: 100%;  
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 0.7rem;
+    background: #f1f3f4;
+    position: relative;
+    
+    img {
+        width: 100%;
+        height: 100%;; // Reduced height
+      object-fit: cover;
+      display: block;
+    }
+    
+    .video-duration {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+    }
+  }
+  
+  .item-details {
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    .item-title {
+      font-size: 0.9rem; // Slightly smaller
+      font-weight: 500;
+      margin-bottom: 0.2rem; // Reduced space
+      color: $text-primary;
+      line-height: 1.3;
+    }
+    
+    .item-meta {
+      display: flex;
+      gap: 0.8rem;
+      font-size: 0.75rem; // Smaller
+      color: $text-secondary;
+      align-items: center;
+      
+      .completed-badge {
+        color: $completed-color;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        
+        .material-icons {
+          font-size: 14px;
+          margin-right: 3px;
+        }
+      }
+    }
+  }
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+  .player-header {
+    padding: 0.8rem 1.5rem;
+    
+    .course-title {
+      font-size: 1.4rem;
+    }
+  }
+  
+  .player-layout {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .instructor-section {
+    padding: 0.7rem 1.25rem !important;
+  }
+  
+  .playlist-container {
+    max-height: 400px;
+  }
+  
+  .playlist-item {
+    .item-thumbnail {
+      width: 70px;
+      min-width: 70px;
+      
+      img {
+        height: 40px;
+      }
+    }
+  }
+}
+
+
+// Add to your existing SCSS
+
+.playlist-container {
+    display: flex;
+    flex-direction: column;
+    // ... existing styles ...
+    
+    .quiz-section {
+      background: white;
+      border-top: 1px solid $border-color;
+      padding: 1.25rem;
+      margin-top: auto; // Push to bottom
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+      
+      .quiz-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        
+        h3 {
+          font-size: 1.15rem;
+          font-weight: 600;
+          margin: 0;
+          color: $text-primary;
+        }
+        
+        .quiz-badge {
+          background: rgba($player-primary, 0.1);
+          color: $player-primary;
+          padding: 0.25rem 0.75rem;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: 500;
+        }
+      }
+      
+      .quiz-description {
+        color: $text-secondary;
+        font-size: 0.9rem;
+        margin-bottom: 1.2rem;
+        line-height: 1.5;
+      }
+      
+      .quiz-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background: $player-primary;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 0.7rem;
+        font-weight: 500;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        
+        &:hover {
+          background: darken($player-primary, 8%);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        mat-icon {
+          margin-left: 8px;
+          font-size: 18px;
+          height: 18px;
+          width: 18px;
+        }
+      }
+    }
+  }
+  
+  .playlist-items {
+    flex-grow: 1; // Take remaining space
+    overflow-y: auto;
+    padding: 0.5rem;
+    background: #fafafa;
+    
+    // Add scrollbar styling
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+  }

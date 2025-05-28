@@ -25,7 +25,7 @@
 <div class="courses-grid" 
      [class.list-view]="isListView"
      [@viewAnimation]="isListView ? 'list' : 'grid'">
-  <div *ngFor="let course of courses" class="course-card">
+  <div  *ngFor="let course of courses" class="course-card" (click)="goToCourse(course.id)">
     
     <div class="card-header" [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
       <div class="course-category">{{ course.categoryName }}</div>
@@ -54,20 +54,8 @@
         </div>
         <div class="meta-item">
           <mat-icon>person</mat-icon>
-          <span>{{ course.instructorNames?.[0] || 'Unknown' }}</span>
-        </div>
+          <span>{{ course.instructorNames[0] || 'Unknown' }}</span>        </div>
       </div>
     </div>  </div>
 </div>
 
-
-
-
-
-
-<div class="courses-grid">
-
-  <div *ngFor="let course of courses" class="course-card">
-
-  </div>
-</div>
