@@ -4,7 +4,8 @@ export interface Course {
     description: string;
     shortDescription: string;
     categoryName: string;
-    instructorNames: string[];
+    categoryId: number;
+    instructorNames: string;
     level: string;
     language: string;
     coverImage: string;
@@ -28,12 +29,16 @@ export interface Course {
     description: string;
     orderContent: number;
   }
-
   export interface Quiz {
     id: number;
     title: string;
-    questions: string[];
-    answers: string[];
-    options: string[][];  
     courseId: number;
+    questions: Question[];
   }
+  
+  export interface Question {
+    text: string;
+    options: string[];
+    answer: string;
+  }
+  

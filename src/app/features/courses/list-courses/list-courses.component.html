@@ -1,11 +1,12 @@
-<div class="category-header">
-  <h2 class="category-title">Web Development</h2>
+<div class="category-header" *ngIf="!searchTitle">
+  <h2 class="category-title">{{ categoryName }}</h2>
   <div class="category-tags">
-    <span class="category-tag">Frontend</span>
-    <span class="category-tag">Backend</span>
-    <span class="category-tag">Full Stack</span>
+    <span class="category-tag" *ngFor="let tag of categoryTags">
+      {{ tag }}
+    </span>
   </div>
 </div>
+
 
 
 
@@ -21,14 +22,18 @@
 
 
 <!-- Modified courses grid -->
-
-<div class="courses-grid" 
+<div class="courses-grid"
      [class.list-view]="isListView"
      [@viewAnimation]="isListView ? 'list' : 'grid'">
-  <div  *ngFor="let course of courses" class="course-card" (click)="goToCourse(course.id)">
-    
-    <div class="card-header" [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
-      <div class="course-category">{{ course.categoryName }}</div>
+  <div *ngFor="let course of courses" class="course-card" (click)="goToCourse(course.id)">
+
+    <div class="card-header"
+         [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
+         
+      <div class="course-category"
+           (click)="goToCategory(course.categoryId); $event.stopPropagation()">
+        {{ course.categoryName }}
+      </div>
     </div>
     <div class="card-body">
       <h3 class="course-title">{{ course.title }}</h3>

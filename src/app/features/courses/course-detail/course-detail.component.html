@@ -9,7 +9,7 @@
             <div class="meta-info">
               <span>{{course.level}}</span>
               <span>{{ course.courseMetaData?.duration | durationPipe }} hours</span>
-              <span>{{ course.instructorNames.join(', ') || '' }}</span>
+              <span>{{ course.instructorNames || '' }}</span>
             </div>
           </div>
           <div class="start-course-container">

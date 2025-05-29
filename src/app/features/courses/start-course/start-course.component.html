@@ -5,7 +5,7 @@
       <h1 class="course-title">{{ course.title }}</h1>
       <div class="course-meta">
         <span class="level-badge">{{ course.level }}</span>
-        <span>Instructor: {{ course.instructorNames.join(', ') }}</span>
+        <span>Instructor: {{ course.instructorNames }}</span>
       </div>
     </div>
   
@@ -28,7 +28,7 @@
             alt="Instructor"
           />
           <div class="instructor-info">
-            <div class="instructor-name">{{ course.instructorNames.join(', ') }}</div>
+            <div class="instructor-name">{{ course.instructorNames }}</div>
             <div class="instructor-role">Course Instructor</div>
           </div>
         </div>

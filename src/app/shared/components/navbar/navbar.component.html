@@ -8,6 +8,40 @@
       </div>
     </div>
 
+    <!-- Center - Search Bar -->
+  <!-- Center - Search Bar -->
+  <div class="nav-center">
+    <div class="search-container">
+      <mat-icon class="search-icon" (click)="onSearch()">search</mat-icon>
+      <input
+        [formControl]="searchControl"
+        type="text"
+        class="search-input"
+        placeholder="Search courses, materials..."
+        (keyup.enter)="onSearch()"
+      />
+      <!-- loading spinner -->
+<!--       <mat-progress-spinner
+        *ngIf="isLoading"
+        diameter="20"
+        mode="indeterminate">
+      </mat-progress-spinner> -->
+    </div>
+  
+    <!-- suggestions dropdown -->
+    <div class="suggestions-dropdown" *ngIf="suggestions.length > 0">
+      <ul>
+        <li
+          *ngFor="let course of suggestions"
+          (click)="selectSuggestion(course)"
+        >
+          {{ course.title }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+
     <!-- Right Side -->
     <div class="nav-right">
       <div class="nav-actions">

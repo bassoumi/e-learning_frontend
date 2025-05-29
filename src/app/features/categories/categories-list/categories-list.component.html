@@ -1,1 +1,68 @@
-<p>categories-list works!</p>
+<div class="category-header">
+    <h2 class="category-title">{{ categoryName }}</h2>
+    <div class="category-tags">
+      <span 
+        *ngFor="let tag of categoryTags" 
+        class="category-tag"
+      >
+        {{ tag }}
+      </span>
+    </div>
+  </div>
+  
+
+  
+  <!-- Add view toggle controls -->
+  <div class="view-controls">
+    <button class="icon-button" (click)="isListView = false" [class.active]="!isListView">
+      <mat-icon>grid_view</mat-icon>
+    </button>
+    <button class="icon-button" (click)="isListView = true" [class.active]="isListView">
+      <mat-icon>view_list</mat-icon>
+    </button>
+  </div>
+  
+  
+  <!-- Modified courses grid -->
+  <div class="courses-grid"
+       [class.list-view]="isListView"
+       [@viewAnimation]="isListView ? 'list' : 'grid'">
+    <div *ngFor="let course of courses" class="course-card" (click)="goToCourse(course.id)">
+  
+      <div class="card-header"
+           [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
+           
+        <div class="course-category">
+          {{ course.categoryName }}
+        </div>
+      </div>
+      <div class="card-body">
+        <h3 class="course-title">{{ course.title }}</h3>
+        
+        <div class="course-short-desc" *ngIf="course.shortDescription">
+          {{ course.shortDescription }}
+        </div>
+  
+      
+        <div class="course-duration">
+          <span class="level">{{ course.level }}</span>
+          <span>·</span>
+          <span>Durée : {{ course.courseMetaData?.duration }} Min</span>
+        </div>
+        
+        
+        
+  
+        <div class="course-meta">
+          <div class="meta-item">
+            <mat-icon>translate</mat-icon>
+            <span>{{ course.language }}</span>
+          </div>
+          <div class="meta-item">
+            <mat-icon>person</mat-icon>
+            <span>{{ course.instructorNames[0] || 'Unknown' }}</span>        </div>
+        </div>
+      </div>  </div>
+  </div>
+  
+  

@@ -31,6 +31,7 @@ export class StartCourseComponent implements OnInit {
     this.courseService.getCourseById(id).subscribe({
       next: data => {
         this.course = Array.isArray(data) ? data[0] : data;
+        console.log('Loaded course:', this.course);
 
         // Narrow `contents` so TS knows it's not undefined
         const contents = this.course?.contents;
@@ -87,7 +88,7 @@ export class StartCourseComponent implements OnInit {
   navigateToQuiz(): void {
     const courseId = this.course?.id;
     if (courseId != null) {
-      this.router.navigate(['courses/courses', courseId, 'quiz']);
+      this.router.navigate(['courses', courseId, 'quiz']);
     }
   }
 

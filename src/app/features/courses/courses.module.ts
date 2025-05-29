@@ -12,6 +12,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { StartCourseComponent } from './start-course/start-course.component';
 import { QuizCourseComponent } from './quiz-course/quiz-course.component';
+import { AddCourseComponent } from './add-course/add-course.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { QuizCourseComponent } from './quiz-course/quiz-course.component';
     CourseFormComponent,
     StartCourseComponent,
     QuizCourseComponent,
+    AddCourseComponent,
 
   ],
   imports: [

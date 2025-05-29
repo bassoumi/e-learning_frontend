@@ -1,32 +1,65 @@
-<div class="quiz-container" *ngIf="course?.quiz">
-    <h2>{{ course.title }} - Quiz</h2>
-    <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
+<!-- only show *everything* once we have both course.quiz and the quizForm built -->
+<div class="quiz-container" *ngIf="course?.quiz && quizForm">
+
+  <!-- header/nav can now safely use questions.length -->
+  <div class="quiz-header">
+    <h1 class="quiz-title">{{ course.title }}</h1>
+    <div class="quiz-progress">
+      Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
+    </div>
+  </div>
+
+  <div class="quiz-nav">
+    <button
+      *ngFor="let _ of questions.controls; let i = index"
+      (click)="goToQuestion(i)"
+      [class.active]="i === currentQuestionIndex"
+      [class.answered]="answeredQuestions.includes(i)">
+      {{ i + 1 }}
+    </button>
+  </div>
+
+  <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
+    <div formArrayName="questions">
       <div
+        #questionBlock
         class="question-block"
         *ngFor="let qCtrl of questions.controls; let i = index"
-        [formGroup]="qCtrl"
-      >
-        <p class="question-text">{{ qCtrl.get('question')?.value }}</p>
+        [formGroupName]="i"
+        [class.active]="i === currentQuestionIndex">
+
+        <p class="question-text">
+          Question {{ i + 1 }}: {{ qCtrl.get('text')?.value }}
+        </p>
+
         <div class="options">
-            <label *ngFor="let opt of qCtrl.get('options')?.value">
-                <input
-                  type="radio"
-                  [value]="opt"
-                  formControlName="selectedAnswer"
-                  name="selectedAnswer"
-                />
-                {{ opt }}
-              </label>
-              
+          <label
+            *ngFor="let opt of course.quiz!.questions[i].options; let j = index"
+            [class.correct]="isCorrectAnswer(i, opt)"
+            [class.incorrect]="isIncorrectAnswer(i, opt)">
+            <input
+              type="radio"
+              formControlName="selectedAnswer"
+              [value]="opt"
+              [disabled]="showAnswers"
+              (change)="onAnswerSelect(i)" />
+            {{ opt }}
+
+            <span class="feedback-icon" *ngIf="showAnswers">
+              <span class="correct-icon" *ngIf="isCorrectAnswer(i, opt)">✓</span>
+              <span class="incorrect-icon" *ngIf="isIncorrectAnswer(i, opt)">✗</span>
+            </span>
+          </label>
         </div>
-        <div
-          class="error"
-          *ngIf="submitted && qCtrl.get('selectedAnswer')?.invalid"
-        >
+
+        <div class="error" *ngIf="submitted && qCtrl.get('selectedAnswer')?.invalid">
           Please select an answer.
         </div>
       </div>
-  
-      <button type="submit" class="btn-submit">Submit Quiz</button>
-    </form>
-  </div>
+    </div>
+
+    <button type="submit" class="btn-submit">Submit Quiz</button>
+  </form>
+</div>
+<!-- optionally show a spinner/message while loading -->
+<p *ngIf="!quizForm">Loading quiz…</p>

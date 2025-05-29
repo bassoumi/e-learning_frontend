@@ -161,3 +161,237 @@
 .top-navbar.collapsed {
   left: 80px; /* largeur sidebar réduite */
 }
+
+/* Top Navigation Bar */
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 240px;
+  right: 0;
+  height: 60px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+
+  .navbar-content {
+    width: 100%;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    /* New center section */
+    .nav-center {
+      flex: 1;
+      max-width: 600px;
+      padding: 0 2rem;
+      
+      .search-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        
+        .search-icon {
+          position: absolute;
+          left: 12px;
+          color: #7f8c8d;
+          font-size: 1.3rem;
+          pointer-events: none;
+        }
+        
+        .search-input {
+          width: 100%;
+          padding: 8px 16px 8px 40px;
+          border-radius: 20px;
+          border: 1px solid #e0e0e0;
+          background: #f8f9fa;
+          font-size: 0.95rem;
+          transition: all 0.3s ease;
+          
+          &:focus {
+            outline: none;
+            border-color: #3498db;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+          }
+          
+          &::placeholder {
+            color: #95a5a6;
+          }
+        }
+      }
+    }
+  }
+
+  .nav-left {
+    /* Maintain existing width */
+    width: 240px;
+    flex-shrink: 0;
+    
+    .app-logo {
+      display: flex;
+      flex-direction: column;
+      
+      .app-name {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-left: 20px;
+      }
+      
+      .app-subname {
+        font-size: 0.75rem;
+        color: #7f8c8d;
+        margin-left: 20px;
+      }
+    }
+  }
+
+  .nav-right {
+    flex-shrink: 0;
+    
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+
+      .nav-icon {
+        background: none;
+        border: none;
+        padding: 8px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #34495e;
+
+        &:hover {
+          background: #f8f9fa;
+          color: #2980b9;
+        }
+
+        mat-icon {
+          font-size: 1.5rem;
+          width: 28px;
+          height: 28px;
+        }
+      }
+    }
+  }
+}
+
+/* Settings Dropdown */
+.settings-dropdown {
+  position: relative;
+
+  .dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 120%;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 220px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 1001;
+
+    &.show {
+      opacity: 1;
+      visibility: visible;
+      top: 100%;
+    }
+
+    .menu-item {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #2c3e50;
+
+      &:hover {
+        background: #f8f9fa;
+        color: #2980b9;
+      }
+
+      mat-icon {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+      }
+
+      span {
+        font-size: 0.9rem;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+/* Dark Mode */
+.dark-mode {
+  .top-navbar {
+    background: #2c3e50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+    .app-name { color: #ffffff; }
+    .app-subname { color: #bdc3c7; }
+    
+    .nav-icon {
+      color: #bdc3c7;
+      
+      &:hover {
+        background: #34495e;
+        color: #ffffff;
+      }
+    }
+    
+    .nav-center {
+      .search-container {
+        .search-icon {
+          color: #95a5a6;
+        }
+        
+        .search-input {
+          background: #34495e;
+          border-color: #2c3e50;
+          color: #ecf0f1;
+          
+          &:focus {
+            background: #2c3e50;
+            border-color: #3498db;
+          }
+          
+          &::placeholder {
+            color: #7f8c8d;
+          }
+        }
+      }
+    }
+  }
+
+  .settings-dropdown .dropdown-menu {
+    background: #34495e;
+    
+    .menu-item {
+      color: #ecf0f1;
+      
+      &:hover {
+        background: #2c3e50;
+        color: #ffffff;
+      }
+      
+      mat-icon {
+        color: #95a5a6;
+      }
+    }
+  }
+}
+
+.top-navbar.collapsed {
+  left: 80px; /* largeur sidebar réduite */
+}
