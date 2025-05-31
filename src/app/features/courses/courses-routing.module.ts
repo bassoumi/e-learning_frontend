@@ -9,7 +9,7 @@ import { QuizCourseComponent } from './quiz-course/quiz-course.component';
 const routes: Routes = [
   {path: '',component:ListCoursesComponent},
   {path: 'course-detail/:id', component: CourseDetailComponent},
-  {path: 'course-play/:id', component: StartCourseComponent},
+  { path: 'course-play/:courseId/:studentId', component: StartCourseComponent },
   {path: 'addCourse', component: AddCourseComponent},
   {path: ':id/quiz', component: QuizCourseComponent},
 

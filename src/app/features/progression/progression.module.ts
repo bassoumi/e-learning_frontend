@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ProgressionRoutingModule } from './progression-routing.module';
 import { ProgressionListComponent } from './progression-list/progression-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -13,7 +14,9 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ProgressionRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule,
+    
   ]
 })
 export class ProgressionModule { }

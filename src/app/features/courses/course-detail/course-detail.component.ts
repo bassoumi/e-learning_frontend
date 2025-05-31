@@ -12,6 +12,7 @@ export class CourseDetailComponent implements OnInit {
 
 
   course!: Course;
+  private studentId!: number | null;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,13 +44,33 @@ export class CourseDetailComponent implements OnInit {
         console.error('Erreur lors du chargement du cours :', err);
       }
     });
+
+    this.studentId = this.getUserIdFromLocalStorage();
+    if (this.studentId === null) {
+      console.error('Aucun userId trouvé dans localStorage');
+    }
+  }
+
+  private getUserIdFromLocalStorage(): number | null {
+    const raw = localStorage.getItem('user_id');
+    if (!raw) {
+      return null;
+    }
+    const parsed = Number(raw);
+    return isNaN(parsed) ? null : parsed;
   }
   
 
 
 
   startCourse(courseId: number) {
-    this.router.navigate(['courses/course-play', courseId]);
+    if (this.studentId === null) {
+      console.error('Impossible de démarrer le cours : studentId introuvable');
+      return;
+    }
+    // On navigue vers /course-play/:courseId/:studentId
+    this.router.navigate(['courses/course-play', courseId, this.studentId]);
+  }
   }
 
-}
+

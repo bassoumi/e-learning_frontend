@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { Content, Course, Quiz } from 'src/app/core/models/course.model';
+import { Student } from 'src/app/core/models/student.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,15 @@ export class CourseService {
   private apiUrl = 'http://localhost:8080/api/v1/courses';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
+
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  }
 
   getCourses(): Observable<Course[]> {
     const token = this.authService.getToken();
@@ -50,6 +60,14 @@ export class CourseService {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
     return this.http.get<Course[]>(`${this.apiUrl}/category/${categoryId}`, { headers });
   }
+
+
+  getCoursesByInstructor(instructorId: number): Observable<Course[]> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+    return this.http.get<Course[]>(`${this.apiUrl}/instructor/${instructorId}`, { headers });
+  }
+  
   
 
 
@@ -79,6 +97,10 @@ getCoursesByTitle(title: string): Observable<Course[]> {
   const params = new HttpParams().set('title', title);
   return this.http.get<Course[]>(`${this.apiUrl}/title`, { headers, params });
 }
+
+
+
+
 
   
 }

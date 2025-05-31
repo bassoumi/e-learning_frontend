@@ -10,7 +10,7 @@
 
     <!-- Center - Search Bar -->
   <!-- Center - Search Bar -->
-  <div class="nav-center">
+  <div class="nav-center" clickOutside (clickOutside)="closeSuggestions()">
     <div class="search-container">
       <mat-icon class="search-icon" (click)="onSearch()">search</mat-icon>
       <input
@@ -19,23 +19,35 @@
         class="search-input"
         placeholder="Search courses, materials..."
         (keyup.enter)="onSearch()"
+        (focus)="onSearchFocus()"
       />
-      <!-- loading spinner -->
-<!--       <mat-progress-spinner
-        *ngIf="isLoading"
-        diameter="20"
-        mode="indeterminate">
-      </mat-progress-spinner> -->
     </div>
-  
-    <!-- suggestions dropdown -->
-    <div class="suggestions-dropdown" *ngIf="suggestions.length > 0">
+    
+    <!-- Suggestions dropdown -->
+    <div class="suggestions-dropdown" *ngIf="showSuggestions && suggestions.length > 0">
       <ul>
-        <li
-          *ngFor="let course of suggestions"
-          (click)="selectSuggestion(course)"
-        >
-          {{ course.title }}
+        <li *ngFor="let course of suggestions" (click)="selectSuggestion(course)">
+          <div class="course-suggestion">
+            <div class="course-image" 
+                 [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
+            </div>
+            <div class="course-details">
+              <div class="course-title" 
+                   [innerHTML]="highlightMatch(course.title, searchControl.value!)">
+              </div>
+              <div class="course-description">{{ course.shortDescription }}</div>
+              <div class="course-meta">
+                <div class="meta-item">
+                  <mat-icon>schedule</mat-icon>
+                  <span>{{ course.courseMetaData?.duration }} Min</span>
+                </div>
+                <div class="meta-item">
+                  <mat-icon>person</mat-icon>
+                  <span>{{ course.instructorNames[0] || 'Unknown' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </li>
       </ul>
     </div>

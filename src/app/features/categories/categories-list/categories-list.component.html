@@ -1,13 +1,11 @@
 <div class="category-header">
-    <h2 class="category-title">{{ categoryName }}</h2>
-    <div class="category-tags">
-      <span 
-        *ngFor="let tag of categoryTags" 
-        class="category-tag"
-      >
-        {{ tag }}
-      </span>
-    </div>
+  <div class="category-label">CATEGORY</div>
+  <div class="name-display">{{ categoryName }}</div>
+  <div class="category-tags">
+    <span *ngFor="let tag of categoryTags" class="category-tag">
+      {{ tag }}
+    </span>
+  </div>
   </div>
   
 
@@ -60,7 +58,7 @@
           </div>
           <div class="meta-item">
             <mat-icon>person</mat-icon>
-            <span>{{ course.instructorNames[0] || 'Unknown' }}</span>        </div>
+            <span>{{ course.instructorNames || 'Unknown' }}</span>        </div>
         </div>
       </div>  </div>
   </div>

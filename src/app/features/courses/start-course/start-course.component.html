@@ -1,4 +1,6 @@
 <!-- start-course.component.html -->
+
+
 <div class="course-player-container" *ngIf="course">
     <!-- Header -->
     <div class="player-header">
@@ -24,14 +26,41 @@
         <div class="instructor-section">
           <img
             class="instructor-avatar"
-            [src]="course.instructorAvatar || 'https://via.placeholder.com/36'"
             alt="Instructor"
-          />
+            [src]="'http://localhost:8080/uploads/courses/' + course.coverImage"          />
           <div class="instructor-info">
             <div class="instructor-name">{{ course.instructorNames }}</div>
             <div class="instructor-role">Course Instructor</div>
           </div>
+        
+          <!-- ====== BOUTON D’ABONNEMENT ====== -->
+          <div class="instructor-subscribe">
+            <!-- Tant que l’on n’a pas encore vérifié l’abonnement, on peut montrer un loader ou rien -->
+            <ng-container *ngIf="subscriptionChecked; else loadingState">
+              <!-- Si l’étudiant n’est pas encore abonné, on propose le bouton Subscribe -->
+              <button
+                *ngIf="!isSubscribed"
+                class="btn btn-primary"
+                (click)="subscribe()">
+                Subscribe
+              </button>
+        
+              <!-- Si l’étudiant est déjà abonné, on affiche un bouton Subscribed (éventuellement pour se désabonner) -->
+              <button
+                *ngIf="isSubscribed"
+                class="btn btn-secondary"
+                (click)="unsubscribe()">
+                Subscribed
+              </button>
+            </ng-container>
+        
+            <!-- Template alternatif pendant la vérification -->
+            <ng-template #loadingState>
+              <span class="text-muted">Vérification en cours…</span>
+            </ng-template>
+          </div>
         </div>
+        
   
         <div class="video-info">
           <h2 class="video-title">{{ currentVideo.title }}</h2>

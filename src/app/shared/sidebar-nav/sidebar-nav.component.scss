@@ -97,8 +97,8 @@ $transition-timing: 0.3s ease;
 
 // Branding Section
 .logo-container {
+  margin-top: 15px;
   padding: 0 1rem;
-  margin-bottom: 1rem;
   min-height: 3rem; // Ensure consistent height
 
   .logo-primary {
@@ -119,11 +119,12 @@ $transition-timing: 0.3s ease;
 .nav-menu {
   flex: 1;
   padding: 0 0.5rem;
-  margin: 0;
+  margin-top:25px ;
   list-style: none;
 
   .nav-item {
     margin: 0.15rem 0;
+    margin-top: 10px;
 
     a {
       display: flex;
@@ -185,5 +186,84 @@ $transition-timing: 0.3s ease;
     color: #95a5a6;
     font-size: 0.7rem;
     line-height: 1.4;
+  }
+}
+
+// Sous-menu
+.has-submenu {
+  position: relative;
+  
+  .submenu-trigger {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    
+    .submenu-toggle {
+      transition: transform $transition-timing;
+      font-size: 1.2rem;
+      margin-left: auto;
+    }
+  }
+
+  .submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height $transition-timing;
+    
+    li {
+      padding-left: 2rem;
+      position: relative;
+      
+      &::before {
+        content: "";
+        position: absolute;
+        left: 1.5rem;
+        top: 50%;
+        height: 5px;
+        width: 5px;
+        background: #7f8c8d;
+        border-radius: 50%;
+        transform: translateY(-50%);
+      }
+      
+      a {
+        padding: 0.4rem 0.75rem !important;
+        border-left: 0 !important;
+        
+        .nav-icon {
+          font-size: 1rem;
+          min-width: 20px;
+        }
+      }
+    }
+  }
+
+  // État ouvert
+  &.open {
+    .submenu-toggle {
+      transform: rotate(180deg);
+    }
+    
+    .submenu {
+      max-height: 200px;
+    }
+  }
+}
+
+// Gestion de l'état replié
+.sidebar.collapsed {
+  .has-submenu {
+    .submenu {
+      display: none !important;
+    }
+    
+    .submenu-trigger .submenu-toggle {
+      display: none;
+    }
   }
 }

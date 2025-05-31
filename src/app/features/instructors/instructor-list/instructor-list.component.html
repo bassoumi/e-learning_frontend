@@ -1,1 +1,134 @@
-<p>instructor-list works!</p>
+<!-- En-tête avec label + nom -->
+<div class="instructor-header">
+  <div class="category-label">instructor</div>
+  <div class="name-display">
+    {{ instructorNames }}
+  </div>
+</div>
+
+<!-- Carte de l’instructeur (photo, contact, bio) -->
+<div class="instructor-card" *ngIf="instructor">
+  <!-- Bloc photo de profil -->
+  <div class="instructor-image">
+    <img
+      *ngIf="instructorImage"
+      [src]="'http://localhost:8080/uploads/images/' + instructorImage"      alt="Photo de {{ instructorNames }}"
+    />
+  </div>
+
+  <!-- Bloc détails (nom, contact, bio) -->
+  <div class="instructor-details">
+    <!-- Nom complet -->
+    <h2 class="instructor-name">{{ instructorNames }}</h2>
+
+    <!-- Informations de contact -->
+    <div class="instructor-contact">
+      <!-- Email -->
+      <div class="contact-item">
+        <div class="contact-icon">
+          <!-- Vous pouvez remplacer ce span par un <i> d’icône (FontAwesome, etc.) -->
+          <span>✉️</span>
+        </div>
+        <div>
+          <span class="contact-label">Email&nbsp;:</span>
+          <span class="contact-value">{{ instructorEmail }}</span>
+        </div>
+      </div>
+
+      <!-- Vous pouvez ajouter d’autres "contact-item" ici (par exemple téléphone, réseaux sociaux…) -->
+      <!--
+      <div class="contact-item">
+        <div class="contact-icon">
+          <span>📱</span>
+        </div>
+        <div>
+          <span class="contact-label">Tél&nbsp;:</span>
+          <span class="contact-value">{{ instructorPhone }}</span>
+        </div>
+      </div>
+      -->
+    </div>
+
+    <!-- Biographie -->
+    <div class="instructor-bio">
+      <div class="bio-title">
+        Biographie
+      </div>
+      <div class="bio-content">
+        {{ instructorBio }}
+      </div>
+    </div>
+
+    <!-- Section statistiques (facultative, si vous souhaitez afficher des stats) -->
+    <!--
+    <div class="instructor-stats">
+      <div class="stat-item">
+        <div class="stat-value">{{ someStatValue1 }}</div>
+        <div class="stat-label">Stat 1</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">{{ someStatValue2 }}</div>
+        <div class="stat-label">Stat 2</div>
+      </div>
+      <!-- etc. -->
+    <!-- </div> -->
+  </div>
+</div>
+
+    
+  
+    
+    <!-- Add view toggle controls -->
+    <div class="view-controls">
+      <button class="icon-button" (click)="isListView = false" [class.active]="!isListView">
+        <mat-icon>grid_view</mat-icon>
+      </button>
+      <button class="icon-button" (click)="isListView = true" [class.active]="isListView">
+        <mat-icon>view_list</mat-icon>
+      </button>
+    </div>
+    
+    
+    <!-- Modified courses grid -->
+    <div class="courses-grid"
+         [class.list-view]="isListView"
+         [@viewAnimation]="isListView ? 'list' : 'grid'">
+      <div *ngFor="let course of courses" class="course-card" (click)="goToCourse(course.id)">
+    
+        <div class="card-header"
+             [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
+             
+          <div class="course-category">
+            {{ course.categoryName }}
+          </div>
+        </div>
+        <div class="card-body">
+          <h3 class="course-title">{{ course.title }}</h3>
+          
+          <div class="course-short-desc" *ngIf="course.shortDescription">
+            {{ course.shortDescription }}
+          </div>
+    
+        
+          <div class="course-duration">
+            <span class="level">{{ course.level }}</span>
+            <span>·</span>
+            <span>Durée : {{ course.courseMetaData?.duration }} Min</span>
+          </div>
+          
+          
+          
+    
+          <div class="course-meta">
+            <div class="meta-item">
+              <mat-icon>translate</mat-icon>
+              <span>{{ course.language }}</span>
+            </div>
+            <div class="meta-item">
+              <mat-icon>person</mat-icon>
+              <span>{{ course.instructorNames || 'Unknown' }}</span>        </div>
+          </div>
+        </div>  </div>
+    </div>
+    
+    

@@ -59,7 +59,7 @@
         </div>
         <div class="meta-item">
           <mat-icon>person</mat-icon>
-          <span>{{ course.instructorNames[0] || 'Unknown' }}</span>        </div>
+          <span (click)="goToInstructors(course.instructorId); $event.stopPropagation()" >{{ course.instructorNames }}</span>        </div>
       </div>
     </div>  </div>
 </div>

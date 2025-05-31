@@ -64,6 +64,7 @@ export class ListCoursesComponent implements OnInit {
 
   private handleCourses(data: Course[]): void {
     this.courses = data;
+    console.log('Courses loaded:', this.courses);
 
     // Populate categoryName & categoryTags only when not in search mode
     if (!this.searchTitle && this.courses.length) {
@@ -81,6 +82,10 @@ export class ListCoursesComponent implements OnInit {
 
   goToCategory(categoryId: number): void {
     this.router.navigate(['/categories', categoryId]);
+  }
+  goToInstructors(instructorId: number): void {
+    console.log('Navigating to instructor with ID:', instructorId);
+    this.router.navigate(['/instructors', instructorId]);
   }
 
 

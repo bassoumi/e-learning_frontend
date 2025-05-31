@@ -9,6 +9,7 @@ export interface Course {
     level: string;
     language: string;
     coverImage: string;
+    instructorId: number;
     contents?: Content[];
     instructorAvatar?: string;
     courseMetaData?: {

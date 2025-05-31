@@ -21,11 +21,23 @@ export class InstructorService {
   }
 
 
+
+  getInstructorById(instructorId: number): Observable<Instructor> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<Instructor>(`${this.instructorUrl}/${instructorId}`, { headers });
+  }
+
+
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
   }
+
+
+
+
+  
 
 }

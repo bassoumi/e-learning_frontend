@@ -12,56 +12,74 @@
     </div>
   </div>
 
-  <!-- Main Navigation -->
+
+
+
   <ul class="nav-menu">
-    <li class="nav-item active">
-      <a routerLink="/">
-        <mat-icon class="nav-icon">home</mat-icon>
-        <span class="nav-text">Accueil</span>
+    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/courses">
+        <mat-icon class="nav-icon">menu_book</mat-icon>
+        <span class="nav-text">Cours</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a routerLink="/dashboard">
-        <mat-icon class="nav-icon">dashboard</mat-icon>
-        <span class="nav-text">Tableau de bord</span>
+  
+    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/progression">
+        <mat-icon class="nav-icon">hourglass_top</mat-icon>
+        <span class="nav-text">Progression</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a routerLink="/communication">
-        <mat-icon class="nav-icon">chat</mat-icon>
-        <span class="nav-text">Communication</span>
+  
+    <li class="nav-item has-submenu" #submenuItem (click)="toggleSubmenu($event, submenuItem)" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">
+      <a class="submenu-trigger">
+        <mat-icon class="nav-icon">category</mat-icon>
+        <span class="nav-text">Catégories</span>
+        <mat-icon class="submenu-toggle">expand_more</mat-icon>
+      </a>
+  
+      <ul class="submenu">
+        <li *ngFor="let category of categoryList" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a [routerLink]="['/categories', category.id]">
+            <span class="nav-text">{{ category.nom }}</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+  
+    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/agenda">
+        <mat-icon class="nav-icon">event</mat-icon>
+        <span class="nav-text">Agenda</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a routerLink="/case-management">
-        <mat-icon class="nav-icon">assignment</mat-icon>
-        <span class="nav-text">Gestion des cas</span>
+  
+    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/notifications">
+        <mat-icon class="nav-icon">notifications</mat-icon>
+        <span class="nav-text">Notification</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a routerLink="/support">
-        <mat-icon class="nav-icon">support_agent</mat-icon>
-        <span class="nav-text">Accompagnement</span>
+  
+    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/chatbot">
+        <mat-icon class="nav-icon">smart_toy</mat-icon>
+        <span class="nav-text">Chatbot</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a routerLink="/training">
-        <mat-icon class="nav-icon">school</mat-icon>
-        <span class="nav-text">Formations</span>
+  
+    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/profile">
+        <mat-icon class="nav-icon">person</mat-icon>
+        <span class="nav-text">Profil</span>
       </a>
     </li>
+  
     <li class="nav-item">
-      <a routerLink="/reports">
-        <mat-icon class="nav-icon">assessment</mat-icon>
-        <span class="nav-text">Rapports</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a routerLink="/more">
-        <mat-icon class="nav-icon">more_horiz</mat-icon>
-        <span class="nav-text">Plus</span>
+      <a (click)="logout()">
+        <mat-icon class="nav-icon">logout</mat-icon>
+        <span class="nav-text">Déconnexion</span>
       </a>
     </li>
   </ul>
-
+  
 </nav>

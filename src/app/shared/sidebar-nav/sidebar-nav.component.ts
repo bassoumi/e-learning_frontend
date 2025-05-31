@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { Category } from 'src/app/core/models/category.model';
+import { CategoryService } from 'src/app/features/categories/services/category.service';
 
 interface NavItem {
   label: string;
@@ -12,40 +15,35 @@ interface NavItem {
   templateUrl: './sidebar-nav.component.html',
   styleUrls: ['./sidebar-nav.component.scss']
 })
-export class SidebarNavComponent {
-
+export class SidebarNavComponent implements OnInit {
 
   @Input() isCollapsed!: boolean;
-@Output() toggle = new EventEmitter<void>();
+  @Output() toggle = new EventEmitter<void>();
+  categoryList: Category[] = [];
 
-    // Example menu structure
-    items: NavItem[] = [
-      { label: 'Accueil', icon: 'home', route: '/home' },
-      { label: 'Tableau de bord', icon: 'dashboard', route: '/dashboard' },
-      {
-        label: 'Communication',
-        icon: 'chat_bubble',
-        children: [
-          { label: 'Messagerie', icon: 'mail', route: '/comms/messages' },
-          { label: 'Notifications', icon: 'notifications', route: '/comms/notifications' },
-        ]
+  constructor(private categoryService:CategoryService ,
+    private router: Router
+  ) { }
+
+
+  ngOnInit(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        this.categoryList = categories;
       },
-      { label: 'Gestion des cas', icon: 'folder_open', route: '/cases' },
-      { label: 'Accompagnement', icon: 'thumb_up', route: '/support' },
-      { label: 'Formations', icon: 'video_library', children: [
-          { label: 'Catalogue', icon: 'menu_book', route: '/trainings/catalog' },
-          { label: 'Mes formations', icon: 'school', route: '/trainings/mine' },
-        ]
-      },
-      { label: 'Rapports', icon: 'insert_chart', children: [
-          { label: 'Statistiques', icon: 'bar_chart', route: '/reports/stats' },
-          { label: 'Exports', icon: 'file_download', route: '/reports/exports' },
-        ]
-      },
-      { label: 'Plus', icon: 'more_horiz', route: '/more' }
-    ];
+      error: (err) => {
+        console.error('Erreur de chargement des catégories', err);
+      }
+    });
+  }
+
+  logout(): void {
+    // Supprimer le token ou session
+    localStorage.removeItem('token'); // ou sessionStorage.clear()
+    // Rediriger vers la page de login
+    this.router.navigate(['/login']);
+  }
   
-    // track which dropdown is open
     openSection: string | null = null;
   
     toggleSection(label: string) {
@@ -57,4 +55,15 @@ export class SidebarNavComponent {
     toggleCollapse() {
       this.toggle.emit();  // inform parent to toggle
     }
+
+
+
+
+
+    toggleSubmenu(event: MouseEvent, item: HTMLElement) {
+      event.preventDefault();
+      item.classList.toggle('open');
+    }
+
+
   }
