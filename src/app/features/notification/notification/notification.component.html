@@ -1,0 +1,72 @@
+<div class="notification-container">
+    <h2>Mes notifications</h2>
+  
+    <!-- Affichage vide -->
+    <div *ngIf="notifications.length === 0">
+      <p>Aucune notification non lue.</p>
+    </div>
+  
+    <!-- Vue en grille ou liste -->
+    <div class="view-controls">
+      <button class="icon-button" (click)="isListView = false" [class.active]="!isListView">
+        <mat-icon>grid_view</mat-icon>
+      </button>
+      <button class="icon-button" (click)="isListView = true" [class.active]="isListView">
+        <mat-icon>view_list</mat-icon>
+      </button>
+    </div>
+  
+    <!-- Notifications affichées comme des cartes -->
+    <div 
+      class="courses-grid"
+      [class.list-view]="isListView"
+      [@viewAnimation]="isListView ? 'list' : 'grid'"
+      *ngIf="notifications.length > 0"
+    >
+      <div 
+        *ngFor="let n of notifications" 
+        class="course-card" 
+        (click)="onClickNotification(n)"
+      >
+        <div class="card-header"
+             [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + n.coverImage + ')'">
+          <div class="course-category"
+               (click)="goToCategory(n.categoryId); $event.stopPropagation()">
+            {{ n.categoryName }}
+          </div>
+        </div>
+  
+        <div class="card-body">
+          <h3 class="course-title">{{ n.courseTitle }}</h3>
+  
+          <div class="course-short-desc" *ngIf="n.shortDescription">
+            {{ n.shortDescription }}
+          </div>
+  
+          <div class="course-duration">
+            <span class="level">{{ n.level }}</span>
+            <span>·</span>
+            <span>Durée : {{ n.duration }} Min</span>
+          </div>
+  
+          <div class="course-meta">
+         
+            <div class="meta-item">
+              <mat-icon>person</mat-icon>
+              <span (click)="goToInstructors(n.instructorId); $event.stopPropagation()">
+                {{ n.instructorNames }}
+              </span>
+            </div>
+          </div>
+  
+          <div class="notification-date">
+            <div class="icon-text-wrapper">
+              <mat-icon class="aligned-icon">notifications</mat-icon>
+              <span>Date de sortie : {{ n.createdAt | date:'short' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

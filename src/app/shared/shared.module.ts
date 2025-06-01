@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { DurationPipe } from './pipes/duration.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatBadgeModule } from '@angular/material/badge';
+
 
 
 
@@ -31,7 +33,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
-    
+    MatBadgeModule,    
   ],
   exports: [
     NavbarComponent,

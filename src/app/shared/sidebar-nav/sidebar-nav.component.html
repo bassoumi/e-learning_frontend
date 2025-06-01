@@ -53,12 +53,20 @@
       </a>
     </li>
   
-    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-      <a routerLink="/notifications">
+    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"> 
+      <a routerLink="/notifications" class="nav-link-with-indicator">
         <mat-icon class="nav-icon">notifications</mat-icon>
         <span class="nav-text">Notification</span>
+    
+        <!-- Bulle rouge -->
+        <span 
+          class="red-dot" 
+          *ngIf="unreadCount > 0"
+        ></span>
       </a>
     </li>
+    
+    
   
     <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       <a routerLink="/chatbot">

@@ -12,6 +12,8 @@ import {
   catchError
 } from 'rxjs';
 import { CourseService } from 'src/app/features/courses/services/course.service';
+import { StudentService } from 'src/app/features/students/services/student.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -36,7 +38,8 @@ export class NavbarComponent {
   constructor(
     private router: Router,
     private courseService: CourseService,
-    private el: ElementRef
+    private el: ElementRef,
+
   ) {}
 
   openAccountSettings() {
@@ -104,7 +107,12 @@ export class NavbarComponent {
         this.isLoading = false;
       }
     });
+
+
   }
+
+
+
 
   onSearch(): void {
     const term = this.searchControl.value?.trim() ?? '';
@@ -162,5 +170,7 @@ export class NavbarComponent {
       this.closeSuggestions();
     }
   }
+
+  
 
 }

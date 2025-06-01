@@ -53,6 +53,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
   },
+  {
+    path: 'notifications',
+    loadChildren: () =>
+      import('./features/notification/notification.module').then(m => m.NotificationModule),
+  },
   // default & fallback
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];

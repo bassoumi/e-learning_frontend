@@ -66,31 +66,36 @@ export class StartCourseComponent implements OnInit {
     });
   }
 
-
-
   private checkSubscription(): void {
-    if (!this.instructorIdOfCourse) {
-      // Pas d’instructeur => pas d’abonnement possible
+    // Vérifie si instructorIdOfCourse est défini et différent de 0 (si 0 n'est pas valide)
+    if (this.instructorIdOfCourse === undefined || this.instructorIdOfCourse === null) {
       this.isSubscribed = false;
       this.subscriptionChecked = true;
       return;
     }
+  
+// 1) Log avant l'appel au service
+this.studentService.getSubscription(this.studentId).subscribe({
+  next: (resp: any) => {
+    // Affichez « brute » le JSON renvoyé par le backend
+    console.log('Réponse getSubscription reçue (brute) :', resp);
 
-    this.studentService.getSubscription(this.studentId).subscribe({
-      next: (resp: Student) => {
-        // Si resp.instructorId correspond à l’instructor de ce cours, on est abonné
-        this.isSubscribed = (resp.instructorId === this.instructorIdOfCourse);
-        this.subscriptionChecked = true;
-      },
-      error: err => {
-        console.error('Erreur lors de la vérification d’abonnement :', err);
-        // En cas d’erreur, on considère “non abonné”
-        this.isSubscribed = false;
-        this.subscriptionChecked = true;
-      }
-    });
+    // Si votre backend renvoie { instructorIds: [...] }, on peut vérifier :
+    this.isSubscribed = Array.isArray(resp.instructorIds)
+      ? resp.instructorIds.includes(this.instructorIdOfCourse)
+      : false;
+
+    this.subscriptionChecked = true;
+  },
+  error: (err) => {
+    console.error('Erreur lors de la vérification d’abonnement :', err);
+    this.isSubscribed = false;
+    this.subscriptionChecked = true;
   }
+});
 
+  }
+  
 
 
   subscribe(): void {
@@ -102,6 +107,7 @@ export class StartCourseComponent implements OnInit {
       next: updatedStudent => {
         // L’abonnement a réussi : on met à jour le drapeau
         this.isSubscribed = true;
+        console.log('Abonnement réussi :', updatedStudent);
       },
       error: err => {
         console.error('Erreur lors de l’abonnement :', err);
@@ -109,10 +115,13 @@ export class StartCourseComponent implements OnInit {
     });
   }
 
-
-
   unsubscribe(): void {
-    this.studentService.unsubscribe(this.studentId).subscribe({
+    if (this.instructorIdOfCourse === undefined) {
+      console.error("Impossible de se désabonner : instructorIdOfCourse est indéfini");
+      return;
+    }
+  
+    this.studentService.unsubscribe(this.studentId, this.instructorIdOfCourse).subscribe({
       next: () => {
         this.isSubscribed = false;
       },
@@ -121,6 +130,8 @@ export class StartCourseComponent implements OnInit {
       }
     });
   }
+  
+  
 
 
   private loadCourseAndProgressions(studentId: number, courseId: number): Observable<any> {

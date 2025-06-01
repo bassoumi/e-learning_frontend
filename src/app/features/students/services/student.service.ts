@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
+import { NotificationDto } from 'src/app/core/models/NotificationDto';
 import { Student, SubscriptionRequest } from 'src/app/core/models/student.model';
 
 @Injectable({
@@ -52,20 +53,30 @@ export class StudentService {
     ): Observable<Student> {
       const url = `${this.baseUrl}/${studentId}/subscribe`;
       const headers = this.getAuthHeaders();
-      const body: SubscriptionRequest = { instructorId: newInstructorId };
+      const body: SubscriptionRequest = { instructorIds: [newInstructorId] };
       return this.http.put<Student>(url, body, { headers });
     }
+    
   
   
   
-  
-    unsubscribe(studentId: number): Observable<void> {
-      const url = `${this.baseUrl}/${studentId}/subscribe`;
+    unsubscribe(studentId: number, instructorId: number): Observable<void> {
+      const url = `${this.baseUrl}/${studentId}/subscribe/${instructorId}`;
       const headers = this.getAuthHeaders();
       return this.http.delete<void>(url, { headers });
     }
+    
   
-
+    getUnreadNotifications(studentId: number): Observable<NotificationDto[]> {
+      const url = `${this.baseUrl}/${studentId}/notifications`;
+      return this.http.get<NotificationDto[]>(url, { headers: this.getAuthHeaders() });
+    }
+    
+    markNotificationAsRead(studentId: number, notificationId: number): Observable<void> {
+      const url = `${this.baseUrl}/${studentId}/notifications/${notificationId}/read`;
+      return this.http.put<void>(url, {}, { headers: this.getAuthHeaders() });
+    }
+    
 
   
 }

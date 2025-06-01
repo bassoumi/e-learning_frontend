@@ -6,8 +6,8 @@ export interface Student {
     gender: string;
     email: string;
     phone: string;
-    instructorId?: number;
-    address: {
+    instructorIds: number[];
+        address: {
       street: string;
       city: string;
       state: string;
@@ -15,5 +15,4 @@ export interface Student {
   }
   
   export interface SubscriptionRequest {
-    instructorId: number;
-  }
+    instructorIds: number[];  }

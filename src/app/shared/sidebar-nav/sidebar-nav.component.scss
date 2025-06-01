@@ -267,3 +267,20 @@ $transition-timing: 0.3s ease;
     }
   }
 }
+
+
+.nav-link-with-indicator {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.red-dot {
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 16px;
+  right: 8px;
+}

@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { Category } from 'src/app/core/models/category.model';
 import { CategoryService } from 'src/app/features/categories/services/category.service';
+import { StudentService } from 'src/app/features/students/services/student.service';
 
 interface NavItem {
   label: string;
@@ -20,9 +22,13 @@ export class SidebarNavComponent implements OnInit {
   @Input() isCollapsed!: boolean;
   @Output() toggle = new EventEmitter<void>();
   categoryList: Category[] = [];
+  unreadCount: number = 0;
+
 
   constructor(private categoryService:CategoryService ,
-    private router: Router
+    private router: Router,
+    private studentService: StudentService,
+    private authService: AuthService
   ) { }
 
 
@@ -35,6 +41,12 @@ export class SidebarNavComponent implements OnInit {
         console.error('Erreur de chargement des catégories', err);
       }
     });
+
+    const studentId = this.authService.getLoggedInStudentId();
+    if (studentId != null) {
+      this.loadUnreadCount(studentId);
+    }
+
   }
 
   logout(): void {
@@ -65,5 +77,17 @@ export class SidebarNavComponent implements OnInit {
       item.classList.toggle('open');
     }
 
+
+
+    
+  private loadUnreadCount(studentId: number): void {
+    this.studentService.getUnreadNotifications(studentId).subscribe({
+      next: notifications => {
+        this.unreadCount = notifications.length;
+        console.log('Nombre de notifications non lues:', this.unreadCount);
+      },
+      error: err => console.error(err)
+    });
+  }
 
   }
