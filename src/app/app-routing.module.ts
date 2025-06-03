@@ -58,8 +58,17 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/notification/notification.module').then(m => m.NotificationModule),
   },
+  {
+    path: 'agenda',
+    loadChildren: () =>
+      import('./features/agenda/agenda.module').then(m => m.AgendaModule),
+  },
   // default & fallback
   { path: '', redirectTo: 'login', pathMatch: 'full' },
+  
+  { path: 'agenda', loadChildren: () => import('./features/agenda/agenda.module').then(m => m.AgendaModule) },
+  { path: 'profile', loadChildren: () => import('./features/profile/profile.module').then(m => m.ProfileModule) },
+
 ];
 
 @NgModule({

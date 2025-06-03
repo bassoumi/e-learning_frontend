@@ -12,25 +12,36 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  
   login(user: UserLogin): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/authenticate`, user).pipe(
-      tap((response: AuthResponse) => {
-        this.storeToken(response.token); // ou autre champ
-        this.setLoggedInStudentId(response.user_id!); // 👈 on stocke ici
-      })
-    );
+    return this.http
+      .post<AuthResponse>(`${this.baseUrl}/authenticate`, user)
+      .pipe(
+        tap((response: AuthResponse) => {
+          this.storeToken(response.token);
+          if (response.user_id != null && response.role) {
+            this.setLoggedInStudentId(response.user_id, response.role);
+          }
+        })
+      );
   }
 
-  setLoggedInStudentId(id: number): void {
+  /**
+   * Enregistre l'ID et le rôle de l'utilisateur
+   * dans la variable interne + localStorage
+   */
+  setLoggedInStudentId(id: number, role: string): void {
     this.loggedInStudentId = id;
-    localStorage.setItem('user_id', id.toString()); // facultatif si tu veux le garder même après refresh
+    localStorage.setItem('user_id', id.toString());
+    localStorage.setItem('role', role);
   }
 
-
+  /**
+   * Récupère l'ID stocké (en mémoire ou dans localStorage)
+   */
   getLoggedInStudentId(): number | null {
-    if (this.loggedInStudentId !== null) return this.loggedInStudentId;
-  
+    if (this.loggedInStudentId !== null) {
+      return this.loggedInStudentId;
+    }
     const storedId = localStorage.getItem('user_id');
     return storedId ? Number(storedId) : null;
   }
@@ -43,7 +54,9 @@ export class AuthService {
       data
     );
   }
-  
+  getUserRole(): string | null {
+    return localStorage.getItem('role');
+  }
   
   registerStudent(data: StudentRegister): Observable<any> {
     return this.http.post(

@@ -1,0 +1,375 @@
+// Variables
+$primary: #4e54c8;
+$secondary: #8f94fb;
+$accent: #ff6b6b;
+$light: #f8f9fa;
+$dark: #343a40;
+$success: #20bf6b;
+$warning: #fa8231;
+$shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+$radius: 16px;
+$transition: all 0.3s ease;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin card-style {
+  background: white;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  overflow: hidden;
+}
+
+@mixin section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  color: $primary;
+  
+  i {
+    font-size: 1.4rem;
+  }
+  
+  h2 {
+    font-size: 1.6rem;
+  }
+}
+
+@mixin info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+@mixin info-item {
+  display: flex;
+  flex-direction: column;
+  
+  .info-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 5px;
+  }
+  
+  .info-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $dark;
+    padding: 8px 0;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  }
+}
+
+@mixin btn-style {
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Styles communs
+.profile-container, .instructor-container {
+  width: 100%;
+  max-width: 1000px;
+  @include card-style;
+  margin: 0 auto;
+}
+
+.profile-header, .instructor-header {
+  background: linear-gradient(to right, $primary, $secondary);
+  padding: 30px;
+  color: white;
+  text-align: center;
+  position: relative;
+  
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+}
+
+.profile-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: $accent;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.avatar-container {
+  position: relative;
+  margin-top: -100px;
+  z-index: 10;
+}
+
+.profile-avatar {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 5px solid white;
+  background: linear-gradient(45deg, #a6c0fe, #f68084);
+  @include flex-center;
+  color: white;
+  font-size: 4.5rem;
+  font-weight: bold;
+  box-shadow: $shadow;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: $transition;
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.info-section {
+  background: $light;
+  border-radius: $radius;
+  padding: 25px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.section-title {
+  @include section-title;
+}
+
+.info-grid {
+  @include info-grid;
+  
+  .info-item {
+    @include info-item;
+  }
+}
+
+.profile-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn {
+  @include btn-style;
+  
+  &-primary {
+    background: $primary;
+    color: white;
+    
+    &:hover {
+      background: darken($primary, 10%);
+    }
+  }
+  
+  &-outline {
+    background: transparent;
+    border: 2px solid $primary;
+    color: $primary;
+    
+    &:hover {
+      background: rgba($primary, 0.1);
+    }
+  }
+}
+
+// Styles spécifiques au profil Étudiant
+.profile-container {
+  .profile-content {
+    display: flex;
+    padding: 30px;
+    gap: 30px;
+  }
+  
+  .profile-sidebar {
+    flex: 0 0 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .profile-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+    
+    .stat-card {
+      background: $light;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      transition: $transition;
+      
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+      
+      i {
+        font-size: 1.8rem;
+        color: $primary;
+        margin-bottom: 10px;
+      }
+      
+      h3 {
+        font-size: 2rem;
+        color: $dark;
+        margin-bottom: 5px;
+      }
+      
+      p {
+        color: #6c757d;
+        font-size: 0.9rem;
+      }
+    }
+  }
+  
+  .profile-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .instructors-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+    
+    .instructor-badge {
+      background: linear-gradient(to right, $primary, $secondary);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Styles spécifiques au profil Instructeur
+.instructor-container {
+  .instructor-header {
+    padding: 60px 30px 80px;
+    
+    .profile-avatar-img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 5px solid white;
+      object-fit: cover;
+      box-shadow: $shadow;
+    }
+  }
+  
+  .instructor-content {
+    padding: 30px;
+    padding-top: 0;
+    margin-top: -50px;
+  }
+  
+  .info-section {
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #555;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 900px) {
+  .profile-content {
+    flex-direction: column;
+  }
+  
+  .profile-sidebar {
+    flex: 1;
+    align-items: center;
+  }
+  
+  .profile-stats {
+    max-width: 500px;
+  }
+  
+  .profile-container .avatar-container {
+    margin-top: -140px;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .profile-header, .instructor-header {
+    padding: 20px 15px;
+    
+    h1 {
+      font-size: 1.8rem;
+    }
+  }
+  
+  .profile-content {
+    padding: 20px 15px;
+  }
+  
+  .profile-actions {
+    flex-direction: column;
+  }
+  
+  .profile-container .profile-content {
+    flex-direction: column;
+  }
+  
+  .instructor-container .instructor-header {
+    padding: 50px 15px 70px;
+  }
+}

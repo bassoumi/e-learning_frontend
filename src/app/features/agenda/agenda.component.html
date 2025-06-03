@@ -1,0 +1,198 @@
+<!-- agenda.component.html -->
+<div class="agenda-container">
+  <!-- En-tête de l'agenda -->
+  <div class="agenda-header">
+    <div class="header-left">
+      <h1 class="agenda-title">Mon Agenda</h1>
+      <button class="add-event-button" (click)="showAddEventModal = true">+ Ajouter</button>
+    </div>
+    
+    <div class="header-center">
+      <button class="nav-button" (click)="previousWeek()">&lt;</button>
+      <h2 class="current-week">{{ currentWeekDates }}</h2>
+      <button class="nav-button" (click)="nextWeek()">&gt;</button>
+    </div>
+    
+    <div class="header-right">
+      <span class="current-date">{{ currentDate | date:'fullDate' }}</span>
+    </div>
+  </div>
+
+  <!-- Corps de l'agenda -->
+  <div class="agenda-body">
+    <div class="time-column">
+      <div class="time-header"></div>
+      <div class="time-slot" *ngFor="let hour of hours">
+        <!-- Exemple d’affichage "9:00 - 12:00" si slotStep = 3 -->
+        {{ hour }}:00 - {{ (hour + slotStep) % 24 }}:00
+      </div>
+    </div>
+
+    <div class="days-container">
+      <div class="day-column" *ngFor="let day of days">
+        <div class="day-header">
+          <div class="day-name">{{ day.name }}</div>
+          <div class="day-date">{{ day.date }}</div>
+        </div>
+    <!-- MODIFIEZ CETTE SECTION -->
+<div class="day-content">
+  <div 
+    class="time-slot" 
+    *ngFor="let hour of hours"
+    (click)="createEvent(day, hour)"
+  >
+    <!-- Déplacez la boucle des événements ICI -->
+    <div 
+      *ngFor="let event of getEvents(day, hour)"
+      class="event"
+      [ngClass]="{
+        'personal': event.type === 'personal',
+        'start':    event.type === 'START',
+        'update':   event.type === 'UPDATE'
+      }"
+      (click)="showEventDetails(event); $event.stopPropagation()"
+    >
+      <div class="event-title">{{ event.title }}</div>
+      <button 
+        class="delete-event-button"
+        (click)="deleteEvent(event.id, event.type); $event.stopPropagation()"
+      >×</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="selectedEvent" class="event-details-modal">
+  <div class="modal-backdrop" (click)="selectedEvent = null"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ selectedEvent.title }}</h3>
+      <button class="close-button" (click)="selectedEvent = null">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <!-- Événements personnels -->
+      <div *ngIf="selectedEvent.type === 'personal'" class="event-details-section">
+        <div class="detail-item">
+          <div class="detail-label">Description</div>
+          <div class="detail-value">{{ selectedEvent.description }}</div>
+        </div>
+        
+        <div class="detail-item">
+          <div class="detail-label">Date</div>
+          <div class="detail-value">{{ selectedEvent.fullDate | date:'medium' }}</div>
+        </div>
+      </div>
+    
+      <!-- Détails des cours -->
+      <div *ngIf="selectedEvent.type === 'START' || selectedEvent.type === 'UPDATE'" class="course-details-section">
+        <div class="course-header">
+          <div class="course-image-container">
+            <img [src]="'http://localhost:8080/uploads/courses/' + selectedEvent.coursImage" 
+                 alt="Image du cours" 
+                 class="course-image" />
+          </div>
+          <div class="course-meta">
+            <h4 class="course-title">{{ selectedEvent.courseTitle }}</h4>
+            <div class="course-id">ID: {{ selectedEvent.courseId }}</div>
+          </div>
+        </div>
+    
+        <div class="course-info-grid">
+          <div class="info-card">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </div>
+            <div>
+              <div class="info-label">Date</div>
+              <div class="info-value">{{ selectedEvent.fullDate | date:'medium' }}</div>
+            </div>
+          </div>
+    
+          <div class="info-card">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <div>
+              <div class="info-label">Instructeur</div>
+              <div class="info-value">{{ selectedEvent.instructor }}</div>
+            </div>
+          </div>
+    
+    
+     
+        </div>
+    
+        <div class="course-actions">
+          <button class="action-button primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            Rejoindre le cours
+          </button>
+          <button class="action-button secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Accéder au forum
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="action-button" (click)="selectedEvent = null">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour ajouter un événement -->
+<div *ngIf="showAddEventModal" class="modal-backdrop">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Ajouter un événement personnel</h2>
+      <button (click)="showAddEventModal = false" class="close-button">×</button>
+    </div>
+    
+    <form [formGroup]="personalEventForm" (ngSubmit)="submitEvent()" class="modal-body">
+      <div class="form-group">
+        <label for="title">Titre*</label>
+        <input id="title" type="text" formControlName="title">
+        <div *ngIf="personalEventForm.get('title')?.invalid && personalEventForm.get('title')?.touched" 
+             class="error-message">
+          Le titre est requis
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" rows="3"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="eventDateTime">Date & Heure*</label>
+        <input id="eventDateTime" type="datetime-local" formControlName="eventDateTime">
+        <div *ngIf="personalEventForm.get('eventDateTime')?.invalid && personalEventForm.get('eventDateTime')?.touched" 
+             class="error-message">
+          La date et l'heure sont requises
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" (click)="showAddEventModal = false">Annuler</button>
+        <button type="submit" [disabled]="personalEventForm.invalid">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>

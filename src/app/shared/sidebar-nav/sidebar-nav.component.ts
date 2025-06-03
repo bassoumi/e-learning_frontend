@@ -5,12 +5,7 @@ import { Category } from 'src/app/core/models/category.model';
 import { CategoryService } from 'src/app/features/categories/services/category.service';
 import { StudentService } from 'src/app/features/students/services/student.service';
 
-interface NavItem {
-  label: string;
-  icon: string;       // CSS class or material ligature
-  route?: string;
-  children?: NavItem[];
-}
+
 
 @Component({
   selector: 'app-sidebar-nav',
@@ -18,6 +13,10 @@ interface NavItem {
   styleUrls: ['./sidebar-nav.component.scss']
 })
 export class SidebarNavComponent implements OnInit {
+  showInstructorMenu = false;
+  showCourseMenu = false;
+  showStudentMenu = false;
+  showProfileMenu = false;
 
   @Input() isCollapsed!: boolean;
   @Output() toggle = new EventEmitter<void>();
@@ -46,6 +45,21 @@ export class SidebarNavComponent implements OnInit {
     if (studentId != null) {
       this.loadUnreadCount(studentId);
     }
+    const role = this.authService.getUserRole(); // 'ADMIN', 'INSTRUCTOR' ou 'STUDENT'
+
+    if (role === 'ADMIN') {
+      this.showInstructorMenu = true;
+      this.showProfileMenu = false;
+    }
+    if (role === 'INSTRUCTOR') {
+      this.showCourseMenu = true;
+      this.showProfileMenu = true; // Par exemple, si un instructor gère aussi des menus "instructor"
+      // ou bien showCourseMenu = true si vous aviez un flag dédié pour les cours
+    }
+    if (role === 'STUDENT') {
+      this.showStudentMenu = true;
+      this.showProfileMenu = true;
+    }
 
   }
 
@@ -72,11 +86,11 @@ export class SidebarNavComponent implements OnInit {
 
 
 
-    toggleSubmenu(event: MouseEvent, item: HTMLElement) {
+    toggleSubmenu(event: MouseEvent, item: HTMLElement): void {
       event.preventDefault();
       item.classList.toggle('open');
     }
-
+    
 
 
     
