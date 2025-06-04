@@ -12,6 +12,7 @@ import { DurationPipe } from './pipes/duration.pipe';
 import { OrderByPipe } from './pipes/order-by.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 
@@ -26,6 +27,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     SidebarNavComponent,
     DurationPipe,
     OrderByPipe,
+    NotFoundComponent,
   ],
   imports: [
     CommonModule,

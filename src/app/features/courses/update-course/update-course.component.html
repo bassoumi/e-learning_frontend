@@ -46,38 +46,26 @@
             </div>
           </div>
 
-          <!-- Category -->
+          <!-- Category (readonly) -->
           <div class="form-group">
-            <label for="category">Category *</label>
-            <select id="category" formControlName="categoryId">
+            <label for="category">Category</label>
+            <select id="category" formControlName="categoryId" readonly>
               <option [ngValue]="null" disabled>Select category</option>
               <option *ngFor="let category of categories" [ngValue]="category.id">
                 {{ category.nom }}
               </option>
             </select>
-            <div
-              *ngIf="courseForm.get('categoryId')?.invalid && courseForm.get('categoryId')?.touched"
-              class="text-danger"
-            >
-              Category is required.
-            </div>
           </div>
 
-          <!-- Instructor -->
+          <!-- Instructor (readonly) -->
           <div class="form-group">
-            <label for="instructor">Instructor *</label>
-            <select id="instructor" formControlName="instructorId">
+            <label for="instructor">Instructor</label>
+            <select id="instructor" formControlName="instructorId" readonly>
               <option [ngValue]="null" disabled>Select instructor</option>
               <option *ngFor="let ins of instructors" [ngValue]="ins.id">
                 {{ ins.firstName }} {{ ins.lastName }}
               </option>
             </select>
-            <div
-              *ngIf="courseForm.get('instructorId')?.invalid && courseForm.get('instructorId')?.touched"
-              class="text-danger"
-            >
-              Instructor is required.
-            </div>
           </div>
 
           <!-- Level -->
@@ -121,8 +109,8 @@
               >
                 <label>Current Cover:</label>
                 <img
-                [src]="'http://localhost:8080/uploads/courses/' + existingCoverUrl"
-                                  alt="Current Cover"
+                  [src]="'http://localhost:8080/uploads/courses/' + existingCoverUrl"
+                  alt="Current Cover"
                   class="cover-preview"
                 />
               </div>
@@ -145,6 +133,7 @@
               formControlName="shortDescription"
               placeholder="Brief course summary"
               rows="2"
+              readonly
             ></textarea>
           </div>
 
@@ -176,24 +165,16 @@
           </div>
 
           <div class="form-grid">
-            <!-- Duration -->
+            <!-- Duration (readonly) -->
             <div class="form-group">
-              <label for="duration">Duration (hours) *</label>
+              <label for="duration">Duration (hours)</label>
               <input
                 id="duration"
                 type="number"
                 formControlName="duration"
                 placeholder="Total course hours"
+                readonly
               />
-              <div
-                *ngIf="
-                  courseForm.get('courseMetaData.duration')?.invalid &&
-                  courseForm.get('courseMetaData.duration')?.touched
-                "
-                class="text-danger"
-              >
-                Duration is required.
-              </div>
             </div>
 
             <!-- Tags -->
@@ -299,6 +280,7 @@
                 <input
                   formControlName="title"
                   placeholder="Section title"
+                  readonly
                 />
               </div>
 
@@ -307,6 +289,7 @@
                 <input
                   formControlName="videoUrl"
                   placeholder="https://example.com/video"
+                  readonly
                 />
               </div>
 
@@ -316,6 +299,7 @@
                   formControlName="description"
                   placeholder="Detailed content description"
                   rows="3"
+                  readonly
                 ></textarea>
               </div>
 
@@ -325,19 +309,12 @@
                   type="number"
                   formControlName="orderContent"
                   placeholder="Display order"
+                  readonly
                 />
               </div>
             </div>
           </div>
         </div>
-
-        <button
-          type="button"
-          (click)="addContent()"
-          class="add-section-btn"
-        >
-          <i class="material-icons">add</i> Add Content Section
-        </button>
       </div>
 
       <!-- STEP 3: QUIZ -->
@@ -350,7 +327,7 @@
         <div formGroupName="quiz">
           <div class="form-group">
             <label>Quiz Title</label>
-            <input formControlName="title" placeholder="Quiz title" />
+            <input formControlName="title" placeholder="Quiz title" readonly />
           </div>
 
           <div formArrayName="questions" class="question-cards">
@@ -361,31 +338,17 @@
             >
               <div class="card-header">
                 <h4>Question {{ i + 1 }}</h4>
-                <button
-                  type="button"
-                  (click)="removeQuestion(i)"
-                  class="remove-btn"
-                >
-                  <i class="material-icons">delete</i>
-                </button>
               </div>
 
               <div class="card-body">
                 <div class="form-group">
                   <label>Question Text *</label>
-                  <input formControlName="text" placeholder="Enter question" />
+                  <input formControlName="text" placeholder="Enter question" readonly />
                 </div>
 
                 <div class="form-group">
                   <div class="array-header">
                     <label>Options *</label>
-                    <button
-                      type="button"
-                      (click)="addOption(i)"
-                      class="add-btn small"
-                    >
-                      <i class="material-icons">add</i> Add Option
-                    </button>
                   </div>
                   <div formArrayName="options" class="options-container">
                     <div
@@ -398,21 +361,15 @@
                       <input
                         [formControlName]="j"
                         placeholder="Option {{ j + 1 }}"
+                        readonly
                       />
-                      <button
-                        type="button"
-                        (click)="removeOption(i, j)"
-                        class="remove-btn"
-                      >
-                        <i class="material-icons">close</i>
-                      </button>
                     </div>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label>Correct Answer *</label>
-                  <input formControlName="answer" placeholder="Enter correct answer" />
+                  <input formControlName="answer" placeholder="Enter correct answer" readonly />
                   <div class="hint">
                     Must match one of the options exactly
                   </div>
@@ -420,14 +377,6 @@
               </div>
             </div>
           </div>
-
-          <button
-            type="button"
-            (click)="addQuestion()"
-            class="add-section-btn"
-          >
-            <i class="material-icons">add</i> Add Question
-          </button>
         </div>
       </div>
 
@@ -461,7 +410,5 @@
         </button>
       </div>
     </form>
-
-
   </div>
 </div>

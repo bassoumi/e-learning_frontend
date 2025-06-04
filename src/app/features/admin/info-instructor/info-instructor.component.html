@@ -1,0 +1,23 @@
+<div class="instructor-profile-container py-4" [class.loading]="isLoading" *ngIf="!isLoading && instructor">
+    <div class="instructor-card">
+      <div class="card-body-profile">
+        <img
+          [src]="'http://localhost:8080/uploads/images/' + instructor.profileImage"
+          alt="Profil de {{instructor.firstName}} {{instructor.lastName}}"
+          class="instructor-avatar"
+        />
+        <div class="instructor-details">
+          <h4>{{ instructor.firstName }} {{ instructor.lastName }}</h4>
+          <p><strong>Email :</strong> {{ instructor.email }}</p>
+          <div class="instructor-bio">
+            <p><strong>Bio :</strong> {{ instructor.bio }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Message d'erreur -->
+  <div class="error-message" *ngIf="errorMsg">
+    <p>{{ errorMsg }}</p>
+  </div>

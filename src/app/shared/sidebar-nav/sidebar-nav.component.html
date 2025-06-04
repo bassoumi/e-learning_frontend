@@ -45,45 +45,49 @@
     </li>
   
     <!-- SECTION INSTRUCTOR (Manage Courses) -->
-    <li 
-      class="nav-item has-submenu" 
-      #submenuItemCourse 
-      (click)="toggleSubmenu($event, submenuItemCourse)" 
-      routerLinkActive="active"
-      *ngIf="showCourseMenu"
-    >
-      <a class="submenu-trigger">
-        <mat-icon class="nav-icon">library_books</mat-icon>
-        <span class="nav-text">Vos Course</span>
-        <mat-icon class="submenu-toggle">expand_more</mat-icon>
-      </a>
-  
-      <ul class="submenu">
-        <li routerLinkActive="active">
-          <a routerLink="/instructors">
-            <span class="nav-text">View Courses</span>
-          </a>
-        </li>
-        <li routerLinkActive="active">
-          <a routerLink="/courses/addCourse">
-            <span class="nav-text">Add Course</span>
-          </a>
-        </li>
-        <li routerLinkActive="active">
-          <a routerLink="/courses/update">
-            <span class="nav-text">Update Course</span>
-          </a>
-        </li>
-      </ul>
-    </li>
-  
-    <!-- SECTION COMMUNE À TOUS (Courses listes pour tous ou étudiants) -->
-    <li class="nav-item" routerLinkActive="active">
-      <a routerLink="/courses">
-        <mat-icon class="nav-icon">menu_book</mat-icon>
-        <span class="nav-text">Courses</span>
+    <!-- Sous-menu pour l'instructeur -->
+<!-- Vos Courses -->
+<li 
+  class="nav-item has-submenu" 
+  #submenuItemCourse 
+  (click)="toggleSubmenu($event, submenuItemCourse)" 
+  *ngIf="showCourseMenu"
+  routerLinkActive="active"
+  [routerLinkActiveOptions]="{ exact: false }"
+>
+  <!-- ✅ On récupère la classe "active" depuis le parent li -->
+  <a 
+    class="submenu-trigger" 
+    [ngClass]="{'active': submenuItemCourse.classList.contains('active')}"
+  >
+    <mat-icon class="nav-icon">library_books</mat-icon>
+    <span class="nav-text">Vos Courses</span>
+    <mat-icon class="submenu-toggle">expand_more</mat-icon>
+  </a>
+
+  <ul class="submenu">
+    <li>
+      <a routerLink="/instructors">
+        <span class="nav-text">View Courses</span>
       </a>
     </li>
+    <li>
+      <a routerLink="/courses/addCourse">
+        <span class="nav-text">Add Course</span>
+      </a>
+    </li>
+  </ul>
+</li>
+
+
+<!-- Courses général -->
+<li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+  <a routerLink="/courses">
+    <mat-icon class="nav-icon">menu_book</mat-icon>
+    <span class="nav-text">Courses</span>
+  </a>
+</li>
+
   
     <li class="nav-item" routerLinkActive="active">
       <a routerLink="/progression">

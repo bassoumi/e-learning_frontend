@@ -1,0 +1,213 @@
+/* Variables */
+$primary-color: #4361ee;
+$secondary-color: #3a0ca3;
+$light-bg: #f8f9fa;
+$border-color: #e9ecef;
+$shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+$transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+/* Container principal */
+.instructor-profile-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  
+  &.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}
+
+/* Carte de profil */
+.instructor-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: $shadow;
+  transition: $transition;
+  border: none;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* Corps de la carte */
+.card-body-profile {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  
+  @media (min-width: 768px) {
+    flex-direction: row;
+    text-align: left;
+  }
+}
+
+/* Image de profil */
+.instructor-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid white;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  position: relative;
+  transition: $transition;
+  
+  @media (min-width: 768px) {
+    margin-bottom: 0;
+    margin-right: 2rem;
+  }
+  
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: linear-gradient(135deg, $primary-color, $secondary-color) border-box;
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+  }
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+/* Détails de l'instructeur */
+.instructor-details {
+  flex: 1;
+  
+  h4 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #212529;
+    position: relative;
+    display: inline-block;
+    
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(90deg, $primary-color, $secondary-color);
+      border-radius: 3px;
+    }
+  }
+  
+  p {
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+    color: #495057;
+    line-height: 1.6;
+    
+    strong {
+      color: #212529;
+      font-weight: 600;
+      min-width: 80px;
+      display: inline-block;
+    }
+  }
+}
+
+/* Bio */
+.instructor-bio {
+  background: linear-gradient(to right, rgba($primary-color, 0.03), rgba($secondary-color, 0.03));
+  border-left: 4px solid $primary-color;
+  padding: 1.2rem;
+  border-radius: 0 8px 8px 0;
+  margin-top: 1.5rem;
+  position: relative;
+  
+  &:before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 15px;
+    font-size: 5rem;
+    color: rgba($primary-color, 0.1);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  
+  p {
+    font-style: italic;
+    color: #495057;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0;
+  }
+}
+
+/* Message d'erreur */
+.error-message {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #fff5f5, #fff);
+  border-radius: 12px;
+  box-shadow: $shadow;
+  border-left: 4px solid #e63946;
+  max-width: 600px;
+  margin: 2rem auto;
+  position: relative;
+  overflow: hidden;
+  
+  &:before {
+    content: "!";
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: #e63946;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    color: #e63946;
+    margin: 0;
+    padding-left: 60px;
+    font-weight: 500;
+  }
+}
+
+/* Animation d'apparition */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.instructor-card {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.error-message {
+  animation: fadeInUp 0.4s ease-out forwards;
+}

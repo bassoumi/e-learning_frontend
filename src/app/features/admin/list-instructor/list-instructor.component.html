@@ -1,0 +1,92 @@
+<div class="admin-container">
+  <!-- Header -->
+  <div class="admin-header">
+    <h1>
+      <i class="fas fa-chalkboard-teacher"></i>
+      Gestion des Instructeurs
+    </h1>
+    <div class="admin-controls d-flex align-items-center">
+      <div class="search-box d-flex align-items-center me-3">
+        <i class="fas fa-search me-2"></i>
+        <!-- Liaison ngModel sur searchName et recherche au click -->
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Rechercher un instructeur..."
+          [(ngModel)]="searchName"
+          (keyup.enter)="searchInstructorByName()"
+        />
+      </div>
+      <button class="btn btn-primary" (click)="searchInstructorByName()">
+        <i class="fas fa-search me-1"></i> Rechercher
+      </button>
+      <button class="btn btn-primary"(click)="addInstructor()">
+        <i class="fas fa-plus me-1"  ></i> Nouvel Instructeur
+      </button>
+    </div>
+  </div>
+
+  <!-- Table des Instructeurs -->
+  <div class="instructors-table overflow-auto mt-3">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Profil</th>
+          <th>Nom complet</th>
+          <th>Email</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let instructor of instructors">
+          <!-- Colonne Image de profil -->
+          <td>
+            <img
+              class="rounded-circle"
+              [src]="'http://localhost:8080/uploads/images/' + instructor.profileImage"
+              [alt]="instructor.firstName + ' ' + instructor.lastName"
+              style="width: 40px; height: 40px; object-fit: cover;"
+            />
+          </td>
+
+          <!-- Colonne Nom complet -->
+          <td>
+            {{ instructor.firstName }} {{ instructor.lastName }}
+          </td>
+
+          <!-- Colonne Email -->
+          <td>
+            {{ instructor.email }}
+          </td>
+
+          <!-- Colonne Actions -->
+          <td class="text-center">
+            <!-- Bouton Info -->
+            <button
+              class="btn btn-sm btn-info me-2"
+              (click)="openInfoModal(instructor)"
+              title="Voir détails"
+            >
+              <i class="fas fa-info-circle">info</i>
+            </button>
+
+            <!-- Bouton Supprimer -->
+            <button
+              class="btn btn-sm btn-danger"
+              (click)="deleteInstructor(instructor.id)"
+              title="Supprimer"
+            >
+              <i class="fas fa-trash">del</i>
+            </button>
+          </td>
+        </tr>
+        <!-- Si aucun instructeur trouvé -->
+        <tr *ngIf="instructors.length === 0">
+          <td colspan="4" class="text-center py-3">
+            Aucun instructeur trouvé.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -9,9 +9,7 @@
   
    -->
   
-  
-  <!-- Add view toggle controls -->
-  <div class="view-controls">
+   <div class="view-controls">
     <button class="icon-button" (click)="isListView = false" [class.active]="!isListView">
       <mat-icon>grid_view</mat-icon>
     </button>
@@ -20,28 +18,31 @@
     </button>
   </div>
   
-  
-  <!-- Modified courses grid -->
   <div class="courses-grid"
-       [class.list-view]="isListView"
-       [@viewAnimation]="isListView ? 'list' : 'grid'">
-    <div *ngFor="let course of courses" class="course-card" >
-  
+       [class.list-view]="isListView">
+    <div *ngFor="let course of courses" class="course-card">
       <div class="card-header"
            [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
-           
         <div class="course-category"
              (click)="goToCategory(course.categoryId); $event.stopPropagation()">
           {{ course.categoryName }}
         </div>
+        
+        <!-- Déplacer le bouton d'édition ici -->
+        <div class="edit-button">
+          <button mat-icon-button (click)="goToUpdate(course.id); $event.stopPropagation()" 
+                  aria-label="Edit Course">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
       </div>
+      
       <div class="card-body">
         <h3 class="course-title">{{ course.title }}</h3>
         
         <div class="course-short-desc" *ngIf="course.shortDescription">
           {{ course.shortDescription }}
         </div>
-  
       
         <div class="course-duration">
           <span class="level">{{ course.level }}</span>
@@ -49,9 +50,6 @@
           <span>Durée : {{ course.courseMetaData?.duration }} Min</span>
         </div>
         
-        
-        
-  
         <div class="course-meta">
           <div class="meta-item">
             <mat-icon>translate</mat-icon>
@@ -59,15 +57,9 @@
           </div>
           <div class="meta-item">
             <mat-icon>person</mat-icon>
-            <span  >{{ course.instructorNames }}</span>        </div>
-        </div>
-        <div class="meta-item edit-button">
-            <button mat-icon-button (click)="goToUpdate(course.id)" aria-label="Edit Course">
-              <mat-icon>edit</mat-icon>
-            </button>
+            <span>{{ course.instructorNames }}</span>
           </div>
-      </div>  </div>
-      
+        </div>
+      </div>
+    </div>
   </div>
-  
-  

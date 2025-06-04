@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { authGuard } from './core/auth/guards/auth.guard';
+import { NotFoundComponent } from './shared/not-found/not-found.component';
 
 const routes: Routes = [
   
@@ -32,6 +34,8 @@ const routes: Routes = [
     path: 'instructors',
     loadChildren: () =>
       import('./features/instructors/instructors.module').then(m => m.InstructorsModule),
+    canActivate: [authGuard],
+    data: { roles: ['INSTRUCTOR'] }
   },
   {
     path: 'students',
@@ -52,6 +56,8 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () =>
       import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
+    canActivate: [authGuard],
+    data: { roles: ['admin'] }
   },
   {
     path: 'notifications',
@@ -64,10 +70,20 @@ const routes: Routes = [
       import('./features/agenda/agenda.module').then(m => m.AgendaModule),
   },
   // default & fallback
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
   
   { path: 'agenda', loadChildren: () => import('./features/agenda/agenda.module').then(m => m.AgendaModule) },
   { path: 'profile', loadChildren: () => import('./features/profile/profile.module').then(m => m.ProfileModule) },
+
+
+  { path: 'admin', loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule) ,
+    canActivate: [authGuard],
+    data: { roles: ['admin'] }
+  },
+  {
+    path: '**',
+    component: NotFoundComponent
+  }
+  
 
 ];
 

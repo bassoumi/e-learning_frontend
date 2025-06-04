@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../courses/services/course.service';
 import { Course } from 'src/app/core/models/course.model';
-import { Instructor } from 'src/app/core/models/instructor.model';
 import { InstructorService } from '../services/instructor.service';
+import { Instructor } from 'src/app/core/models/instructor';
 
 @Component({
   selector: 'app-instructor-list',

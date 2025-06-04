@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/core/auth/auth.service';
 import { AgendaEntry } from 'src/app/core/models/agenda-entry.model';
 import { PersonalEvent, PersonalEventRequest } from 'src/app/core/models/personal-event.model';
 import { AgendaService } from './service/agenda.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-agenda',
@@ -32,7 +33,8 @@ export class AgendaComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private agendaService: AgendaService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.personalEventForm = this.fb.group({
       title: ['', Validators.required],
@@ -267,5 +269,10 @@ export class AgendaComponent implements OnInit {
   }
   showEventDetails(event: any): void {
     this.selectedEvent = event;
+  }
+
+  joinCourse(courseId: number): void {
+    const studentId = this.authService.getLoggedInStudentId();
+    this.router.navigate(['/courses/course-play', courseId, studentId]);
   }
 }

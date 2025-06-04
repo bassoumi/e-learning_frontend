@@ -1,0 +1,292 @@
+/* Variables */
+$primary-color: #4361ee;
+$secondary-color: #3a0ca3;
+$success-color: #4cc9f0;
+$error-color: #f72585;
+$light-bg: #f8f9fa;
+$border-color: #e9ecef;
+$shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+$transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+/* Conteneur principal */
+.instructor-form-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: $shadow;
+  position: relative;
+  overflow: hidden;
+  
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, $primary-color, $secondary-color);
+  }
+}
+
+/* Titre */
+.form-title {
+  font-weight: 700;
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  color: #212529;
+  position: relative;
+  display: inline-block;
+  
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, $primary-color, $secondary-color);
+    border-radius: 4px;
+  }
+}
+
+/* Formulaire */
+.instructor-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem; /* Espace entre les colonnes */
+  
+  .form-group {
+    position: relative;
+    margin-bottom: 0; /* Suppression de la marge inférieure */
+    
+    label {
+      display: block;
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+      color: #495057;
+      font-size: 1.05rem;
+      transition: $transition;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border: 2px solid $border-color;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: $transition;
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 4px 12px rgba($primary-color, 0.15);
+      }
+      
+      &::placeholder {
+        color: #adb5bd;
+      }
+    }
+    
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    /* Effet d'animation pour les champs */
+    &:hover {
+      label {
+        color: $primary-color;
+      }
+      
+      .form-control {
+        border-color: rgba($primary-color, 0.5);
+      }
+    }
+  }
+  
+  /* Champ fichier personnalisé */
+  .file-input-group {
+    position: relative;
+    grid-column: span 2; /* Fait occuper toute la largeur */
+    margin-top: 0.5rem; /* Espacement plus petit */
+    margin-bottom: 1rem;
+    
+    .file-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed $border-color;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: $transition;
+      background: #fafcff;
+      
+      &:hover {
+        border-color: $primary-color;
+        background: rgba($primary-color, 0.03);
+        
+        .upload-icon {
+          color: $primary-color;
+          transform: translateY(-3px);
+        }
+      }
+      
+      .upload-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #adb5bd;
+        transition: $transition;
+      }
+      
+      .file-text {
+        font-size: 1.1rem;
+        color: #495057;
+        margin-bottom: 0.5rem;
+      }
+      
+      .file-hint {
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+    }
+    
+    input[type="file"] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+  }
+}
+
+/* Bouton de soumission */
+.submit-button {
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 1rem 2.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: $transition;
+  box-shadow: 0 6px 15px rgba($primary-color, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  margin-top: 0.5rem; /* Espacement ajouté */
+  
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(135deg, $secondary-color, $primary-color);
+    transition: all 0.5s ease;
+    z-index: -1;
+  }
+  
+  &:hover:before {
+    width: 100%;
+  }
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba($primary-color, 0.4);
+  }
+  
+  &:disabled {
+    background: #adb5bd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    
+    &:before {
+      display: none;
+    }
+  }
+  
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+/* Messages d'alerte */
+.form-alert {
+  padding: 1.2rem 1.5rem;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  animation: slideIn 0.4s ease-out forwards;
+  
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+  }
+  
+  &-success {
+    background: rgba($success-color, 0.1);
+    border-left: 4px solid $success-color;
+    color: darken($success-color, 20%);
+  }
+  
+  &-error {
+    background: rgba($error-color, 0.1);
+    border-left: 4px solid $error-color;
+    color: darken($error-color, 15%);
+  }
+}
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .instructor-form-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .form-title {
+    font-size: 1.8rem;
+  }
+  
+  .instructor-form {
+    grid-template-columns: 1fr;
+    
+    .file-input-group {
+      grid-column: span 1; /* Réduction de la largeur sur mobile */
+    }
+  }
+}

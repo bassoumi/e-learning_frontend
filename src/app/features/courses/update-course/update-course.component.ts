@@ -18,6 +18,7 @@ import { CourseService } from '../services/course.service';
   templateUrl: './update-course.component.html',
   styleUrls: ['./update-course.component.scss'],
 })
+
 export class UpdateCourseComponent implements OnInit {
   courseForm!: FormGroup;
   categories: any[] = [];
@@ -45,8 +46,8 @@ export class UpdateCourseComponent implements OnInit {
       title:           ['', Validators.required],
       description:     ['', Validators.required],
       shortDescription:[''],
-      categoryId:      [null, Validators.required],
-      instructorId:    [null, Validators.required],
+      categoryId:      [{ value: null, disabled: true }, Validators.required],
+      instructorId:    [{ value: null, disabled: true }, Validators.required],
       level:           [''],
       language:        [''],
       contents:        this.fb.array([]),
@@ -55,36 +56,28 @@ export class UpdateCourseComponent implements OnInit {
         questions:  this.fb.array([]),
       }),
       courseMetaData:  this.fb.group({
-        duration:   [null, Validators.required],
+        duration:   [{ value: null, disabled: true }, Validators.required],
         tags:       this.fb.array([]),
         objectives: this.fb.array([]),
       }),
     });
+    
 
-    // 3) Charger parallèlement catégories, instructeurs et détails (array) du cours
+    // 3) Charger parallèlement catégories, instructeurs et détails du cours
     forkJoin({
       categories:  this.categorieService.getCategories(),
       instructors: this.instructorService.getInstructors(),
       courseArr:   this.courseService.getCourseById(this.courseId),
     }).subscribe({
       next: ({ categories, instructors, courseArr }) => {
-        this.categories   = categories;
-        this.instructors  = instructors;
-
+        this.categories  = categories;
+        this.instructors = instructors;
 
         // 4) Comme getCourseById renvoie un tableau d’un seul élément, on prend le premier :
         if (!Array.isArray(courseArr) || courseArr.length === 0) {
           return;
         }
         const c: Course = courseArr[0];
-
-        console.log('— c.title            =>', c.title);
-        console.log('— c.description      =>', c.description);
-        console.log('— c.categoryId       =>', c.categoryId);
-        console.log('— c.instructorId     =>', c.instructorId);
-        console.log('— c.courseMetaData   =>', c.courseMetaData);
-        console.log('— c.quiz             =>', c.quiz);
-        console.log('— c.contents         =>', c.contents);
 
         // 5) Récupérer les objets imbriqués (s’ils existent)
         const metaData = c.courseMetaData || {
@@ -94,12 +87,11 @@ export class UpdateCourseComponent implements OnInit {
           tags:        [],
           objectives:  [],
         };
-        // Si quiz est null, on crée un objet vide pour pouvoir patcher
         const quizObj: { title: string; questions: Question[] } = c.quiz
           ? { title: c.quiz.title, questions: c.quiz.questions }
           : { title: '', questions: [] };
 
-        // 6) PatchValue : on pointe bien sur 'c.' et non sur 'courseArr'
+        // 6) PatchValue pour les champs simples, categoryId, instructorId, level, language, metadata.duration, quiz.title
         this.courseForm.patchValue({
           title:            c.title,
           description:      c.description,
@@ -116,47 +108,46 @@ export class UpdateCourseComponent implements OnInit {
           },
         });
 
-
         // 7) Stocker l’URL de la couverture existante
         this.existingCoverUrl = c.coverImage || '';
 
         // 8) Remplir le FormArray “contents”
-        const contentsArray = this.courseForm.get('contents') as FormArray;
+        const contentsArray = this.contents;
         while (contentsArray.length) {
           contentsArray.removeAt(0);
         }
         (c.contents || []).forEach((cnt: Content) => {
           contentsArray.push(
             this.fb.group({
-              title:        [cnt.title,       Validators.required],
-              videoUrl:     [cnt.videoUrl,    Validators.required],
-              description:  [cnt.description, Validators.required],
-              orderContent: [cnt.orderContent],
+              title:        [{ value: cnt.title,       disabled: true }, Validators.required],
+              videoUrl:     [{ value: cnt.videoUrl,    disabled: true }, Validators.required],
+              description:  [{ value: cnt.description, disabled: true }, Validators.required],
+              orderContent: [{ value: cnt.orderContent, disabled: true }],
             })
           );
         });
 
         // 9) Remplir le FormArray “quiz.questions”
-        const questionsArray = (this.courseForm.get('quiz') as FormGroup).get('questions') as FormArray;
+        const questionsArray = this.quizQuestions;
         while (questionsArray.length) {
           questionsArray.removeAt(0);
         }
         (quizObj.questions || []).forEach((q: Question) => {
           const optsArray = this.fb.array([]);
-          (q.options || []).forEach(opt => {
-            optsArray.push(this.fb.control(opt, Validators.required));
+          (q.options || []).forEach((opt) => {
+            optsArray.push(this.fb.control({ value: opt, disabled: true }, Validators.required));
           });
           questionsArray.push(
             this.fb.group({
-              text:    [q.text,    Validators.required],
+              text:    [{ value: q.text,    disabled: true }, Validators.required],
               options: optsArray,
-              answer:  [q.answer,  Validators.required],
+              answer:  [{ value: q.answer,  disabled: true }, Validators.required],
             })
           );
         });
 
         // 10) Remplir le FormArray “tags”
-        const tagsArray = (this.courseForm.get('courseMetaData') as FormGroup).get('tags') as FormArray;
+        const tagsArray = this.tags;
         while (tagsArray.length) {
           tagsArray.removeAt(0);
         }
@@ -165,16 +156,16 @@ export class UpdateCourseComponent implements OnInit {
         });
 
         // 11) Remplir le FormArray “objectives”
-        const objectivesArray = (this.courseForm.get('courseMetaData') as FormGroup).get('objectives') as FormArray;
+        const objectivesArray = this.objectives;
         while (objectivesArray.length) {
           objectivesArray.removeAt(0);
         }
         (metaData.objectives || []).forEach((obj: string) => {
           objectivesArray.push(this.fb.control(obj, Validators.required));
         });
-
       },
-      error: err => {
+      error: (err) => {
+        console.error('Error loading initial data:', err);
       },
     });
   }
@@ -190,10 +181,14 @@ export class UpdateCourseComponent implements OnInit {
     return this.quiz.get('questions') as FormArray;
   }
   get tags(): FormArray {
-    return (this.courseForm.get('courseMetaData') as FormGroup).get('tags') as FormArray;
+    return (this.courseForm.get('courseMetaData') as FormGroup).get(
+      'tags'
+    ) as FormArray;
   }
   get objectives(): FormArray {
-    return (this.courseForm.get('courseMetaData') as FormGroup).get('objectives') as FormArray;
+    return (this.courseForm.get('courseMetaData') as FormGroup).get(
+      'objectives'
+    ) as FormArray;
   }
 
   // Méthodes pour ajouter/supprimer dynamiquement des champs FormArray
@@ -227,10 +222,14 @@ export class UpdateCourseComponent implements OnInit {
     this.quizQuestions.removeAt(index);
   }
   getOptions(questionIndex: number): FormArray {
-    return this.quizQuestions.at(questionIndex).get('options') as FormArray;
+    return this.quizQuestions
+      .at(questionIndex)
+      .get('options') as FormArray;
   }
   addOption(questionIndex: number): void {
-    this.getOptions(questionIndex).push(this.fb.control('', Validators.required));
+    this.getOptions(questionIndex).push(
+      this.fb.control('', Validators.required)
+    );
   }
   removeOption(questionIndex: number, optionIndex: number): void {
     this.getOptions(questionIndex).removeAt(optionIndex);
@@ -262,30 +261,36 @@ export class UpdateCourseComponent implements OnInit {
       return;
     }
 
-    const f = this.courseForm.value;
+    const f = this.courseForm.getRawValue();
     const fd = new FormData();
+
+    // Champs simples
     fd.append('title', f.title);
     fd.append('description', f.description);
     fd.append('shortDescription', f.shortDescription || '');
-    fd.append('categoryId', f.categoryId.toString());
     fd.append('level', f.level || '');
     fd.append('language', f.language || '');
+    // categoryId et instructorId sont en disabled → getRawValue() nous donne leur valeur
+    fd.append('categoryId', f.categoryId.toString());
     fd.append('instructorId', f.instructorId.toString());
-    fd.append('id', this.courseId.toString());
 
+    // Cover Image si modifiée
     if (this.coverFile) {
       fd.append('coverImage', this.coverFile);
     }
 
-    const contentsBlob = new Blob([JSON.stringify(f.contents)], { type: 'application/json' });
-    fd.append('contents', contentsBlob, 'contents.json');
-
-    const quizBlob = new Blob([JSON.stringify(f.quiz)], { type: 'application/json' });
-    fd.append('quiz', quizBlob, 'quiz.json');
-
-    const metaBlob = new Blob([JSON.stringify(f.courseMetaData)], { type: 'application/json' });
+    // Metadata (JSON)
+    const metaPayload = {
+      duration:   f.courseMetaData.duration,
+      tags:       f.courseMetaData.tags,
+      objectives: f.courseMetaData.objectives,
+    };
+    const metaBlob = new Blob([JSON.stringify(metaPayload)], {
+      type: 'application/json',
+    });
     fd.append('metadata', metaBlob, 'metadata.json');
 
+    // On n'ajoute pas contents ni quiz dans ce FormData pour l'update
     this.courseService.updateCourseWithFile(this.courseId, fd).subscribe({
       next: () => {
         this.router.navigate(['/courses']);
