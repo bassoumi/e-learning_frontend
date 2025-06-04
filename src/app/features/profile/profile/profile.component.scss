@@ -372,4 +372,95 @@ $transition: all 0.3s ease;
   .instructor-container .instructor-header {
     padding: 50px 15px 70px;
   }
-}
+}// Styles spécifiques au profil Instructeur
+.instructor-container {
+    .instructor-header {
+      padding: 60px 30px 80px;
+    }
+    
+    .instructor-content {
+      padding: 30px;
+      padding-top: 0;
+      margin-top: -50px;
+    }
+    
+    .avatar-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    
+    .instructor-stats {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      
+      .stat-card {
+        flex: 1;
+        background: $light;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        transition: $transition;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 150px;
+        
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        i {
+          font-size: 1.8rem;
+          color: $primary;
+          margin-bottom: 10px;
+        }
+        
+        h3 {
+          font-size: 2rem;
+          color: $dark;
+          margin-bottom: 5px;
+        }
+        
+        p {
+          color: #6c757d;
+          font-size: 0.9rem;
+          margin-top: auto;
+        }
+      }
+    }
+    
+    // ... reste du code ...
+  }
+  
+  // Responsive
+  @media (max-width: 900px) {
+    // ... autres styles ...
+    
+    .instructor-container .instructor-stats {
+      flex-wrap: wrap;
+      
+      .stat-card {
+        flex: 0 0 calc(50% - 20px);
+      }
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .instructor-container .instructor-stats {
+      flex-direction: column;
+      
+      .stat-card {
+        flex: 1;
+        width: 100%;
+      }
+    }
+  }

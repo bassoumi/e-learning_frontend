@@ -14,14 +14,6 @@ export class CourseService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = this.authService.getToken();
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-  }
-
   getCourses(): Observable<Course[]> {
     const token = this.authService.getToken();
 
@@ -54,6 +46,15 @@ export class CourseService {
   
     return this.http.post<Course>(this.apiUrl, formData, { headers });
   }
+
+  updateCourseWithFile(id: number, formData: FormData): Observable<Course> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.put<Course>(`${this.apiUrl}/${id}`, formData, { headers });
+  }
+
 
   getCoursesByCategory(categoryId: number): Observable<Course[]> {
     const token = this.authService.getToken();

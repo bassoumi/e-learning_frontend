@@ -6,12 +6,14 @@ import { InstructorListComponent } from './instructor-list/instructor-list.compo
 import { InstructorDetailComponent } from './instructor-detail/instructor-detail.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { CoursesPrivateListComponent } from './courses-private-list/courses-private-list.component';
 
 
 @NgModule({
   declarations: [
     InstructorListComponent,
-    InstructorDetailComponent
+    InstructorDetailComponent,
+    CoursesPrivateListComponent
   ],
   imports: [
     CommonModule,

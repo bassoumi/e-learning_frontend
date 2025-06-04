@@ -85,7 +85,6 @@
               </div>
             </div>
           </div>
-          <br><br><br>br
           
           <div class="info-section">
             <div class="section-title">
@@ -120,22 +119,50 @@
       </div>
     </div>
   </ng-container>
-  
   <ng-container *ngIf="userRole === 'INSTRUCTOR'">
     <div class="instructor-container">
       <div class="instructor-header">
-        <div class="avatar-container">
-          <img
-            [src]="userProfile.profileImage"
-            alt="Instructor Photo"
-            class="profile-avatar-img"
-          />
+        <div class="profile-badge">
+          <i class="fas fa-chalkboard-teacher"></i> Instructeur Certifié
         </div>
         <h1>Profil Instructeur</h1>
         <p>Gérez vos informations et préférences de compte</p>
       </div>
       
       <div class="instructor-content">
+        <div class="avatar-section">
+          <div class="avatar-container">
+            <div class="profile-avatar">
+              <img 
+              [src]="'http://localhost:8080/uploads/images/' + userProfile.profileImage"
+              alt="Photo de profil"
+                class="profile-avatar-img"
+              />
+              <div class="avatar-overlay">
+                <i class="fas fa-camera"></i> Changer la photo
+              </div>
+            </div>
+          </div>
+          
+          <div class="instructor-stats">
+            <div class="stat-card">
+              <i class="fas fa-book"></i>
+              <h3>24</h3>
+              <p>Cours créés</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-users"></i>
+              <h3>1.2K</h3>
+              <p>Étudiants</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-star"></i>
+              <h3>4.8</h3>
+              <p>Évaluation</p>
+            </div>
+          </div>
+        </div>
+        
         <div class="info-section">
           <div class="section-title">
             <i class="fas fa-user-circle"></i>
@@ -162,6 +189,18 @@
               <span class="info-label">ID Utilisateur</span>
               <span class="info-value">{{ userProfile.id }}</span>
             </div>
+            
+            <div class="info-item">
+              <span class="info-label">Spécialité</span>
+              <span class="info-value">Développement Web</span>
+            </div>
+            
+            <div class="info-item">
+              <span class="info-label">Statut</span>
+              <span class="info-value">
+                Actif <i class="fas fa-check-circle" style="color: var(--success); margin-left: 5px;"></i>
+              </span>
+            </div>
           </div>
         </div>
         
@@ -170,7 +209,7 @@
             <i class="fas fa-info-circle"></i>
             <h2>Bio</h2>
           </div>
-          <p>{{ userProfile.bio }}</p>
+          <p>{{ userProfile.bio || "Aucune biographie fournie" }}</p>
         </div>
         
         <div class="profile-actions">
@@ -181,10 +220,9 @@
             <i class="fas fa-lock"></i> Changer le Mot de Passe
           </button>
           <button class="btn btn-outline">
-            <i class="fas fa-cog"></i> Paramètres
+            <i class="fas fa-chart-line"></i> Statistiques
           </button>
         </div>
       </div>
     </div>
   </ng-container>
-  

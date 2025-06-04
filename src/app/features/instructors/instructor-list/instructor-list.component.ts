@@ -71,4 +71,8 @@ export class InstructorListComponent {
     this.router.navigate(['courses', 'course-detail', courseId]);
   }
 
+
+
+
+
 }

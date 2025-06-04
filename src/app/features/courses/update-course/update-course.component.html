@@ -1,0 +1,467 @@
+<!-- course-edit.component.html -->
+<div class="course-form-container">
+  <h2 class="form-title">Edit Course</h2>
+  
+  <!-- Step Indicator -->
+  <div class="step-indicator">
+    <div class="step" [class.active]="currentStep === 0" [class.completed]="currentStep > 0">
+      <div class="step-number">1</div>
+      <div class="step-label">Course Information</div>
+    </div>
+    <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+      <div class="step-number">2</div>
+      <div class="step-label">Course Content</div>
+    </div>
+    <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+      <div class="step-number">3</div>
+      <div class="step-label">Quiz</div>
+    </div>
+  </div>
+
+  <!-- Only show the form once Angular has initialized the form controls -->
+  <div *ngIf="courseForm.get('title')">
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+      <!-- STEP 1: COURSE INFORMATION -->
+      <div *ngIf="currentStep === 0" class="form-section">
+        <div class="section-header">
+          <h3>Course Details</h3>
+          <p>Update the basic information about your course</p>
+        </div>
+
+        <div class="form-grid">
+          <!-- Title -->
+          <div class="form-group">
+            <label for="title">Title *</label>
+            <input
+              id="title"
+              type="text"
+              formControlName="title"
+              placeholder="Course title"
+            />
+            <div
+              *ngIf="courseForm.get('title')?.invalid && courseForm.get('title')?.touched"
+              class="text-danger"
+            >
+              Title is required.
+            </div>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label for="category">Category *</label>
+            <select id="category" formControlName="categoryId">
+              <option [ngValue]="null" disabled>Select category</option>
+              <option *ngFor="let category of categories" [ngValue]="category.id">
+                {{ category.nom }}
+              </option>
+            </select>
+            <div
+              *ngIf="courseForm.get('categoryId')?.invalid && courseForm.get('categoryId')?.touched"
+              class="text-danger"
+            >
+              Category is required.
+            </div>
+          </div>
+
+          <!-- Instructor -->
+          <div class="form-group">
+            <label for="instructor">Instructor *</label>
+            <select id="instructor" formControlName="instructorId">
+              <option [ngValue]="null" disabled>Select instructor</option>
+              <option *ngFor="let ins of instructors" [ngValue]="ins.id">
+                {{ ins.firstName }} {{ ins.lastName }}
+              </option>
+            </select>
+            <div
+              *ngIf="courseForm.get('instructorId')?.invalid && courseForm.get('instructorId')?.touched"
+              class="text-danger"
+            >
+              Instructor is required.
+            </div>
+          </div>
+
+          <!-- Level -->
+          <div class="form-group">
+            <label for="level">Level</label>
+            <input
+              id="level"
+              type="text"
+              formControlName="level"
+              placeholder="Beginner/Intermediate/Advanced"
+            />
+          </div>
+
+          <!-- Language -->
+          <div class="form-group">
+            <label for="language">Language</label>
+            <input
+              id="language"
+              type="text"
+              formControlName="language"
+              placeholder="Course language"
+            />
+          </div>
+
+          <!-- Cover Image -->
+          <div class="form-group">
+            <label for="coverImage">Cover Image</label>
+            <div class="file-upload" (click)="fileInput.click()">
+              <input
+                #fileInput
+                type="file"
+                (change)="onFileSelected($event)"
+                accept="image/*"
+                class="hidden"
+              />
+
+              <!-- Display existing cover if no new file selected -->
+              <div
+                *ngIf="!coverFile && existingCoverUrl"
+                class="cover-preview-container"
+              >
+                <label>Current Cover:</label>
+                <img
+                [src]="'http://localhost:8080/uploads/courses/' + existingCoverUrl"
+                                  alt="Current Cover"
+                  class="cover-preview"
+                />
+              </div>
+
+              <span class="file-name" *ngIf="!coverFile && !existingCoverUrl"
+                >No file selected</span
+              >
+              <span class="file-name has-file" *ngIf="coverFile">
+                <i class="material-icons">check_circle</i> {{ coverFile.name }}
+              </span>
+              <button type="button" class="browse-btn">Browse</button>
+            </div>
+          </div>
+
+          <!-- Short Description -->
+          <div class="form-group full-width">
+            <label for="shortDescription">Short Description</label>
+            <textarea
+              id="shortDescription"
+              formControlName="shortDescription"
+              placeholder="Brief course summary"
+              rows="2"
+            ></textarea>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group full-width">
+            <label for="description">Description *</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              placeholder="Detailed course description"
+              rows="4"
+            ></textarea>
+            <div
+              *ngIf="
+                courseForm.get('description')?.invalid &&
+                courseForm.get('description')?.touched
+              "
+              class="text-danger"
+            >
+              Description is required.
+            </div>
+          </div>
+        </div>
+
+        <!-- Course Metadata -->
+        <div class="metadata-section" formGroupName="courseMetaData">
+          <div class="section-header">
+            <h3>Course Metadata</h3>
+          </div>
+
+          <div class="form-grid">
+            <!-- Duration -->
+            <div class="form-group">
+              <label for="duration">Duration (hours) *</label>
+              <input
+                id="duration"
+                type="number"
+                formControlName="duration"
+                placeholder="Total course hours"
+              />
+              <div
+                *ngIf="
+                  courseForm.get('courseMetaData.duration')?.invalid &&
+                  courseForm.get('courseMetaData.duration')?.touched
+                "
+                class="text-danger"
+              >
+                Duration is required.
+              </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="form-group">
+              <div class="array-header">
+                <label>Tags</label>
+                <button
+                  type="button"
+                  (click)="addTag()"
+                  class="add-btn"
+                >
+                  <i class="material-icons">add</i> Add Tag
+                </button>
+              </div>
+              <div formArrayName="tags" class="array-container">
+                <div
+                  *ngFor="
+                    let tagCtrl of tags.controls;
+                    let i = index
+                  "
+                  class="array-item"
+                >
+                  <input
+                    [formControlName]="i"
+                    placeholder="Tag {{ i + 1 }}"
+                  />
+                  <button
+                    type="button"
+                    (click)="removeTag(i)"
+                    class="remove-btn"
+                  >
+                    <i class="material-icons">close</i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Learning Objectives -->
+            <div class="form-group full-width">
+              <div class="array-header">
+                <label>Learning Objectives</label>
+                <button
+                  type="button"
+                  (click)="addObjective()"
+                  class="add-btn"
+                >
+                  <i class="material-icons">add</i> Add Objective
+                </button>
+              </div>
+              <div formArrayName="objectives" class="array-container">
+                <div
+                  *ngFor="
+                    let objCtrl of objectives.controls;
+                    let i = index
+                  "
+                  class="array-item"
+                >
+                  <input
+                    [formControlName]="i"
+                    placeholder="Objective {{ i + 1 }}"
+                  />
+                  <button
+                    type="button"
+                    (click)="removeObjective(i)"
+                    class="remove-btn"
+                  >
+                    <i class="material-icons">close</i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: COURSE CONTENT -->
+      <div *ngIf="currentStep === 1" class="form-section">
+        <div class="section-header">
+          <h3>Course Content</h3>
+          <p>Add or update sections and videos for your course</p>
+        </div>
+
+        <div formArrayName="contents" class="content-sections">
+          <div
+            *ngFor="let group of contents.controls; let i = index"
+            [formGroupName]="i"
+            class="content-card"
+          >
+            <div class="card-header">
+              <h4>Content Section {{ i + 1 }}</h4>
+              <button
+                type="button"
+                (click)="removeContent(i)"
+                class="remove-btn"
+              >
+                <i class="material-icons">delete</i>
+              </button>
+            </div>
+
+            <div class="card-body">
+              <div class="form-group">
+                <label>Title *</label>
+                <input
+                  formControlName="title"
+                  placeholder="Section title"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Video URL *</label>
+                <input
+                  formControlName="videoUrl"
+                  placeholder="https://example.com/video"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Description *</label>
+                <textarea
+                  formControlName="description"
+                  placeholder="Detailed content description"
+                  rows="3"
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Order</label>
+                <input
+                  type="number"
+                  formControlName="orderContent"
+                  placeholder="Display order"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          (click)="addContent()"
+          class="add-section-btn"
+        >
+          <i class="material-icons">add</i> Add Content Section
+        </button>
+      </div>
+
+      <!-- STEP 3: QUIZ -->
+      <div *ngIf="currentStep === 2" class="form-section">
+        <div class="section-header">
+          <h3>Course Quiz</h3>
+          <p>Add or update questions to assess your students</p>
+        </div>
+
+        <div formGroupName="quiz">
+          <div class="form-group">
+            <label>Quiz Title</label>
+            <input formControlName="title" placeholder="Quiz title" />
+          </div>
+
+          <div formArrayName="questions" class="question-cards">
+            <div
+              *ngFor="let q of quizQuestions.controls; let i = index"
+              [formGroupName]="i"
+              class="question-card"
+            >
+              <div class="card-header">
+                <h4>Question {{ i + 1 }}</h4>
+                <button
+                  type="button"
+                  (click)="removeQuestion(i)"
+                  class="remove-btn"
+                >
+                  <i class="material-icons">delete</i>
+                </button>
+              </div>
+
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Question Text *</label>
+                  <input formControlName="text" placeholder="Enter question" />
+                </div>
+
+                <div class="form-group">
+                  <div class="array-header">
+                    <label>Options *</label>
+                    <button
+                      type="button"
+                      (click)="addOption(i)"
+                      class="add-btn small"
+                    >
+                      <i class="material-icons">add</i> Add Option
+                    </button>
+                  </div>
+                  <div formArrayName="options" class="options-container">
+                    <div
+                      *ngFor="
+                        let opt of getOptions(i).controls;
+                        let j = index
+                      "
+                      class="option-item"
+                    >
+                      <input
+                        [formControlName]="j"
+                        placeholder="Option {{ j + 1 }}"
+                      />
+                      <button
+                        type="button"
+                        (click)="removeOption(i, j)"
+                        class="remove-btn"
+                      >
+                        <i class="material-icons">close</i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Correct Answer *</label>
+                  <input formControlName="answer" placeholder="Enter correct answer" />
+                  <div class="hint">
+                    Must match one of the options exactly
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            (click)="addQuestion()"
+            class="add-section-btn"
+          >
+            <i class="material-icons">add</i> Add Question
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="form-navigation">
+        <button
+          type="button"
+          *ngIf="currentStep > 0"
+          (click)="prevStep()"
+          class="nav-btn prev-btn"
+        >
+          <i class="material-icons">arrow_back</i> Previous
+        </button>
+
+        <button
+          type="button"
+          *ngIf="currentStep < 2"
+          (click)="nextStep()"
+          class="nav-btn next-btn"
+        >
+          Next <i class="material-icons">arrow_forward</i>
+        </button>
+
+        <button
+          type="submit"
+          *ngIf="currentStep === 2"
+          [disabled]="courseForm.invalid"
+          class="submit-btn"
+        >
+          <i class="material-icons">save</i> Save Changes
+        </button>
+      </div>
+    </form>
+
+
+  </div>
+</div>
