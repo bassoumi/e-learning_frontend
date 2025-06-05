@@ -27,17 +27,25 @@
           <img
             class="instructor-avatar"
             alt="Instructor"
-            [src]="'http://localhost:8080/uploads/courses/' + course.coverImage"          />
+            [src]="'http://localhost:8080/uploads/courses/' + course.coverImage"
+          />
+        
           <div class="instructor-info">
             <div class="instructor-name">{{ course.instructorNames }}</div>
             <div class="instructor-role">Course Instructor</div>
+        
+            <!-- ====== AJOUT DU NOMBRE D’ABONNÉS ====== -->
+            <div 
+              class="instructor-subscriber-count" 
+              *ngIf="subscriberCount !== null">
+              {{ subscriberCount }} abonnés
+            </div>
           </div>
         
           <!-- ====== BOUTON D’ABONNEMENT ====== -->
           <div class="instructor-subscribe">
-            <!-- Tant que l’on n’a pas encore vérifié l’abonnement, on peut montrer un loader ou rien -->
             <ng-container *ngIf="subscriptionChecked; else loadingState">
-              <!-- Si l’étudiant n’est pas encore abonné, on propose le bouton Subscribe -->
+              <!-- Si l’étudiant n’est pas encore abonné -->
               <button
                 *ngIf="!isSubscribed"
                 class="btn btn-primary"
@@ -45,7 +53,7 @@
                 Subscribe
               </button>
         
-              <!-- Si l’étudiant est déjà abonné, on affiche un bouton Subscribed (éventuellement pour se désabonner) -->
+              <!-- Si l’étudiant est déjà abonné -->
               <button
                 *ngIf="isSubscribed"
                 class="btn btn-secondary"
@@ -54,7 +62,7 @@
               </button>
             </ng-container>
         
-            <!-- Template alternatif pendant la vérification -->
+            <!-- État de chargement -->
             <ng-template #loadingState>
               <span class="text-muted">Vérification en cours…</span>
             </ng-template>

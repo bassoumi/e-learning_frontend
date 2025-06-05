@@ -1,1 +1,31 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+    <div class="kpi-cards">
+      <div class="card">
+        <h3>Utilisateurs</h3>
+        <p class="value">{{ totalUsers }}</p>
+      </div>
+      <div class="card">
+        <h3>Cours</h3>
+        <p class="value">{{ totalCourses }}</p>
+      </div>
+      <div class="card">
+        <h3>Taux de complétion</h3>
+        <p class="value">{{ completionRate }}%</p>
+      </div>
+    </div>
+  
+    <div class="charts">
+      <div class="chart-container">
+        <h4>Inscriptions mensuelles</h4>
+        <canvas id="registrationsChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h4>Top Instructeurs</h4>
+        <ul class="top-list">
+          <li *ngFor="let instr of topInstructors">
+            {{ instr.instructorName }} ({{ instr.subscriptionCount }})
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>

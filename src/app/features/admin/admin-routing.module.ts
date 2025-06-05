@@ -4,12 +4,13 @@ import { InstructorListComponent } from '../instructors/instructor-list/instruct
 import { AddInstructorComponent } from './add-instructor/add-instructor.component';
 import { ListInstructorComponent } from './list-instructor/list-instructor.component';
 import { InfoInstructorComponent } from './info-instructor/info-instructor.component';
+import { CoursesAdminListComponent } from './courses-admin-list/courses-admin-list.component';
 
 const routes: Routes = [
-  {path: '', component:ListInstructorComponent},
+  {path: 'instructor-List', component:ListInstructorComponent},
   {path: 'add-instructor', component:AddInstructorComponent},
   {path: 'info-instructor/:id', component:InfoInstructorComponent},
-
+  {path: 'courses-list', component:CoursesAdminListComponent},
 
 ];
 

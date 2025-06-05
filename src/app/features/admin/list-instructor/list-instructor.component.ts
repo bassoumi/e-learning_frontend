@@ -41,7 +41,20 @@ export class ListInstructorComponent {
   }
 
 
-  deleteInstructor(  id: number ): void {
+  deleteInstructorById(id: number): void {
+    if (confirm('Voulez-vous vraiment supprimer cet instructeur ?')) {
+      this.adminService.deleteInstructor(id).subscribe({
+        next: () => {
+          // Supprimer l'instructeur de la liste sans refaire un appel
+          this.instructors = this.instructors.filter(i => i.id !== id);
+          alert('Instructeur supprimé avec succès.');
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression', err);
+          alert('Erreur : impossible de supprimer cet instructeur.');
+        }
+      });
+    }
   }
 
   searchInstructorByName(): void {

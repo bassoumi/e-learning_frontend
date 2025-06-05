@@ -8,6 +8,7 @@ import { ProgressionService } from '../../progression/services/progression.servi
 import { switchMap, catchError, of, Observable, forkJoin } from 'rxjs';
 import { ProgressionResponse, ProgressionRequest } from 'src/app/core/models/progression.model';
 import { Student } from 'src/app/core/models/student.model';
+import { InstructorService } from '../../instructors/services/instructor.service';
 
 @Component({
   selector: 'app-start-course',
@@ -24,6 +25,8 @@ export class StartCourseComponent implements OnInit {
   instructorIdOfCourse?: number;    
   isSubscribed = false;          
   subscriptionChecked = false;
+  courseId!: number;
+  subscriberCount: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,10 +34,12 @@ export class StartCourseComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private courseService: CourseService,
     private studentService: StudentService,
-    private progressionService: ProgressionService
+    private progressionService: ProgressionService,
+    private instructorsService: InstructorService // Assuming this is the service to get instructor details
   ) {}
 
   ngOnInit(): void {
+    // 1. On récupère courseId et studentId depuis l'URL
     const courseId = Number(this.route.snapshot.paramMap.get('courseId'));
     const studentId = Number(this.route.snapshot.paramMap.get('studentId'));
     if (!courseId || !studentId) {
@@ -42,26 +47,38 @@ export class StartCourseComponent implements OnInit {
       return;
     }
 
-    // 1. Récupère d’abord l’étudiant, puis on charge cours + progressions + état d’abonnement
-    this.studentService.getStudentById(studentId).pipe(
+    this.courseId = courseId;
+    this.studentId = studentId;
+
+    // 2. Charger l'étudiant, puis enchaîner sur le chargement du cours + progressions
+    this.studentService.getStudentById(this.studentId).pipe(
       switchMap(stu => {
-        this.studentId = stu.id;
-        // On charge en parallèle :
-        //  a) le cours
-        //  b) les progressions
-        return this.loadCourseAndProgressions(stu.id, courseId);
+        // 2.a) on a l'étudiant → on garde studentId en local (déjà assigné plus haut)
+        // 2.b) on charge le cours + progressions (méthode que vous implémentez ailleurs)
+        return this.loadCourseAndProgressions(stu.id, this.courseId);
       }),
       catchError(err => {
         console.error('Erreur init:', err);
         return of(null);
       })
     ).subscribe(() => {
-      // Après avoir chargé course, on sait à présent qui est l’instructeur
+      // 3. Quand course + progressions sont chargés, this.course est renseigné
       if (this.course) {
-        // On stocke l’ID de l’instructeur pour l’utiliser dans le subscribe
         this.instructorIdOfCourse = this.course.instructorId;
-        // On vérifie maintenant si l’étudiant est déjà abonné
+
+        // 4. Vérifier la souscription de l'étudiant (votre méthode existante)
         this.checkSubscription();
+
+        // 5. Appeler getSubscriberCount pour l'instructeur récupéré
+        this.instructorsService
+          .getSubscriberCount(this.instructorIdOfCourse)
+          .subscribe({
+            next: (count) => this.subscriberCount = count,
+            error: (err) => {
+              console.error('Erreur en récupérant le nombre d\'abonnés', err);
+              this.subscriberCount = 0;
+            }
+          });
       }
     });
   }
@@ -281,11 +298,17 @@ this.studentService.getSubscription(this.studentId).subscribe({
       : 'https://via.placeholder.com/120x70?text=No+Thumbnail';
   }
 
-  isCompleted(content: Content): boolean {
-    const prog = this.progressions.find(p => p.contentId === content.id);
-    return !!prog && prog.progressionPercentage > 0;
+// Après, on se base d’abord sur le Set 'completedVideos' :
+isCompleted(content: Content): boolean {
+  // Si on a déjà cliqué sur la vidéo, ona l’a ajouté dans completedVideos.
+  if (this.completedVideos.has(content.id)) {
+    return true;
   }
-  
+  // Sinon, on retombe sur le check existant des progressions “effectivement persistées”
+  const prog = this.progressions.find(p => p.contentId === content.id);
+  return !!prog && prog.progressionPercentage > 0;
+}
+
 
   isLastVideo(): boolean {
     const c = this.course?.contents;
@@ -297,5 +320,13 @@ this.studentService.getSubscription(this.studentId).subscribe({
       this.router.navigate(['courses', this.course.id, 'quiz']);
     }
   }
+
+
+
+
+
+
+
+
 
 }

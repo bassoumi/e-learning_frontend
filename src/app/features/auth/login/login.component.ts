@@ -30,7 +30,7 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value).subscribe({
       next: (res) => {
         this.authService.storeToken(res.token);
-        this.router.navigate(['/dashboard']); // Redirect after login
+        this.router.navigate(['/courses']); // Redirect after login
       },
       error: (err) => {
         this.errorMessage = 'Invalid email or password';

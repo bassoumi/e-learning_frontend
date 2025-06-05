@@ -28,6 +28,14 @@ export class InstructorService {
   }
 
 
+
+
+  getSubscriberCount(instructorId: number): Observable<number> {
+    const url = `${this.instructorUrl}/${instructorId}/subscribers/count`;
+    const headers = this.getAuthHeaders();
+    return this.http.get<number>(url, { headers });
+  }
+
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     return new HttpHeaders({
@@ -35,9 +43,5 @@ export class InstructorService {
     });
   }
 
-
-
-
-  
 
 }

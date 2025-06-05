@@ -6,13 +6,15 @@ import { AddInstructorComponent } from './add-instructor/add-instructor.componen
 import { ListInstructorComponent } from './list-instructor/list-instructor.component';
 import { InfoInstructorComponent } from './info-instructor/info-instructor.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CoursesAdminListComponent } from './courses-admin-list/courses-admin-list.component';
 
 
 @NgModule({
   declarations: [
     AddInstructorComponent,
     ListInstructorComponent,
-    InfoInstructorComponent
+    InfoInstructorComponent,
+    CoursesAdminListComponent
   ],
   imports: [
     CommonModule,

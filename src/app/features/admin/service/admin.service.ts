@@ -61,5 +61,17 @@ export class AdminService {
         { headers, params }
       );
     }
-  
+
+    deleteInstructor(id: number): Observable<void> {
+      const headers = this.getAuthHeaders();
+      return this.http.delete<void>(`${this.baseUrl}/instructors/${id}/profile`, { headers });
+    }
+    
+    deleteCourse(id: number): Observable<void> {
+      const headers = this.getAuthHeaders();
+      return this.http.delete<void>(`${this.baseUrl}/courses/${id}`, { headers });
+    }
+
+
+    
   }

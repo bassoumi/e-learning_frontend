@@ -1,0 +1,125 @@
+
+<div class="container">
+    <header>
+      <h1>Liste des Cours</h1>
+      <p>Liste des Cours</p>
+    </header>
+    
+    <div class="courses-header">
+      <!-- Statistiques (facultatif : vous pouvez les lier à des variables Angular) -->
+      <div class="stats-card">
+        <div class="stats-icon courses">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <div class="stats-content">
+          <h3>{{ courses.length }}</h3>
+          <p>Cours disponibles</p>
+        </div>
+      </div>
+      
+      <div class="stats-card">
+        <div class="stats-icon instructors">
+          <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+        <div class="stats-content">
+            <h3>{{instructorNumber}}</h3>
+          <p>Instructeurs experts</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="courses-container">
+      <!-- En-tête de “table” (similaire à vos .table-header) -->
+      <div class="table-header">
+        <div>ID</div>
+        <div>Instructeur</div>
+        <div>Niveau</div>
+        <div>Catégorie</div>
+        <div>Titre</div>
+        <div>Actions</div>
+      </div>
+  
+      <!-- Liste dynamique -->
+      <ul class="course-list">
+        <li
+          class="course-item"
+          *ngFor="let course of courses; let i = index"
+          [style.--i]="i + 1"
+        >
+          <!-- Colonne “ID” -->
+          <div class="course-id" data-label="ID">
+            {{ course.id }}
+          </div>
+  
+          <!-- Colonne “Instructeur” -->
+          <div class="instructor" data-label="Instructeur">
+            <div class="instructor-avatar">
+            </div>
+            <div>{{ course.instructorNames }}</div>
+          </div>
+  
+          <!-- Colonne “Niveau” -->
+          <div class="level" data-label="Niveau">
+            <!-- On applique dynamiquement la classe beginner/intermediate/advanced selon course.level -->
+            <span
+              class="level-badge"
+              [ngClass]="{
+                beginner: course.level === 'Débutant',
+                intermediate: course.level === 'Intermédiaire',
+                advanced: course.level === 'Avancé'
+              }"
+            >
+              {{ course.level }}
+            </span>
+          </div>
+  
+          <!-- Colonne “Catégorie” -->
+          <div class="category" data-label="Catégorie">
+            <!-- On applique dynamiquement la classe dev/design/business selon course.categoryName -->
+            <div
+              class="category-icon"
+              [ngClass]="{
+                dev: course.categoryName.toLowerCase() === 'développement',
+                design: course.categoryName.toLowerCase() === 'design',
+                business: course.categoryName.toLowerCase() === 'business'
+              }"
+            >
+              <i
+                class="fas"
+                [ngClass]="{
+                  'fa-code': course.categoryName.toLowerCase() === 'développement',
+                  'fa-paint-brush': course.categoryName.toLowerCase() === 'design',
+                  'fa-chart-line': course.categoryName.toLowerCase() === 'business'
+                }"
+              ></i>
+            </div>
+            <div>{{ course.categoryName }}</div>
+          </div>
+  
+          <!-- Colonne “Titre” -->
+          <div class="title" data-label="Titre">
+            {{ course.title }}
+          </div>
+  
+          <!-- Colonne “Actions” -->
+          <div class="actions" data-label="Actions">
+            <button
+              class="action-btn info"
+              title="Voir les détails"
+              (click)="viewCourseInfo(course.id)"
+            >
+              <i class="fas fa-info">info</i>
+            </button>
+            <button
+              class="action-btn delete"
+              title="Supprimer le cours"
+              (click)="deleteCourseById(course.id)"
+            >
+              <i class="fas fa-trash">del</i>
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
