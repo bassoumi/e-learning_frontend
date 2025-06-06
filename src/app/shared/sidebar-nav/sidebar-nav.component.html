@@ -26,21 +26,30 @@
     >
       <a class="submenu-trigger">
         <mat-icon class="nav-icon">manage_accounts</mat-icon>
-        <span class="nav-text">Instructors</span>
+        <span class="nav-text">dashboard</span>
         <mat-icon class="submenu-toggle">expand_more</mat-icon>
       </a>
   
       <ul class="submenu">
         <li routerLinkActive="active">
-          <a routerLink="/instructors/all">
+          <a routerLink="/admin/instructor-List">
             <span class="nav-text">All Instructors</span>
           </a>
         </li>
+
         <li routerLinkActive="active">
-          <a routerLink="/instructors/delete">
-            <span class="nav-text">Delete Instructor Access</span>
+          <a routerLink="/admin/courses-list">
+            <span class="nav-text">All courses</span>
           </a>
         </li>
+
+
+        <li routerLinkActive="active">
+          <a routerLink="/dashboard">
+            <span class="nav-text">interactif</span>
+          </a>
+        </li>
+     
       </ul>
     </li>
   
