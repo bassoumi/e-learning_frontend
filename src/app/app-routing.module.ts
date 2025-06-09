@@ -35,7 +35,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/instructors/instructors.module').then(m => m.InstructorsModule),
     canActivate: [authGuard],
-    data: { roles: ['INSTRUCTOR'] }
+    data: { roles: ['INSTRUCTOR','ADMIN'] }
   },
   {
     path: 'students',
@@ -57,7 +57,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
     canActivate: [authGuard],
-    data: { roles: ['admin'] }
+    data: { roles: ['ADMIN'] }
   },
   {
     path: 'notifications',
@@ -77,8 +77,11 @@ const routes: Routes = [
 
   { path: 'admin', loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule) ,
     canActivate: [authGuard],
-    data: { roles: ['admin'] }
+    data: { roles: ['ADMIN'] }
   },
+
+  {path: '', redirectTo: 'courses', pathMatch: 'full'},
+
   {
     path: '**',
     component: NotFoundComponent

@@ -1,132 +1,192 @@
 <!-- start-course.component.html -->
 
-
 <div class="course-player-container" *ngIf="course">
-    <!-- Header -->
-    <div class="player-header">
-      <h1 class="course-title">{{ course.title }}</h1>
-      <div class="course-meta">
-        <span class="level-badge">{{ course.level }}</span>
-        <span>Instructor: {{ course.instructorNames }}</span>
-      </div>
+  <!-- Header -->
+  <div class="player-header">
+    <h1 class="course-title">{{ course.title }}</h1>
+    <div class="course-meta">
+      <span class="level-badge">{{ course.level }}</span>
+      <span>Instructor: {{ course.instructorNames }}</span>
     </div>
-  
-    <div class="player-layout">
-      <!-- Main Video Player -->
-      <div class="video-container" *ngIf="currentVideo">
-        <div class="video-player">
-          <iframe
-            [src]="getSafeUrl(currentVideo.videoUrl)"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
+  </div>
+
+  <div class="player-layout">
+    <!-- Main Video Player -->
+    <div class="video-container" *ngIf="currentVideo">
+      <div class="video-player">
+        <iframe
+          [src]="getSafeUrl(currentVideo.videoUrl)"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <div class="instructor-section">
+        <img
+          class="instructor-avatar"
+          alt="Instructor"
+          [src]="'http://localhost:8080/uploads/courses/' + course.coverImage"
+        />
+
+        <div class="instructor-info">
+          <div class="instructor-name">{{ course.instructorNames }}</div>
+          <div class="instructor-role">Course Instructor</div>
+
+          <!-- ====== AJOUT DU NOMBRE D’ABONNÉS ====== -->
+          <div
+            class="instructor-subscriber-count"
+            *ngIf="subscriberCount !== null">
+            {{ subscriberCount }} abonnés
+          </div>
         </div>
-  
-        <div class="instructor-section">
-          <img
-            class="instructor-avatar"
-            alt="Instructor"
-            [src]="'http://localhost:8080/uploads/courses/' + course.coverImage"
-          />
-        
-          <div class="instructor-info">
-            <div class="instructor-name">{{ course.instructorNames }}</div>
-            <div class="instructor-role">Course Instructor</div>
-        
-            <!-- ====== AJOUT DU NOMBRE D’ABONNÉS ====== -->
-            <div 
-              class="instructor-subscriber-count" 
-              *ngIf="subscriberCount !== null">
-              {{ subscriberCount }} abonnés
+
+        <!-- ====== BOUTON D’ABONNEMENT ====== -->
+        <div class="instructor-subscribe">
+          <ng-container *ngIf="subscriptionChecked; else loadingState">
+            <!-- Si l’étudiant n’est pas encore abonné -->
+            <button
+              *ngIf="!isSubscribed"
+              class="btn btn-primary"
+              (click)="subscribe()">
+              Subscribe
+            </button>
+
+            <!-- Si l’étudiant est déjà abonné -->
+            <button
+              *ngIf="isSubscribed"
+              class="btn btn-secondary"
+              (click)="unsubscribe()">
+              Subscribed
+            </button>
+          </ng-container>
+
+          <!-- État de chargement -->
+          <ng-template #loadingState>
+            <span class="text-muted">Vérification en cours…</span>
+          </ng-template>
+        </div>
+
+      
+
+      </div>
+
+      <div class="video-info">
+        <h2 class="video-title">{{ currentVideo.title }}</h2>
+        <p class="video-description">{{ currentVideo.description }}</p>
+      </div>
+
+        <!-- ====== SECTION JAIME / COMMENTAIRES ====== -->
+        <div class="feedback-section mt-4">
+          <!-- Like & Unlike buttons -->
+          <div class="like-buttons mb-3">
+            <button
+              class="btn"
+              [ngClass]="{
+                'btn-primary': isLiked,
+                'btn-outline-primary': !isLiked
+              }"
+              (click)="toggleLike()"
+            >
+              {{ isLiked ? 'deja J\'aime' : 'J\'aime' }} ({{ likeCount }})
+            </button>
+          </div>
+          
+
+          <!-- Comment count -->
+          <div class="comment-count mb-2">
+            <strong>{{ commentCount }}</strong> commentaire(s)
+          </div>
+
+          <!-- Liste des commentaires -->
+          <div class="comments-list mb-3">
+            <div *ngFor="let c of comments" class="comment-item mb-2">
+              <div class="comment-author">
+                <!-- Afficher ici l’auteur si disponible -->
+                <strong>{{ c.studentName }}</strong> :
+              </div>
+              <div class="comment-text">{{ c.texte }}</div>
+              <div class="comment-date text-muted" style="font-size: 0.85rem;">
+                {{ c.dateCreation | date:'short' }}
+              </div>
+              <hr />
+            </div>
+            <div *ngIf="comments.length === 0" class="text-muted">
+              Aucun commentaire pour le moment.
             </div>
           </div>
-        
-          <!-- ====== BOUTON D’ABONNEMENT ====== -->
-          <div class="instructor-subscribe">
-            <ng-container *ngIf="subscriptionChecked; else loadingState">
-              <!-- Si l’étudiant n’est pas encore abonné -->
-              <button
-                *ngIf="!isSubscribed"
-                class="btn btn-primary"
-                (click)="subscribe()">
-                Subscribe
-              </button>
-        
-              <!-- Si l’étudiant est déjà abonné -->
-              <button
-                *ngIf="isSubscribed"
-                class="btn btn-secondary"
-                (click)="unsubscribe()">
-                Subscribed
-              </button>
-            </ng-container>
-        
-            <!-- État de chargement -->
-            <ng-template #loadingState>
-              <span class="text-muted">Vérification en cours…</span>
-            </ng-template>
+
+          <!-- Formulaire d'ajout de commentaire -->
+          <div class="add-comment-form">
+            <textarea
+              class="form-control mb-2"
+              rows="3"
+              placeholder="Ajouter un commentaire..."
+              [(ngModel)]="newCommentText">
+            </textarea>
+            <button
+              class="btn btn-success"
+              [disabled]="!newCommentText.trim()"
+              (click)="addComment()">
+              Envoyer
+            </button>
           </div>
         </div>
-        
-  
-        <div class="video-info">
-          <h2 class="video-title">{{ currentVideo.title }}</h2>
-          <p class="video-description">{{ currentVideo.description }}</p>
+        <!-- ====== FIN SECTION JAIME / COMMENTAIRES ====== -->
+    </div>
+
+    
+
+    <!-- Playlist + Quiz -->
+    <div class="playlist-container" *ngIf="course.contents?.length">
+      <div class="playlist-header">
+        <h3>Course Content</h3>
+        <span>{{ course.contents!.length }} videos</span>
+      </div>
+
+      <div class="playlist-items">
+        <div
+          *ngFor="let content of course.contents; let i = index"
+          class="playlist-item"
+          [class.current]="content === currentVideo"
+          [class.completed]="isCompleted(content)"
+          (click)="setCurrentVideo(content)"
+        >
+          <div class="item-index">
+            <span *ngIf="content !== currentVideo">{{ i + 1 }}</span>
+            <mat-icon *ngIf="content === currentVideo">play_arrow</mat-icon>
+            <mat-icon *ngIf="isCompleted(content) && content !== currentVideo">check_circle</mat-icon>
+          </div>
+
+          <div class="item-thumbnail">
+            <img [src]="getThumbnail(content.videoUrl)" alt="Thumbnail" />
+            <div class="video-duration">5:30</div>
+          </div>
+
+          <div class="item-details">
+            <h4 class="item-title">{{ content.title }}</h4>
+            <div class="item-meta">
+              <span *ngIf="isCompleted(content)" class="completed-badge">
+                <mat-icon>check_circle</mat-icon> Complete
+              </span>
+            </div>
+          </div>
         </div>
       </div>
-  
-      <!-- Playlist + Quiz -->
-      <div class="playlist-container" *ngIf="course.contents?.length">
-        <div class="playlist-header">
-          <h3>Course Content</h3>
-          <span>{{ course.contents!.length }} videos</span>
+
+      <!-- Quiz Section at bottom -->
+      <div class="quiz-section" *ngIf="isLastVideo()">
+        <div class="quiz-header">
+          <h3>Course Quiz</h3>
+          <div class="quiz-badge">Next Step</div>
         </div>
-  
-        <div class="playlist-items">
-          <div
-            *ngFor="let content of course.contents; let i = index"
-            class="playlist-item"
-            [class.current]="content === currentVideo"
-            [class.completed]="isCompleted(content)"
-            (click)="setCurrentVideo(content)"
-          >
-            <div class="item-index">
-              <span *ngIf="content !== currentVideo">{{ i + 1 }}</span>
-              <mat-icon *ngIf="content === currentVideo">play_arrow</mat-icon>
-              <mat-icon *ngIf="isCompleted(content) && content !== currentVideo">check_circle</mat-icon>
-            </div>
-  
-            <div class="item-thumbnail">
-              <img [src]="getThumbnail(content.videoUrl)" alt="Thumbnail" />
-              <div class="video-duration">5:30</div>
-            </div>
-  
-            <div class="item-details">
-              <h4 class="item-title">{{ content.title }}</h4>
-              <div class="item-meta">
-                <span *ngIf="isCompleted(content)" class="completed-badge">
-                  <mat-icon>check_circle</mat-icon> Complete
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <!-- Quiz Section at bottom -->
-        <div class="quiz-section" *ngIf="isLastVideo()">
-          <div class="quiz-header">
-            <h3>Course Quiz</h3>
-            <div class="quiz-badge">Next Step</div>
-          </div>
-          <p class="quiz-description">
-            Test your knowledge with this quiz to complete the course.
-          </p>
-          <button class="quiz-button" (click)="navigateToQuiz()">
-            Go to Quiz <mat-icon>arrow_forward</mat-icon>
-          </button>
-        </div>
+        <p class="quiz-description">
+          Test your knowledge with this quiz to complete the course.
+        </p>
+        <button class="quiz-button" (click)="navigateToQuiz()">
+          Go to Quiz <mat-icon>arrow_forward</mat-icon>
+        </button>
       </div>
     </div>
   </div>
-  
+</div>

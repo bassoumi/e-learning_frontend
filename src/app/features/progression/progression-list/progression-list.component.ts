@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ProgressionListComponent {
   isListView = false; // Control variable
-
+studentId: number | null = null; // Store the student ID
 
   inProgressCoursesWithLastContent: CourseWithLastContent[] = [];
 
@@ -26,10 +26,10 @@ export class ProgressionListComponent {
 
   
 ngOnInit(): void {
-  const studentId = this.authService.getLoggedInStudentId();
+   this.studentId = this.authService.getLoggedInStudentId();
 
-  if (studentId) {
-    this.progressionService.getInProgressCoursesWithLastViewed(studentId).subscribe({
+  if (this.studentId) {
+    this.progressionService.getInProgressCoursesWithLastViewed(this.studentId).subscribe({
       next: (courses) => {
         this.inProgressCoursesWithLastContent = courses;
         console.log('Courses with last viewed content:', courses);
@@ -49,7 +49,7 @@ ngOnInit(): void {
 
 
 goToCourse(courseId: number): void {
-  this.router.navigate(['courses/course-detail', courseId]);
+  this.router.navigate(['courses/course-play', courseId, this.studentId]);
 }
 
 goToCategory(categoryId: number): void {

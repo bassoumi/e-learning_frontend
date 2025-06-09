@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CoursesRoutingModule } from './courses-routing.module';
 import { ListCoursesComponent } from './list-courses/list-courses.component';
 import { CourseDetailComponent } from './course-detail/course-detail.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -30,7 +30,9 @@ import { UpdateCourseComponent } from './update-course/update-course.component';
     CoursesRoutingModule,
     ReactiveFormsModule,
     MatIconModule,
-    SharedModule
+    SharedModule,
+    FormsModule
+    
     
   ]
 })

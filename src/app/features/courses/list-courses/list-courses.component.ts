@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { Course } from 'src/app/core/models/course.model';
 import { CourseService } from '../services/course.service';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
@@ -27,6 +27,7 @@ export class ListCoursesComponent implements OnInit {
   isListView = false; // Control variable
   categoryName = '';
   categoryTags: string[] = [];
+  isDarkMode = false;
 
   constructor(
     private coursesService: CourseService,
@@ -88,5 +89,15 @@ export class ListCoursesComponent implements OnInit {
     this.router.navigate(['/instructors', instructorId]);
   }
 
+  @HostBinding('class.dark-mode')
+  get darkModeClass(): boolean {
+    return this.isDarkMode;
+  }
+
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    // ← ceci ajoute/enlève body.dark-mode
+    document.body.classList.toggle('dark-mode', this.isDarkMode);
+  }
 
 }
