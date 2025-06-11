@@ -1,0 +1,24 @@
+<div class="chat-container" [formGroup]="chatForm">
+    <div class="chat-header">
+      <h3>Chatbot Assistant</h3>
+    </div>
+  
+    <div class="chat-messages">
+      <div *ngFor="let msg of chatHistory">
+        <div [ngClass]="{ 'user-message': msg.sender === 'user', 'bot-message': msg.sender === 'bot' }">
+          <p>{{ msg.text }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="chat-input">
+      <input
+        type="text"
+        formControlName="message"
+        (keydown.enter)="sendUserMessage()"
+        placeholder="Type your message..."
+      />
+      <button (click)="sendUserMessage()" [disabled]="chatForm.invalid">Send</button>
+    </div>
+  </div>
+  
