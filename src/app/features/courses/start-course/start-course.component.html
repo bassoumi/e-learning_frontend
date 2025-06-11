@@ -74,7 +74,14 @@
       <div class="video-info">
         <h2 class="video-title">{{ currentVideo.title }}</h2>
         <p class="video-description">{{ currentVideo.description }}</p>
+        <button (click)="currentvd(currentVideo)">generate an ai resume</button>
+      
+        <!-- Bouton Download PDF visible seulement si summary existe -->
+        <button *ngIf="summary" (click)="generatePDF(currentVideo.title, summary)">
+          Download PDF
+        </button>
       </div>
+      
 
         <!-- ====== SECTION JAIME / COMMENTAIRES ====== -->
         <div class="feedback-section mt-4">

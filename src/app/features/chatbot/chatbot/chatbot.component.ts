@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { UserMessage, BotMessage } from 'src/app/core/models/chatbot.model';
 import { ChatbotService } from '../service/chatbot.service';
@@ -9,8 +9,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   templateUrl: './chatbot.component.html',
   styleUrls: ['./chatbot.component.scss']
 })
-export class ChatbotComponent {
+export class ChatbotComponent implements OnInit {
   chatForm!: FormGroup;
+  isTyping: boolean = false;
   chatHistory: { sender: 'user' | 'bot'; text: string }[] = [];
 
   constructor(
@@ -32,8 +33,6 @@ export class ChatbotComponent {
     if (!userId || !userMessage) {
       return;
     }
-    console.log('User ID:', userId);
-    console.log('User Message:', userMessage);
 
     const message: UserMessage = {
       userId: userId.toString(),
@@ -43,8 +42,16 @@ export class ChatbotComponent {
     this.chatHistory.push({ sender: 'user', text: userMessage });
 
     this.chatbotService.sendMessage(message).subscribe({
-      next: (response: BotMessage) => {
-        this.chatHistory.push({ sender: 'bot', text: response.text });
+      next: (responses) => {
+        // responses est un BotMessage[]
+        const firstBotMsg = Array.isArray(responses) && responses.length > 0
+          ? responses[0].text
+          : 'Désolé, pas de réponse du bot.';
+
+        // **bold** → <strong>bold</strong>
+        const formatted = firstBotMsg.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        this.chatHistory.push({ sender: 'bot', text: formatted });
         this.chatForm.reset();
       },
       error: () => {

@@ -21,8 +21,12 @@ export class ChatbotService {
     });
   }
 
-  sendMessage(message: UserMessage): Observable<BotMessage> {
-    return this.http.post<BotMessage>(this.apiUrl, message, {
+  sendMessage(message: UserMessage): Observable<BotMessage[]> {
+    return this.http.post<BotMessage[]>(this.apiUrl, message, {
       headers: this.getAuthHeaders()
     });
-  }}
+  }
+
+
+
+}

@@ -100,6 +100,15 @@ getCoursesByTitle(title: string): Observable<Course[]> {
 }
 
 
+getVideoSummary(youtubeUrl: string): Observable<any> {
+  const body = { youtubeUrl };
+
+  return this.http.post<any>('http://localhost:5001/api/summary', body, {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  });
+}
 
 
 

@@ -1,24 +1,42 @@
 <div class="chat-container" [formGroup]="chatForm">
-    <div class="chat-header">
-      <h3>Chatbot Assistant</h3>
-    </div>
-  
-    <div class="chat-messages">
-      <div *ngFor="let msg of chatHistory">
-        <div [ngClass]="{ 'user-message': msg.sender === 'user', 'bot-message': msg.sender === 'bot' }">
-          <p>{{ msg.text }}</p>
-        </div>
+  <div class="chat-header">
+    <h3>
+      <div class="bot-avatar"></div>
+      Chatbot Assistant
+    </h3>
+  </div>
+
+  <div class="chat-messages">
+    <div *ngFor="let msg of chatHistory" class="message-row" [ngClass]="{'bot-row': msg.sender === 'bot', 'user-row': msg.sender === 'user'}">
+      <!-- Bot avatar for bot messages -->
+      <div *ngIf="msg.sender === 'bot'" class="bot-avatar"></div>
+      
+      <div class="message" [ngClass]="{'bot-message': msg.sender === 'bot', 'user-message': msg.sender === 'user'}">
+        <p [innerHTML]="msg.text"></p>
+
       </div>
     </div>
-  
-    <div class="chat-input">
-      <input
-        type="text"
-        formControlName="message"
-        (keydown.enter)="sendUserMessage()"
-        placeholder="Type your message..."
-      />
-      <button (click)="sendUserMessage()" [disabled]="chatForm.invalid">Send</button>
+    
+    <!-- Typing indicator -->
+    <div class="typing-indicator" *ngIf="isTyping">
+      <div class="bot-avatar"></div>
+      <div class="typing-bubble">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </div>
-  
+
+  <div class="chat-input">
+    <input
+      type="text"
+      formControlName="message"
+      (keydown.enter)="sendUserMessage()"
+      placeholder="Type a message..."
+    />
+    <button (click)="sendUserMessage()" [disabled]="chatForm.invalid">
+      <mat-icon>send</mat-icon>
+    </button>
+  </div>
+</div>

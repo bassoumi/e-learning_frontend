@@ -11,6 +11,7 @@ import { Student } from 'src/app/core/models/student.model';
 import { InstructorService } from '../../instructors/services/instructor.service';
 import { CommentResponse, CommentRequest, LikeRequest, LikeResponse } from 'src/app/core/models/feedback.model';
 import { ContentService } from '../../contents/services/content.service';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-start-course',
@@ -25,6 +26,8 @@ export class StartCourseComponent implements OnInit {
   currentVideo?: Content;
   progressions: ProgressionResponse[] = [];
   isLiked = false; 
+  summary: string = '';
+  title: string = '';
 
   // IDs
   studentId!: number;
@@ -252,6 +255,7 @@ export class StartCourseComponent implements OnInit {
     if (this.completedVideos.has(content.id)) {
       return true;
     }
+
     const prog = this.progressions.find(p => p.contentId === content.id);
     return !!prog && prog.progressionPercentage > 0;
   }
@@ -427,4 +431,38 @@ export class StartCourseComponent implements OnInit {
     }
   }
 
+
+  currentvd(currentVideo: Content) {
+    console.log('current video :', currentVideo);
+
+    this.title = currentVideo.title;  // Save the title
+
+    const url = currentVideo.videoUrl;
+
+    this.courseService.getVideoSummary(url).subscribe({
+      next: (res) => {
+        console.log('Résumé:', res.summary);
+        this.summary = res.summary;
+
+        this.generatePDF(this.title, this.summary);
+      },
+      error: (err) => {
+        console.error('Erreur lors du résumé', err);
+      }
+    });
+  }
+
+  generatePDF(title: string, summary: string) {
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text(title, 10, 20); // title at (10,20)
+    
+    doc.setFontSize(12);
+    const splitSummary = doc.splitTextToSize(summary, 180); // wrap text within width 180
+    doc.text(splitSummary, 10, 30);
+
+    // Save the PDF with a filename based on title
+    doc.save(`${title}.pdf`);
+  }
 }

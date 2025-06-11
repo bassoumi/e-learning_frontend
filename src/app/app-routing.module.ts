@@ -80,7 +80,12 @@ const routes: Routes = [
     data: { roles: ['ADMIN'] }
   },
 
+  { path: 'chatbot', loadChildren: () => import('./features/chatbot/chatbot.module').then(m => m.ChatbotModule) },
+
+
   {path: '', redirectTo: 'courses', pathMatch: 'full'},
+  
+  
 
   {
     path: '**',
