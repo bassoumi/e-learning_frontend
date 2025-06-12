@@ -75,20 +75,20 @@
         <h2 class="video-title">{{ currentVideo.title }}</h2>
         <p class="video-description">{{ currentVideo.description }}</p>
       
-        <!-- Générer si PAS de résumé -->
-        <button *ngIf="!summaryExists" (click)="currentvd(currentVideo)">
-          Generate an AI résumé
-        </button>
+        <div class="video-actions">
+          <!-- If no summary yet -->
+          <button *ngIf="!summaryExists" (click)="currentvd(currentVideo)">
+            Generate an AI résumé
+          </button>
       
-        <!-- Si un résumé existe, afficher Download + Regenerate -->
-        <ng-container *ngIf="summaryExists">
-          <button (click)="downloadPdf()">
-            Download PDF
-          </button>
-          <button (click)="currentvd(currentVideo)">
-            Generate new AI résumé
-          </button>
-        </ng-container>
+          <!-- If summary exists -->
+          <ng-container *ngIf="summaryExists">
+            <button (click)="downloadPdf()">Download PDF</button>
+            <button (click)="currentvd(currentVideo)">
+              Generate new AI résumé
+            </button>
+          </ng-container>
+        </div>
       </div>
       
       
@@ -207,4 +207,57 @@
       </div>
     </div>
   </div>
+
+
+  <div class="chatbot-toggle" (click)="toggleChat()">
+    <mat-icon>chat</mat-icon>
+  </div>
+
+  <!-- Chatbot Container -->
+  <div class="chatbot-container" *ngIf="showChat">
+    <div class="chatbot-header">
+      <div class="chatbot-title">
+        <img src="assets/images/minimalistic-lineart-black-white-chat-bot-logo-white-background_983420-8018-removebg-preview.png" 
+             alt="Chatbot Logo"
+             class="chatbot-logo">
+        <h4>Course Assistant</h4>
+      </div>
+      <button class="close-btn" (click)="toggleChat()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    
+    
+    <div class="chat-messages">
+      <div *ngFor="let message of messages"
+      class="message"
+      [class.bot]="message.sender === 'bot'"
+      [class.user]="message.sender === 'user'">
+        <div class="message-content">{{ message.text }}
+          <button *ngIf="message.isPdfButton" class="pdf-btn" (click)="downloadPdf()">
+            📄 Download PDF
+          </button>
+        </div>
+        <div class="message-time">{{ message.time | date:'shortTime' }}</div>
+      </div>
+  
+      <!-- typing indicator -->
+      <div class="message bot typing-indicator" *ngIf="isTyping">
+        <div class="dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div> <!-- ← close chat-messages here -->
+  
+    <!-- suggestions strip, outside of chat bubbles -->
+    <div class="chat-suggestions" *ngIf="!summaryExists && !suggestionUsed">
+      <button class="suggestion-btn" (click)="onGenerateResumeClick()">
+        ✏️ Generate a résumé for this content
+      </button>
+    </div>
+  
+
+  
+  </div>
+
 </div>

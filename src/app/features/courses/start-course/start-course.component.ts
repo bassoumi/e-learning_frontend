@@ -30,7 +30,8 @@ export class StartCourseComponent implements OnInit {
   summary: string = '';
   title: string = '';
   videoSummary!: VideoSummary;
-
+  showChat: boolean = false;
+  newMessage: string = '';
 
   // IDs
   studentId!: number;
@@ -263,28 +264,54 @@ export class StartCourseComponent implements OnInit {
     this.loadCommentsAndCounts(video.id);
 
 
-    this.courseService
-    .getSummary(video.id)       // ton POST /summarize
+    this.courseService.getSummary(video.id)
     .pipe(
-      tap(summary => {
-        this.videoSummary = summary;   // stocke le résumé renvoyé
-        this.summaryExists = true;   
-        console.log('Résumé vidéo récupéré :', summary);  
+      tap((response: VideoSummary) => {
+        // keep the full object if you need it elsewhere
+        this.videoSummary  = response;
+        this.summaryExists = true;
+  
+        // extract the actual string
+        const text = response.summaryText;
+  
+        console.log('Résumé vidéo récupéré :', text);
+  
+        this.messages.push({
+          text:   text,    // now a string
+          sender: 'bot',
+          time:   new Date(),
+        });
+        this.messages.push({
+          text: '📥 Would you like to generate a PDF résumé?',
+          sender: 'bot',
+          time: new Date(),
+          isPdfButton: true // 👈 Add this flag for conditional rendering
+        });
       }),
       catchError(err => {
         if (err.status === 403) {
           this.summaryExists = false;
           console.log('Résumé vidéo non trouvé, il faut le générer');
-            // pas de résumé -> bouton Générer
+  
+          this.messages.push({
+            text:   'Aucun résumé trouvé. Cliquez sur « Generate an AI résumé » pour en créer un.',
+            sender: 'bot',
+            time:   new Date(),
+          });
           return of(null);
         }
+  
         console.error('Erreur vérif. résumé', err);
+        this.messages.push({
+          text:   'Désolé, impossible de vérifier le résumé pour le moment.',
+          sender: 'bot',
+          time:   new Date(),
+        });
         return throwError(() => err);
       })
     )
     .subscribe();
-
-  }
+  }  
 
   getSafeUrl(url: string): SafeResourceUrl {
     const reg = /^.*(?:youtu\.be\/|v\/|embed\/|watch\?v=)([^#&?]*).*/;
@@ -482,18 +509,29 @@ export class StartCourseComponent implements OnInit {
       });
     }
   }
-
+  isTyping = false;
 
   currentvd(currentVideo: Content) {
-    console.log('currentvd', currentVideo);
-    this.title = currentVideo.title;
-    
-    // On passe l'ID du content, pas l'URL
+    // (Optional) show a “typing…” or confirmation from the user
+
+    this.isTyping = true;
     this.courseService.summarizeContent(currentVideo.id).subscribe({
       next: vs => {
-        this.summary = vs.summaryText;   // vidéo résumé renvoyé par Spring
+        // vs.summaryText is the résumé text
+        this.messages.push({
+          text: vs.summaryText,
+          sender: 'bot',
+          time: new Date(),
+        });
       },
-      error: err => console.error('Erreur lors du résumé', err)
+      error: err => {
+        console.error('Erreur lors du résumé', err);
+        this.messages.push({
+          text: "Sorry, I couldn’t generate the résumé 😔. Please try again later 🔄",
+          sender: 'bot',
+          time: new Date(),
+        });
+      }
     });
   }
   
@@ -509,4 +547,74 @@ export class StartCourseComponent implements OnInit {
     doc.text(split, 10, 30);
     doc.save(`${this.title}.pdf`);
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Component properties
+
+messages: any[] = [
+  {
+    text: "Hello! I’m your assistant 🤖. How can I help you today? 🚀",
+    sender: 'bot',
+    time: new Date()
+  }
+];
+
+// Toggle chat visibility
+toggleChat() {
+  this.showChat = !this.showChat;
 }
+
+// Send new message
+sendMessage() {
+  if (this.newMessage.trim() === '') return;
+  
+  // Add user message
+  this.messages.push({
+    text: this.newMessage,
+    sender: 'user',
+    time: new Date()
+  });
+  
+  // Simulate bot response after delay
+  setTimeout(() => {
+    this.messages.push({
+      text: "I’m a virtual assistant. This feature is under development 🔧",
+      sender: 'bot',
+      time: new Date()
+    });
+  }, 1000);
+  
+  this.newMessage = '';
+}
+
+suggestionUsed = false;  
+
+
+onGenerateResumeClick() {
+  const userText = '✏️ Generate a résumé for this content';
+  this.messages.push({
+    text:   userText,
+    sender: 'user',
+    time:   new Date(),
+  });
+
+  this.suggestionUsed = true;
+
+  this.isTyping = true;
+  this.currentvd(this.currentVideo!);
+}
+}
+
