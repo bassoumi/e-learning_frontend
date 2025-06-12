@@ -30,8 +30,13 @@
         />
 
         <div class="instructor-info">
-          <div class="instructor-name">{{ course.instructorNames }}</div>
-          <div class="instructor-role">Course Instructor</div>
+          <div 
+          class="instructor-name" 
+          (click)="goToInstructor(course.instructorId)"
+        >
+          {{ course.instructorNames }}
+        </div>
+                  <div class="instructor-role">Course Instructor</div>
 
           <!-- ====== AJOUT DU NOMBRE D’ABONNÉS ====== -->
           <div
@@ -210,8 +215,9 @@
 
 
   <div class="chatbot-toggle" (click)="toggleChat()">
-    <mat-icon>chat</mat-icon>
+    <img src="assets/images/minimalistic-lineart-black-white-chat-bot-logo-white-background_983420-8018-removebg-preview.png" alt="Chatbot" />
   </div>
+  
 
   <!-- Chatbot Container -->
   <div class="chatbot-container" *ngIf="showChat">
@@ -247,17 +253,12 @@
           <span></span><span></span><span></span>
         </div>
       </div>
-    </div> <!-- ← close chat-messages here -->
-  
-    <!-- suggestions strip, outside of chat bubbles -->
+    </div> 
     <div class="chat-suggestions" *ngIf="!summaryExists && !suggestionUsed">
       <button class="suggestion-btn" (click)="onGenerateResumeClick()">
         ✏️ Generate a résumé for this content
       </button>
     </div>
   
-
-  
   </div>
-
 </div>

@@ -273,7 +273,8 @@ export class StartCourseComponent implements OnInit {
   
         // extract the actual string
         const text = response.summaryText;
-  
+        this.summary = response.summaryText;
+
         console.log('Résumé vidéo récupéré :', text);
   
         this.messages.push({
@@ -512,22 +513,23 @@ export class StartCourseComponent implements OnInit {
   isTyping = false;
 
   currentvd(currentVideo: Content) {
-    // (Optional) show a “typing…” or confirmation from the user
-
     this.isTyping = true;
+  
     this.courseService.summarizeContent(currentVideo.id).subscribe({
       next: vs => {
-        // vs.summaryText is the résumé text
+        this.isTyping = false;       // ← stop typing indicator
+        this.summary = vs.summaryText;
         this.messages.push({
-          text: vs.summaryText,
+          text: this.summary,
           sender: 'bot',
           time: new Date(),
         });
       },
       error: err => {
+        this.isTyping = false;       // ← stop typing indicator
         console.error('Erreur lors du résumé', err);
         this.messages.push({
-          text: "Sorry, I couldn’t generate the résumé 😔. Please try again later 🔄",
+          text: "Sorry, I couldn’t generate the summary 😔. Please try again later 🔄",
           sender: 'bot',
           time: new Date(),
         });
@@ -535,16 +537,22 @@ export class StartCourseComponent implements OnInit {
     });
   }
   
+  
 
   downloadPdf() {
-    if (!this.summary) { return; }
-
+    if (!this.summary) { 
+      console.error('No summary available to download');
+      return;
+    }
+  
     const doc = new jsPDF();
     doc.setFontSize(16);
     doc.text(this.title, 10, 20);
     doc.setFontSize(12);
-    const split = doc.splitTextToSize(this.summary, 180);
-    doc.text(split, 10, 30);
+  
+    const splitText = doc.splitTextToSize(this.summary, 180);
+    doc.text(splitText, 10, 30);
+  
     doc.save(`${this.title}.pdf`);
   }
 
@@ -615,6 +623,12 @@ onGenerateResumeClick() {
 
   this.isTyping = true;
   this.currentvd(this.currentVideo!);
+}
+
+
+goToInstructor(instructorId: number ): void {
+  // navigate to /instructors/:id
+  this.router.navigate(['/instructors', instructorId]);
 }
 }
 
