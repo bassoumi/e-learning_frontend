@@ -5,13 +5,14 @@ import { CourseService } from '../services/course.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { StudentService } from '../../students/services/student.service';
 import { ProgressionService } from '../../progression/services/progression.service';
-import { switchMap, catchError, of, Observable, forkJoin } from 'rxjs';
+import { switchMap, catchError, of, Observable, forkJoin, tap, throwError } from 'rxjs';
 import { ProgressionResponse, ProgressionRequest } from 'src/app/core/models/progression.model';
 import { Student } from 'src/app/core/models/student.model';
 import { InstructorService } from '../../instructors/services/instructor.service';
 import { CommentResponse, CommentRequest, LikeRequest, LikeResponse } from 'src/app/core/models/feedback.model';
 import { ContentService } from '../../contents/services/content.service';
 import { jsPDF } from 'jspdf';
+import { VideoSummary } from 'src/app/core/models/videoSummary.model';
 
 @Component({
   selector: 'app-start-course',
@@ -28,11 +29,14 @@ export class StartCourseComponent implements OnInit {
   isLiked = false; 
   summary: string = '';
   title: string = '';
+  videoSummary!: VideoSummary;
+
 
   // IDs
   studentId!: number;
   courseId!: number;
   instructorIdOfCourse?: number;
+  summaryExists = false;
 
   // Abonnement à l'instructeur
   isSubscribed = false;
@@ -104,9 +108,34 @@ export class StartCourseComponent implements OnInit {
       // 6. Initialiser les feedbacks pour la vidéo courante
       if (this.currentVideo) {
         this.loadCommentsAndCounts(this.currentVideo.id);
+        this.courseService.getSummary(this.currentVideo.id)
+        .pipe(
+          tap(summary => {
+            // si on a un résumé, on l'affiche et on active le bouton "Télécharger"
+            this.videoSummary = summary;
+            this.summaryExists = true;
+            console.log('Résumé vidéo récupéré :', summary);
+          }),
+          catchError(err => {
+            if (err.status === 403) {
+              // pas encore de résumé -> bouton "Générer"
+              this.summaryExists = false;
+              console.warn('Résumé vidéo non trouvé, il faut le générer');
+              return of(null);
+            }
+            // autre erreur
+            console.error('Erreur vérif. résumé', err);
+            return throwError(() => err);
+          })
+        )
+        .subscribe();
+    
       }
     });
   }
+
+
+  
 
   // ==================== Méthodes de progression ====================
 
@@ -232,6 +261,29 @@ export class StartCourseComponent implements OnInit {
 
     // Recharger les feedbacks après changement de vidéo
     this.loadCommentsAndCounts(video.id);
+
+
+    this.courseService
+    .getSummary(video.id)       // ton POST /summarize
+    .pipe(
+      tap(summary => {
+        this.videoSummary = summary;   // stocke le résumé renvoyé
+        this.summaryExists = true;   
+        console.log('Résumé vidéo récupéré :', summary);  
+      }),
+      catchError(err => {
+        if (err.status === 403) {
+          this.summaryExists = false;
+          console.log('Résumé vidéo non trouvé, il faut le générer');
+            // pas de résumé -> bouton Générer
+          return of(null);
+        }
+        console.error('Erreur vérif. résumé', err);
+        return throwError(() => err);
+      })
+    )
+    .subscribe();
+
   }
 
   getSafeUrl(url: string): SafeResourceUrl {
@@ -433,36 +485,28 @@ export class StartCourseComponent implements OnInit {
 
 
   currentvd(currentVideo: Content) {
-    console.log('current video :', currentVideo);
-
-    this.title = currentVideo.title;  // Save the title
-
-    const url = currentVideo.videoUrl;
-
-    this.courseService.getVideoSummary(url).subscribe({
-      next: (res) => {
-        console.log('Résumé:', res.summary);
-        this.summary = res.summary;
-
-        this.generatePDF(this.title, this.summary);
+    console.log('currentvd', currentVideo);
+    this.title = currentVideo.title;
+    
+    // On passe l'ID du content, pas l'URL
+    this.courseService.summarizeContent(currentVideo.id).subscribe({
+      next: vs => {
+        this.summary = vs.summaryText;   // vidéo résumé renvoyé par Spring
       },
-      error: (err) => {
-        console.error('Erreur lors du résumé', err);
-      }
+      error: err => console.error('Erreur lors du résumé', err)
     });
   }
+  
 
-  generatePDF(title: string, summary: string) {
+  downloadPdf() {
+    if (!this.summary) { return; }
+
     const doc = new jsPDF();
-
     doc.setFontSize(16);
-    doc.text(title, 10, 20); // title at (10,20)
-    
+    doc.text(this.title, 10, 20);
     doc.setFontSize(12);
-    const splitSummary = doc.splitTextToSize(summary, 180); // wrap text within width 180
-    doc.text(splitSummary, 10, 30);
-
-    // Save the PDF with a filename based on title
-    doc.save(`${title}.pdf`);
+    const split = doc.splitTextToSize(this.summary, 180);
+    doc.text(split, 10, 30);
+    doc.save(`${this.title}.pdf`);
   }
 }

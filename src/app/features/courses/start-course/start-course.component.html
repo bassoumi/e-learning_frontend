@@ -74,13 +74,24 @@
       <div class="video-info">
         <h2 class="video-title">{{ currentVideo.title }}</h2>
         <p class="video-description">{{ currentVideo.description }}</p>
-        <button (click)="currentvd(currentVideo)">generate an ai resume</button>
       
-        <!-- Bouton Download PDF visible seulement si summary existe -->
-        <button *ngIf="summary" (click)="generatePDF(currentVideo.title, summary)">
-          Download PDF
+        <!-- Générer si PAS de résumé -->
+        <button *ngIf="!summaryExists" (click)="currentvd(currentVideo)">
+          Generate an AI résumé
         </button>
+      
+        <!-- Si un résumé existe, afficher Download + Regenerate -->
+        <ng-container *ngIf="summaryExists">
+          <button (click)="downloadPdf()">
+            Download PDF
+          </button>
+          <button (click)="currentvd(currentVideo)">
+            Generate new AI résumé
+          </button>
+        </ng-container>
       </div>
+      
+      
       
 
         <!-- ====== SECTION JAIME / COMMENTAIRES ====== -->

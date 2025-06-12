@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { Content, Course, Quiz } from 'src/app/core/models/course.model';
 import { Student } from 'src/app/core/models/student.model';
+import { VideoSummary } from 'src/app/core/models/videoSummary.model';
 
 @Injectable({
   providedIn: 'root'
@@ -100,17 +101,23 @@ getCoursesByTitle(title: string): Observable<Course[]> {
 }
 
 
-getVideoSummary(youtubeUrl: string): Observable<any> {
-  const body = { youtubeUrl };
-
-  return this.http.post<any>('http://localhost:5001/api/summary', body, {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  });
+summarizeContent(contentId: number): Observable<VideoSummary> {
+  const token = this.authService.getToken();
+  const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+  return this.http.post<VideoSummary>(
+    `http://localhost:8080/api/v1/content/${contentId}/summarize`,
+    {}, { headers }
+  );
 }
 
-
+getSummary(contentId: number): Observable<VideoSummary> {
+  const token = this.authService.getToken();
+  const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+  return this.http.get<VideoSummary>(
+    `http://localhost:8080/api/v1/content/${contentId}/summary`,
+    { headers }
+  );
+}
 
   
 }
