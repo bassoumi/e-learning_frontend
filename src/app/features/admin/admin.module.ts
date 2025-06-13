@@ -7,6 +7,9 @@ import { ListInstructorComponent } from './list-instructor/list-instructor.compo
 import { InfoInstructorComponent } from './info-instructor/info-instructor.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoursesAdminListComponent } from './courses-admin-list/courses-admin-list.component';
+import { CategoryPrivateListComponent } from './category-private-list/category-private-list.component';
+import { NewCategoryComponent } from './new-category/new-category.component';
+import { UpdateCategoryComponent } from './update-category/update-category.component';
 
 
 @NgModule({
@@ -14,7 +17,10 @@ import { CoursesAdminListComponent } from './courses-admin-list/courses-admin-li
     AddInstructorComponent,
     ListInstructorComponent,
     InfoInstructorComponent,
-    CoursesAdminListComponent
+    CoursesAdminListComponent,
+    CategoryPrivateListComponent,
+    NewCategoryComponent,
+    UpdateCategoryComponent
   ],
   imports: [
     CommonModule,

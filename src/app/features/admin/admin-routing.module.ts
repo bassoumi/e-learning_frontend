@@ -5,12 +5,19 @@ import { AddInstructorComponent } from './add-instructor/add-instructor.componen
 import { ListInstructorComponent } from './list-instructor/list-instructor.component';
 import { InfoInstructorComponent } from './info-instructor/info-instructor.component';
 import { CoursesAdminListComponent } from './courses-admin-list/courses-admin-list.component';
+import { CategoryPrivateListComponent } from './category-private-list/category-private-list.component';
 
 const routes: Routes = [
   {path: 'instructor-List', component:ListInstructorComponent},
   {path: 'add-instructor', component:AddInstructorComponent},
   {path: 'info-instructor/:id', component:InfoInstructorComponent},
   {path: 'courses-list', component:CoursesAdminListComponent},
+  {path: 'categories-private-list', component:CategoryPrivateListComponent},
+  {path: 'new-category', component:CategoryPrivateListComponent},
+  {path: 'update-category/:id', component:CategoryPrivateListComponent},
+
+
+
 
 ];
 

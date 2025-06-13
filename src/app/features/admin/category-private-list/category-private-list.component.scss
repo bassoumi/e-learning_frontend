@@ -1,0 +1,26 @@
+.category-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+  
+    .btn-update,
+    .btn-delete {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  
+    .btn-update {
+      background-color: #007bff;
+      color: white;
+    }
+  
+    .btn-delete {
+      background-color: #dc3545;
+      color: white;
+    }
+  }
+  

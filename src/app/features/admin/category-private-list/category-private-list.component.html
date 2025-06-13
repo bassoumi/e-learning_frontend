@@ -1,0 +1,19 @@
+<div class="category-container">
+    <div *ngFor="let cat of category" class="category-card">
+      <img
+      [src]="'http://localhost:8080/uploads/categories/' + encodeImageUrl(cat.CoverCategoryimage)"
+      alt="Cover Image"
+        class="category-image"
+      />
+      <div class="category-info">
+        <h2>{{ cat.nom }}</h2>
+        <p>{{ cat.description }}</p>
+  
+        <div class="category-actions">
+          <a [routerLink]="['/admin/update-category', cat.id]" class="btn-update">Update</a>
+          <button (click)="deleteCategory(cat.id)" class="btn-delete">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
