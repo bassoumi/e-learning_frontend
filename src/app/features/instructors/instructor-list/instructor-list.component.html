@@ -1,135 +1,143 @@
-<!-- En-tête avec label + nom -->
-<div class="instructor-header">
-  <div class="category-label">instructor</div>
-  <div class="name-display">
-    {{ instructorNames }}
-  </div>
-</div>
-
-<!-- Carte de l’instructeur (photo, contact, bio) -->
-<div class="instructor-card" *ngIf="instructor">
-  <!-- Bloc photo de profil -->
-  <div class="instructor-image">
-    <img
-      *ngIf="instructorImage"
-      [src]="'http://localhost:8080/uploads/images/' + instructorImage"      alt="Photo de {{ instructorNames }}"
-    />
-  </div>
-
-  <!-- Bloc détails (nom, contact, bio) -->
-  <div class="instructor-details">
-    <!-- Nom complet -->
-    <h2 class="instructor-name">{{ instructorNames }}</h2>
-
-    <!-- Informations de contact -->
-    <div class="instructor-contact">
-      <!-- Email -->
-      <div class="contact-item">
-        <div class="contact-icon">
-          <!-- Vous pouvez remplacer ce span par un <i> d’icône (FontAwesome, etc.) -->
-          <span>✉️</span>
-        </div>
-        <div>
-          <span class="contact-label">Email&nbsp;:</span>
-          <span class="contact-value">{{ instructorEmail }}</span>
-        </div>
+<div class="container">
+  <!-- Channel Header -->
+  <div class="channel-header">
+    <div class="channel-header-top">
+      <div class="channel-avatar">
+        <img *ngIf="instructorImage"
+             [src]="'http://localhost:8080/uploads/images/' + instructorImage"
+             alt="Photo de {{ instructorNames }}">
       </div>
-
-      <!-- Vous pouvez ajouter d’autres "contact-item" ici (par exemple téléphone, réseaux sociaux…) -->
-      <!--
-      <div class="contact-item">
-        <div class="contact-icon">
-          <span>📱</span>
+      <div class="channel-info">
+        <h1 class="channel-name">{{ instructorNames }}</h1>
+        <div class="channel-stats">
+          <span *ngIf="subscriberCount !== null">{{ subscriberCount }} abonnés</span>
+          <span>{{ courses.length }} cours</span>
         </div>
-        <div>
-          <span class="contact-label">Tél&nbsp;:</span>
-          <span class="contact-value">{{ instructorPhone }}</span>
-        </div>
-      </div>
-      -->
-    </div>
-
-    <!-- Biographie -->
-    <div class="instructor-bio">
-      <div class="bio-title">
-        Biographie
-      </div>
-      <div class="bio-content">
-        {{ instructorBio }}
+        <button class="subscribe-btn">
+          <!-- Changed 'notifications' icon -->
+          <mat-icon>favorite</mat-icon>
+          S'ABONNER
+        </button>
       </div>
     </div>
 
-    <!-- Section statistiques (facultative, si vous souhaitez afficher des stats) -->
-    <!--
-    <div class="instructor-stats">
-      <div class="stat-item">
-        <div class="stat-value">{{ someStatValue1 }}</div>
-        <div class="stat-label">Stat 1</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value">{{ someStatValue2 }}</div>
-        <div class="stat-label">Stat 2</div>
-      </div>
-      <!-- etc. -->
-    <!-- </div> -->
   </div>
-</div>
 
-    
-  
-    
-    <!-- Add view toggle controls -->
-    <div class="view-controls">
-      <button class="icon-button" (click)="isListView = false" [class.active]="!isListView">
-        <mat-icon>grid_view</mat-icon>
-      </button>
-      <button class="icon-button" (click)="isListView = true" [class.active]="isListView">
-        <mat-icon>view_list</mat-icon>
-      </button>
-    </div>
-    
-    
-    <!-- Modified courses grid -->
-    <div class="courses-grid"
-         [class.list-view]="isListView"
-         [@viewAnimation]="isListView ? 'list' : 'grid'">
-      <div *ngFor="let course of courses" class="course-card" (click)="goToCourse(course.id)">
-    
-        <div class="card-header"
-             [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
-             
-          <div class="course-category">
-            {{ course.categoryName }}
-          </div>
-        </div>
-        <div class="card-body">
-          <h3 class="course-title">{{ course.title }}</h3>
+  <!-- Content Area -->
+  <div class="content-container">
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- View Controls -->
+      <div class="view-controls">
+        <button class="icon-button" (click)="isListView = false" [class.active]="!isListView">
+          <!-- Changed 'grid_view' icon -->
+          <mat-icon>grid_view</mat-icon>
+        </button>
+        <button class="icon-button" (click)="isListView = true" [class.active]="isListView">
+          <!-- Changed 'view_list' icon -->
+          <mat-icon>view_list</mat-icon>
           
-          <div class="course-short-desc" *ngIf="course.shortDescription">
-            {{ course.shortDescription }}
-          </div>
-    
-        
-          <div class="course-duration">
-            <span class="level">{{ course.level }}</span>
-            <span>·</span>
-            <span>Durée : {{ course.courseMetaData?.duration }} Min</span>
-          </div>
-          
-          
-          
-    
-          <div class="course-meta">
-            <div class="meta-item">
-              <mat-icon>translate</mat-icon>
-              <span>{{ course.language }}</span>
+        </button>
+      </div>
+
+      <!-- Courses Grid -->
+      <div class="courses-grid" [class.list-view]="isListView">
+        <div *ngFor="let course of courses" class="course-card" (click)="goToCourse(course.id)">
+          <div class="card-header"
+               [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
+            <div class="course-category">
+              {{ course.categoryName }}
             </div>
-            <div class="meta-item">
-              <mat-icon>person</mat-icon>
-              <span>{{ course.instructorNames || 'Unknown' }}</span>        </div>
           </div>
-     
-        </div>  </div>
+          <div class="card-body">
+            <h3 class="course-title">{{ course.title }}</h3>
+
+            <div class="course-short-desc" *ngIf="course.shortDescription">
+              {{ course.shortDescription }}
+            </div>
+
+            <div class="course-duration">
+              <span class="level">{{ course.level }}</span>
+              <span>·</span>
+              <span>Durée : {{ course.courseMetaData?.duration }} Min</span>
+            </div>
+
+            <div class="course-meta">
+              <div class="meta-item">
+                <!-- Changed 'translate' icon -->
+                <mat-icon>language</mat-icon>
+                <span>{{ course.language }}</span>
+              </div>
+              <div class="meta-item">
+                <!-- Changed 'person' icon -->
+                <mat-icon>account_circle</mat-icon>
+                <span>{{ course.instructorNames || 'Unknown' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- About Section -->
+      <div class="sidebar-section">
+        <h2 class="sidebar-title">
+          <!-- Changed 'info' icon -->
+          <mat-icon>help_outline</mat-icon>
+          À propos
+        </h2>
+        <div class="bio-content">
+          {{ instructorBio }}
+        </div>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="sidebar-section">
+        <h2 class="sidebar-title">
+          <!-- Changed 'contact_mail' icon -->
+          <mat-icon>mail_outline</mat-icon>
+          Contact
+        </h2>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <!-- Changed 'email' icon -->
+            <mat-icon>alternate_email</mat-icon>
+          </div>
+          <div>
+            <span class="contact-label">Email:</span>
+            <span class="contact-value">{{ instructorEmail }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Links -->
+      <div class="sidebar-section">
+        <h2 class="sidebar-title">
+          <!-- Changed 'share' icon -->
+          <mat-icon>public</mat-icon>
+          Réseaux sociaux
+        </h2>
+        <div class="social-links">
+          <a href="#" class="social-link">
+            <!-- Changed 'facebook' icon -->
+            <mat-icon>facebook</mat-icon>
+          </a>
+          <a href="#" class="social-link">
+            <!-- Changed 'camera_alt' icon -->
+            <mat-icon>photo_camera</mat-icon>
+          </a>
+          <a href="#" class="social-link">
+            <!-- Changed 'work' icon -->
+            <mat-icon>business_center</mat-icon>
+          </a>
+          <a href="#" class="social-link">
+            <!-- Changed 'link' icon -->
+            <mat-icon>insert_link</mat-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

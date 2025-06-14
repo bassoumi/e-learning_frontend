@@ -20,6 +20,12 @@
   </button>
 </div>
 
+<div   *ngFor="let cat of category"     >
+  <div   [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + cat.cover_categoryimage + ')'" 
+         class="category-image">
+  </div>
+</div>
+
 
 <!-- Modified courses grid -->
 <div class="courses-grid"

@@ -6,6 +6,7 @@ import { ListInstructorComponent } from './list-instructor/list-instructor.compo
 import { InfoInstructorComponent } from './info-instructor/info-instructor.component';
 import { CoursesAdminListComponent } from './courses-admin-list/courses-admin-list.component';
 import { CategoryPrivateListComponent } from './category-private-list/category-private-list.component';
+import { UpdateCategoryComponent } from './update-category/update-category.component';
 
 const routes: Routes = [
   {path: 'instructor-List', component:ListInstructorComponent},
@@ -14,7 +15,7 @@ const routes: Routes = [
   {path: 'courses-list', component:CoursesAdminListComponent},
   {path: 'categories-private-list', component:CategoryPrivateListComponent},
   {path: 'new-category', component:CategoryPrivateListComponent},
-  {path: 'update-category/:id', component:CategoryPrivateListComponent},
+  {path: 'update-category/:id', component:UpdateCategoryComponent},
 
 
 

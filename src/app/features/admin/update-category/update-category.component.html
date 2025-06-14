@@ -1,1 +1,50 @@
-<p>update-category works!</p>
+<form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="update-category-form">
+    <div class="form-group">
+      <label for="nom">Nom de la catégorie</label>
+      <input
+        id="nom"
+        type="text"
+        formControlName="nom"
+        class="form-control"
+        placeholder="Entrez le nom"
+      />
+      <div *ngIf="categoryForm.get('nom')?.invalid && categoryForm.get('nom')?.touched" class="error">
+        Le nom est requis.
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        class="form-control"
+        rows="4"
+        placeholder="Entrez la description"
+      ></textarea>
+      <div *ngIf="categoryForm.get('description')?.invalid && categoryForm.get('description')?.touched" class="error">
+        La description est requise.
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="coverImage">Image de couverture</label>
+      <input
+        id="coverImage"
+        type="file"
+        (change)="onFileSelected($event)"
+        accept="image/*"
+        class="form-control-file"
+      />
+    </div>
+  
+    <div *ngIf="imagePreview" class="image-preview">
+      <p>Aperçu :</p>
+      <img [src]="imagePreview" alt="Aperçu catégorie" class="preview-img" />
+    </div>
+  
+    <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">
+      Mettre à jour la catégorie
+    </button>
+  </form>
+  

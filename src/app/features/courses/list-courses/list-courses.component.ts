@@ -3,6 +3,8 @@ import { Course } from 'src/app/core/models/course.model';
 import { CourseService } from '../services/course.service';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CategoryService } from '../../categories/services/category.service';
+import { Category } from 'src/app/core/models/category.model';
 
 @Component({
   selector: 'app-list-courses',
@@ -32,7 +34,8 @@ export class ListCoursesComponent implements OnInit {
   constructor(
     private coursesService: CourseService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private categorieService:CategoryService
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +48,7 @@ export class ListCoursesComponent implements OnInit {
         this.loadCourses();
       }
     });
+    this.loadCoursesByCategory();
   }
 
   private loadCourses(): void {
@@ -99,5 +103,19 @@ export class ListCoursesComponent implements OnInit {
     // ← ceci ajoute/enlève body.dark-mode
     document.body.classList.toggle('dark-mode', this.isDarkMode);
   }
+
+ category: Category[] = [];
+
+  private loadCoursesByCategory(): void {
+    this.categorieService.getCategories().subscribe({
+      next: category => {
+        this.category = category;
+        console.log('Category data:', this.category);
+      },
+      error: err => console.error(err),
+    });
+
+}
+
 
 }

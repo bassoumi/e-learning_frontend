@@ -22,21 +22,36 @@ export class InstructorListComponent {
   isListView = false;
   instructorNames = '';
   categoryTags: string[] = [];
+  isSubscribed = false;
+  subscriptionChecked = false;
+  subscriberCount: number | null = null;
+  instructorId!: number;
 
   constructor(
     private route: ActivatedRoute,
     private courseService: CourseService,
     private router: Router,
-    private instructorService: InstructorService
+    private instructorService: InstructorService,
+
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const instructorId = Number(params.get('instructorId'));
-      console.log('ID de l’instructeur depuis la route :', instructorId);
-      if (instructorId) {
-        this.loadCoursesByInstructorId(instructorId);
-        this.loadInstructorById(instructorId);
+      this.instructorId = Number(params.get('instructorId'));
+      console.log('ID de l’instructeur depuis la route :', this.instructorId);
+  
+      if (this.instructorId) {
+        this.loadCoursesByInstructorId(this.instructorId);
+        this.loadInstructorById(this.instructorId);
+  
+        // Appelle le service ici, une fois que l'instructorId est bien défini
+        this.instructorService.getSubscriberCount(this.instructorId).subscribe({
+          next: count => this.subscriberCount = count,
+          error: err => {
+            console.error('Erreur en récupérant le nombre d\'abonnés', err);
+            this.subscriberCount = 0;
+          }
+        });
       }
     });
   }

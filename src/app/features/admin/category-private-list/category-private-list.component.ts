@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from 'express';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from 'src/app/core/models/category.model';
 import { CategoryService } from '../../categories/services/category.service';
 
@@ -19,6 +18,7 @@ export class CategoryPrivateListComponent {
 
   constructor(
     private categorieService: CategoryService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -50,9 +50,6 @@ export class CategoryPrivateListComponent {
   }
 
   
-  encodeImageUrl(fileName: string | null): string {
-    return fileName ? encodeURIComponent(fileName) : '';
-  }
-  
+
 
 }

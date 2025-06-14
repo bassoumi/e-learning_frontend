@@ -20,6 +20,27 @@ export class CategoryService {
     return this.http.get<Category[]>(this.categoryUrl, { headers });
   }
 
+  getCategoryById(id: number): Observable<Category> {
+    return this.http.get<Category>(`${this.categoryUrl}/${id}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+  
+  createCategory(formData: FormData): Observable<Category> {
+    const headers = this.getAuthHeaders();
+    return this.http.post<Category>(this.categoryUrl, formData, { headers });
+  }
+
+  updateCategory(id: number, formData: FormData): Observable<Category> {
+    const headers = this.getAuthHeaders();
+    return this.http.put<Category>(`${this.categoryUrl}/${id}`, formData, { headers });
+  }
+  deleteCategory(id: number): Observable<void> {
+    const headers = this.getAuthHeaders();
+    const url = `${this.categoryUrl}/${id}`;
+    return this.http.delete<void>(url, { headers });
+  }
+  
 
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
