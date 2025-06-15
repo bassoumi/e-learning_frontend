@@ -12,6 +12,7 @@ export interface Course {
     instructorId: number;
     contents?: Content[];
     instructorAvatar?: string;
+    instructorProfileImage?: string;
     courseMetaData?: {
       createdAt: string;
       updatedAt: string;

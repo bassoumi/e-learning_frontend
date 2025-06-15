@@ -12,6 +12,7 @@ export interface NotificationDto {
     categoryId: number;       // ID de la catégorie
     coverImage: string;       // Nom de l'image de couverture
     duration: number;         // Durée du cours (en minutes)
-    createdAt: string;        // Date de création (format ISO)
+    createdAt: string;  
+    instructorProfileImages:String      // Date de création (format ISO)
   }
   

@@ -12,11 +12,20 @@
         <div class="profile-sidebar">
           <div class="avatar-container">
             <div class="profile-avatar">
-              {{ userProfile.firstName[0] }}{{ userProfile.lastName[0] }}
+              <img
+                [src]="
+                  userProfile.gender === 'Male'
+                    ? '/assets/images/male-avatar.png'
+                    : '/assets/images/female-avatar.png'
+                "
+                alt="Photo de profil"
+                class="profile-avatar-img"
+              />
               <div class="avatar-overlay">
                 <i class="fas fa-camera"></i> Changer la photo
               </div>
             </div>
+            
           </div>
           
           <div class="profile-stats">
@@ -91,18 +100,19 @@
               <i class="fas fa-chalkboard-teacher"></i>
               <h2>Instructeurs Associés</h2>
             </div>
-            
+          
             <p>Vous êtes associé(e) à ces instructeurs :</p>
-            
+          
             <div class="instructors-container" id="instructorContainer">
               <span
                 class="instructor-badge"
-                *ngFor="let instrId of userProfile.instructorIds"
+                *ngFor="let instr of instructors"
               >
-                {{ instrId }}
+                {{ instr.firstName }} {{ instr.lastName }}
               </span>
             </div>
           </div>
+          
           
           <div class="profile-actions">
             <button class="btn btn-primary">
@@ -133,11 +143,16 @@
         <div class="avatar-section">
           <div class="avatar-container">
             <div class="profile-avatar">
-              <img 
-              [src]="'http://localhost:8080/uploads/images/' + userProfile.profileImage"
+              <img
+              [src]="
+                userProfile.gender === 'male' 
+                  ? '/assets/images/male-avatar.png' 
+                  : '/assets/images/female-avatar.png'
+              "
               alt="Photo de profil"
-                class="profile-avatar-img"
-              />
+              class="profile-avatar-img"
+            />
+            
               <div class="avatar-overlay">
                 <i class="fas fa-camera"></i> Changer la photo
               </div>

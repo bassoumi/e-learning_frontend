@@ -31,6 +31,7 @@ export class NotificationComponent implements OnInit {
   private loadNotifications(studentId: number): void {
     this.studentService.getUnreadNotifications(studentId).subscribe({
       next: (notifs) => {
+        console.log('Notifications non lues récupérées pour l\'étudiant ID:', notifs);
         this.notifications = notifs;
         console.log('Notifications chargées:', this.notifications);
       },
@@ -64,4 +65,11 @@ export class NotificationComponent implements OnInit {
   }
   
 
+  get uniqueInstructors(): NotificationDto[] {
+    return this.notifications.filter((item, index, array) =>
+      array.findIndex(t => t.instructorId === item.instructorId) === index
+    );
+  }
+
+  
 }

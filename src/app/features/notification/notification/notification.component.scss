@@ -366,3 +366,31 @@
   .courses-grid:not(.list-view) .course-card:hover {
     transform: translateY(-2px) perspective(1000px) rotateX(2deg) rotateY(1deg);
   }
+
+  .instructor-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    cursor: pointer;
+  }
+  .instructors-line {
+    display: flex;
+    justify-content: center;   // centre horizontalement
+    align-items: center;       // centre verticalement (si besoin)
+    overflow-x: auto;
+    padding: 8px 0;
+    margin-bottom: 16px;
+    gap: 8px;                  // espace entre les images (optionnel)
+  }
+  
+  .instructor-line-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    cursor: pointer;
+  }
+  
