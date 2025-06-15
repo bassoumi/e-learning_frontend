@@ -375,22 +375,31 @@
     margin-right: 8px;
     cursor: pointer;
   }
+
   .instructors-line {
     display: flex;
-    justify-content: center;   // centre horizontalement
-    align-items: center;       // centre verticalement (si besoin)
+    justify-content: center;
+    align-items: center;
     overflow-x: auto;
     padding: 8px 0;
     margin-bottom: 16px;
-    gap: 8px;                  // espace entre les images (optionnel)
+    gap: 15px;
   }
   
   .instructor-line-avatar {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
     margin-right: 8px;
     cursor: pointer;
+    border: 3px solid #1877f2; /* Bordure bleue Facebook */
+    padding: 2px;              /* Espace intérieur entre l’image et la bordure */
+    box-shadow: 0 0 4px rgba(24, 119, 242, 0.5); /* Optionnel : un petit glow bleu */
+    transition: transform 0.2s ease;
+  }
+  
+  .instructor-line-avatar:hover {
+    transform: scale(1.05); /* Optionnel : zoom léger au survol */
   }
   
