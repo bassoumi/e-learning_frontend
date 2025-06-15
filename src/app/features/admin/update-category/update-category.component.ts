@@ -81,7 +81,7 @@ export class UpdateCategoryComponent {
     // Appel PUT vers le service (service inchangé)
     this.categoryService.updateCategory(this.categoryId, formData)
       .subscribe({
-        next: () => this.router.navigate(['/admin/categories']),
+        next: () => this.router.navigate(['admin/categories-private-list']),
         error: err => console.error('Erreur mise à jour catégorie', err)
       });
   }

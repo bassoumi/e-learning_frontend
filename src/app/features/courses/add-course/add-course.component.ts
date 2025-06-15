@@ -4,6 +4,7 @@ import { Course, Content, Quiz } from 'src/app/core/models/course.model';
 import { CourseService } from '../services/course.service';
 import { CategoryService } from '../../categories/services/category.service';
 import { InstructorService } from '../../instructors/services/instructor.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Component({
   selector: 'app-add-course',
@@ -16,11 +17,14 @@ export class AddCourseComponent implements OnInit {
   categories: any[] = [];
   instructors: any[] = [];
   coverFile!: File;
+  connectedInstructorId: number | null = null;
 
   constructor(private fb: FormBuilder, 
               private categorieService: CategoryService,
               private instructorService: InstructorService,
-              private courseService: CourseService) {}
+              private courseService: CourseService,
+              private authService:AuthService
+          ) {}
 
   ngOnInit(): void {
     this.categorieService.getCategories().subscribe(data => {
@@ -52,6 +56,12 @@ export class AddCourseComponent implements OnInit {
         objectives: this.fb.array([])
       })
     });
+
+    const uid = this.authService.getLoggedInStudentId();
+    if (uid !== null) {
+      this.connectedInstructorId = uid;
+      this.courseForm.get('instructorId')!.setValue(uid);
+    }
   }
 
   // Navigation methods

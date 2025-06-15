@@ -1,34 +1,40 @@
 <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="update-category-form">
-    <div class="form-group">
-      <label for="nom">Nom de la catégorie</label>
-      <input
-        id="nom"
-        type="text"
-        formControlName="nom"
-        class="form-control"
-        placeholder="Entrez le nom"
-      />
-      <div *ngIf="categoryForm.get('nom')?.invalid && categoryForm.get('nom')?.touched" class="error">
-        Le nom est requis.
-      </div>
+  <!-- Name Field -->
+  <div class="form-group">
+    <label for="nom">Nom de la catégorie</label>
+    <input
+      id="nom"
+      type="text"
+      formControlName="nom"
+      class="form-control"
+      placeholder="Entrez le nom"
+      [class.invalid]="categoryForm.get('nom')?.invalid && categoryForm.get('nom')?.touched"
+    />
+    <div *ngIf="categoryForm.get('nom')?.invalid && categoryForm.get('nom')?.touched" class="error">
+      Le nom est requis.
     </div>
-  
-    <div class="form-group">
-      <label for="description">Description</label>
-      <textarea
-        id="description"
-        formControlName="description"
-        class="form-control"
-        rows="4"
-        placeholder="Entrez la description"
-      ></textarea>
-      <div *ngIf="categoryForm.get('description')?.invalid && categoryForm.get('description')?.touched" class="error">
-        La description est requise.
-      </div>
+  </div>
+
+  <!-- Description Field -->
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea
+      id="description"
+      formControlName="description"
+      class="form-control"
+      rows="4"
+      placeholder="Entrez la description"
+      [class.invalid]="categoryForm.get('description')?.invalid && categoryForm.get('description')?.touched"
+    ></textarea>
+    <div *ngIf="categoryForm.get('description')?.invalid && categoryForm.get('description')?.touched" class="error">
+      La description est requise.
     </div>
-  
-    <div class="form-group">
-      <label for="coverImage">Image de couverture</label>
+  </div>
+
+  <!-- File Input with Custom Styling -->
+  <div class="form-group">
+    <label for="coverImage">Image de couverture</label>
+    <div class="file-input-container">
       <input
         id="coverImage"
         type="file"
@@ -36,15 +42,25 @@
         accept="image/*"
         class="form-control-file"
       />
+      <label for="coverImage" class="file-input-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        <span>Télécharger une image</span>
+      </label>
     </div>
-  
-    <div *ngIf="imagePreview" class="image-preview">
-      <p>Aperçu :</p>
-      <img [src]="imagePreview" alt="Aperçu catégorie" class="preview-img" />
-    </div>
-  
-    <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">
-      Mettre à jour la catégorie
-    </button>
-  </form>
-  
+  </div>
+
+  <!-- Image Preview -->
+  <div *ngIf="imagePreview" class="image-preview">
+    <p>Aperçu :</p>
+    <img [src]="imagePreview" alt="Aperçu catégorie" class="preview-img" />
+  </div>
+
+  <!-- Submit Button -->
+  <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">
+    Mettre à jour la catégorie
+  </button>
+</form>

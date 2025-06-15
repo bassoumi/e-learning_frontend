@@ -41,14 +41,10 @@
           </select>
         </div>
 
+        <input type="hidden" formControlName="instructorId">
         <div class="form-group">
-          <label for="instructor">Instructor *</label>
-          <select id="instructor" formControlName="instructorId">
-            <option value="" disabled>Select instructor</option>
-            <option *ngFor="let ins of instructors" [value]="ins.id">
-              {{ ins.firstName }} {{ ins.lastName }}
-            </option>
-          </select>
+          <label>Instructeur *</label>
+          <input type="text" [value]="connectedInstructorId" disabled class="form-control" />
         </div>
 
         <div class="form-group">

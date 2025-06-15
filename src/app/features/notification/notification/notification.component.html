@@ -40,8 +40,9 @@
           <h3 class="course-title">{{ n.courseTitle }}</h3>
   
           <div class="course-short-desc" *ngIf="n.shortDescription">
-            {{ n.shortDescription }}
+            {{ n.shortDescription | slice:0:100 }}{{ n.shortDescription.length > 100 ? '...' : '' }}
           </div>
+          
   
           <div class="course-duration">
             <span class="level">{{ n.level }}</span>

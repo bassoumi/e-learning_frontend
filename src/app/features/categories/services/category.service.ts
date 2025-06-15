@@ -35,11 +35,17 @@ export class CategoryService {
     const headers = this.getAuthHeaders();
     return this.http.put<Category>(`${this.categoryUrl}/${id}`, formData, { headers });
   }
-  deleteCategory(id: number): Observable<void> {
-    const headers = this.getAuthHeaders();
-    const url = `${this.categoryUrl}/${id}`;
-    return this.http.delete<void>(url, { headers });
-  }
+
+// category.service.ts
+deleteCategory(id: number): Observable<string> {
+  const headers = this.getAuthHeaders();
+  const url = `${this.categoryUrl}/${id}`;
+  return this.http.delete(url, {
+    headers,
+    responseType: 'text'  
+  });
+}
+
   
 
   private getAuthHeaders(): HttpHeaders {

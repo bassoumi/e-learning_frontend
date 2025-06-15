@@ -1,20 +1,111 @@
-<div class="category-container">
-    <div *ngFor="let cat of category" class="category-card">
-      <img
-      class="category-image"
-      [src]="'http://localhost:8080/uploads/images/' + cat.cover_categoryimage"
-      [alt]="cat.nom"
-    />
+<!-- 🔘 Boutons pour afficher/masquer le formulaire -->
+<div class="toolbar">
+  <button class="btn-add" *ngIf="!isListView" (click)="isListView = true">
+    + Nouvelle catégorie
+  </button>
+  <button class="btn-cancel" *ngIf="isListView" (click)="isListView = false">
+    ✕ Annuler
+  </button>
+</div>
+
+<!-- 🔔 Messages -->
+<div *ngIf="errorMessage" class="alert alert-danger mt-2">
+  {{ errorMessage }}
+</div>
+
+<!-- 📝 Formulaire de création de catégorie -->
+<div *ngIf="isListView" class="new-category-form">
+  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="nom">Nom</label>
+      <input
+        id="nom"
+        type="text"
+        formControlName="nom"
+        placeholder="Nom de la catégorie"
+      />
+    </div>
+
+    <div>
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        placeholder="Description"
+      ></textarea>
+    </div>
+
+    <div>
+      <label for="cover">Image de couverture</label>
+      <input
+        id="cover"
+        type="file"
+        (change)="onFileSelected($event)"
+      />
+    </div>
+
+    <button type="submit" [disabled]="categoryForm.invalid">
+      Créer
+    </button>
+  </form>
+</div>
+
+<!-- 📋 Liste des catégories sous forme de tableau -->
+<div class="category-container" *ngIf="!isListView">
+  <div class="table-wrapper">
+    <table class="category-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cat of category">
+          <td>
+            <img
+              class="category-image"
+              [src]="'http://localhost:8080/uploads/images/' + cat.cover_categoryimage"
+              [alt]="cat.nom"
+            />
+          </td>
+          <td>
+            <div class="category-name">{{ cat.nom }}</div>
+          </td>
+          <td>
+            <div class="category-description">{{ cat.description }}</div>
+          </td>
+          <td>
+            <div class="category-actions">
+              <a
+                [routerLink]="['/admin/update-category', cat.id]"
+                class="btn-update"
+              >
+                Modifier
+              </a>
+              <button
+                (click)="deleteCategory(cat.id)"
+                class="btn-delete"
+              >
+                Supprimer
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     
-      <div class="category-info">
-        <h2>{{ cat.nom }}</h2>
-        <p>{{ cat.description }}</p>
-  
-        <div class="category-actions">
-          <a [routerLink]="['/admin/update-category', cat.id]" class="btn-update">Update</a>
-          <button (click)="deleteCategory(cat.id)" class="btn-delete">Delete</button>
-        </div>
-      </div>
+    <!-- Empty state -->
+    <div *ngIf="category.length === 0" class="empty-state">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <h3>Aucune catégorie trouvée</h3>
+      <p>Commencez par créer votre première catégorie</p>
     </div>
   </div>
-  
+</div>

@@ -34,8 +34,7 @@ const routes: Routes = [
     path: 'instructors',
     loadChildren: () =>
       import('./features/instructors/instructors.module').then(m => m.InstructorsModule),
-    canActivate: [authGuard],
-    data: { roles: ['INSTRUCTOR','ADMIN'] }
+
   },
   {
     path: 'students',
