@@ -32,12 +32,20 @@ export class NotificationComponent implements OnInit {
     this.studentService.getUnreadNotifications(studentId).subscribe({
       next: (notifs) => {
         console.log('Notifications non lues récupérées pour l\'étudiant ID:', notifs);
-        this.notifications = notifs;
+  
+        // Tri par date décroissante (du plus récent au plus ancien)
+        this.notifications = notifs.sort((a, b) => {
+          const dateA = new Date(a.createdAt ?? 0).getTime();
+          const dateB = new Date(b.createdAt ?? 0).getTime();
+          return dateB - dateA;
+        });
+  
         console.log('Notifications chargées:', this.notifications);
       },
       error: (err) => console.error('Erreur lors du chargement des notifications :', err)
     });
   }
+  
 
   onClickNotification(notification: NotificationDto): void {
     const studentId = this.authService.getLoggedInStudentId();

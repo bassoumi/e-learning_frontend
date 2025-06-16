@@ -68,18 +68,22 @@ export class ListCoursesComponent implements OnInit {
   }
 
   private handleCourses(data: Course[]): void {
-    this.courses = data;
+    // Tri décroissant par date (du plus récent au plus ancien)
+    this.courses = data.sort((a, b) => {
+      const dateA = new Date(a.courseMetaData?.createdAt ?? 0).getTime();
+      const dateB = new Date(b.courseMetaData?.createdAt ?? 0).getTime();
+      return dateB - dateA; // du plus récent au plus ancien
+    });
+    
+  
     console.log('Courses loaded:', this.courses);
-
-    // Populate categoryName & categoryTags only when not in search mode
+  
     if (!this.searchTitle && this.courses.length) {
-      // assume all courses have same category for this listing
       this.categoryName = this.courses[0].categoryName;
-      // make sure your Course model has a .tags: string[] property
       this.categoryTags = this.courses[0].courseMetaData?.tags || [];
     }
-  
   }
+  
 
   goToCourse(courseId: number): void {
     this.router.navigate(['courses/course-detail', courseId]);

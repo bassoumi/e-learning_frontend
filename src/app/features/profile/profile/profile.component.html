@@ -1,243 +1,241 @@
 <ng-container *ngIf="userRole === 'STUDENT'">
-    <div class="profile-container">
-      <div class="profile-header">
-        <div class="profile-badge">
-          <i class="fas fa-user-graduate"></i> Étudiant Premium
-        </div>
-        <h1>Profil Utilisateur</h1>
-        <p>Gérez vos informations et préférences de compte</p>
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-badge">
+        <i class="fas fa-user-graduate"></i> Premium Student
       </div>
-      
-      <div class="profile-content">
-        <div class="profile-sidebar">
-          <div class="avatar-container">
-            <div class="profile-avatar">
-              <img
-                [src]="
-                  userProfile.gender === 'Male'
-                    ? '/assets/images/male-avatar.png'
-                    : '/assets/images/female-avatar.png'
-                "
-                alt="Photo de profil"
-                class="profile-avatar-img"
-              />
-              <div class="avatar-overlay">
-                <i class="fas fa-camera"></i> Changer la photo
-              </div>
-            </div>
-            
-          </div>
-          
-          <div class="profile-stats">
-            <div class="stat-card">
-              <i class="fas fa-book"></i>
-              <h3>12</h3>
-              <p>Cours suivis</p>
-            </div>
-            <div class="stat-card">
-              <i class="fas fa-certificate"></i>
-              <h3>7</h3>
-              <p>Certificats</p>
-            </div>
-            <div class="stat-card">
-              <i class="fas fa-star"></i>
-              <h3>96%</h3>
-              <p>Réussite</p>
-            </div>
-            <div class="stat-card">
-              <i class="fas fa-clock"></i>
-              <h3>245h</h3>
-              <p>Temps d'apprentissage</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="profile-main">
-          <div class="info-section">
-            <div class="section-title">
-              <i class="fas fa-user-circle"></i>
-              <h2>Informations Personnelles</h2>
-            </div>
-            
-            <div class="info-grid">
-              <div class="info-item">
-                <span class="info-label">Prénom</span>
-                <span class="info-value">{{ userProfile.firstName }}</span>
-              </div>
-              
-              <div class="info-item">
-                <span class="info-label">Nom</span>
-                <span class="info-value">{{ userProfile.lastName }}</span>
-              </div>
-              
-              <div class="info-item">
-                <span class="info-label">Email</span>
-                <span class="info-value">{{ userProfile.email }}</span>
-              </div>
-              
-              <div class="info-item">
-                <span class="info-label">Genre</span>
-                <span class="info-value">{{ userProfile.gender }}</span>
-              </div>
-              
-              <div class="info-item">
-                <span class="info-label">ID Utilisateur</span>
-                <span class="info-value">{{ userProfile.id }}</span>
-              </div>
-              
-              <div class="info-item">
-                <span class="info-label">Statut</span>
-                <span class="info-value">
-                  Actif 
-                  <i class="fas fa-check-circle" style="color: var(--success); margin-left: 5px;"></i>
-                </span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="info-section">
-            <div class="section-title">
-              <i class="fas fa-chalkboard-teacher"></i>
-              <h2>Instructeurs Associés</h2>
-            </div>
-          
-            <p>Vous êtes associé(e) à ces instructeurs :</p>
-          
-            <div class="instructors-container" id="instructorContainer">
-              <span
-                class="instructor-badge"
-                *ngFor="let instr of instructors"
-              >
-                {{ instr.firstName }} {{ instr.lastName }}
-              </span>
-            </div>
-          </div>
-          
-          
-          <div class="profile-actions">
-            <button class="btn btn-primary">
-              <i class="fas fa-edit"></i> Modifier le Profil
-            </button>
-            <button class="btn btn-outline">
-              <i class="fas fa-lock"></i> Changer le Mot de Passe
-            </button>
-            <button class="btn btn-outline">
-              <i class="fas fa-cog"></i> Paramètres
-            </button>
-          </div>
-        </div>
-      </div>
+      <h1>User Profile</h1>
+      <p>Manage your account information and preferences</p>
     </div>
-  </ng-container>
-  <ng-container *ngIf="userRole === 'INSTRUCTOR'">
-    <div class="instructor-container">
-      <div class="instructor-header">
-        <div class="profile-badge">
-          <i class="fas fa-chalkboard-teacher"></i> Instructeur Certifié
-        </div>
-        <h1>Profil Instructeur</h1>
-        <p>Gérez vos informations et préférences de compte</p>
-      </div>
-      
-      <div class="instructor-content">
-        <div class="avatar-section">
-          <div class="avatar-container">
-            <div class="profile-avatar">
-              <img
+
+    <div class="profile-content">
+      <div class="profile-sidebar">
+        <div class="avatar-container">
+          <div class="profile-avatar">
+            <img
               [src]="
-                userProfile.gender === 'male' 
-                  ? '/assets/images/male-avatar.png' 
+                userProfile.gender === 'Male'
+                  ? '/assets/images/male-avatar.png'
                   : '/assets/images/female-avatar.png'
               "
-              alt="Photo de profil"
+              alt="Profile photo"
               class="profile-avatar-img"
             />
-            
-              <div class="avatar-overlay">
-                <i class="fas fa-camera"></i> Changer la photo
-              </div>
-            </div>
-          </div>
-          
-          <div class="instructor-stats">
-            <div class="stat-card">
-              <i class="fas fa-book"></i>
-              <h3>24</h3>
-              <p>Cours créés</p>
-            </div>
-            <div class="stat-card">
-              <i class="fas fa-users"></i>
-              <h3>1.2K</h3>
-              <p>Étudiants</p>
-            </div>
-            <div class="stat-card">
-              <i class="fas fa-star"></i>
-              <h3>4.8</h3>
-              <p>Évaluation</p>
+            <div class="avatar-overlay">
+              <i class="fas fa-camera"></i> Change Photo
             </div>
           </div>
         </div>
-        
+
+        <div class="profile-stats">
+          <div class="stat-card">
+            <i class="fas fa-book"></i>
+            <h3>12</h3>
+            <p>Courses Enrolled</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-certificate"></i>
+            <h3>7</h3>
+            <p>Certificates</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-star"></i>
+            <h3>96%</h3>
+            <p>Completion Rate</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-clock"></i>
+            <h3>245h</h3>
+            <p>Learning Time</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-main">
         <div class="info-section">
           <div class="section-title">
             <i class="fas fa-user-circle"></i>
-            <h2>Informations Personnelles</h2>
+            <h2>Personal Information</h2>
           </div>
-          
+
           <div class="info-grid">
             <div class="info-item">
-              <span class="info-label">Prénom</span>
+              <span class="info-label">First Name</span>
               <span class="info-value">{{ userProfile.firstName }}</span>
             </div>
-            
+
             <div class="info-item">
-              <span class="info-label">Nom</span>
+              <span class="info-label">Last Name</span>
               <span class="info-value">{{ userProfile.lastName }}</span>
             </div>
-            
+
             <div class="info-item">
               <span class="info-label">Email</span>
               <span class="info-value">{{ userProfile.email }}</span>
             </div>
-            
+
             <div class="info-item">
-              <span class="info-label">ID Utilisateur</span>
+              <span class="info-label">Gender</span>
+              <span class="info-value">{{ userProfile.gender }}</span>
+            </div>
+
+            <div class="info-item">
+              <span class="info-label">User ID</span>
               <span class="info-value">{{ userProfile.id }}</span>
             </div>
-            
+
             <div class="info-item">
-              <span class="info-label">Spécialité</span>
-              <span class="info-value">Développement Web</span>
-            </div>
-            
-            <div class="info-item">
-              <span class="info-label">Statut</span>
+              <span class="info-label">Status</span>
               <span class="info-value">
-                Actif <i class="fas fa-check-circle" style="color: var(--success); margin-left: 5px;"></i>
+                Active
+                <i class="fas fa-check-circle" style="color: var(--success); margin-left: 5px;"></i>
               </span>
             </div>
           </div>
         </div>
-        
+
         <div class="info-section">
           <div class="section-title">
-            <i class="fas fa-info-circle"></i>
-            <h2>Bio</h2>
+            <i class="fas fa-chalkboard-teacher"></i>
+            <h2>Associated Instructors</h2>
           </div>
-          <p>{{ userProfile.bio || "Aucune biographie fournie" }}</p>
+
+          <p>You are associated with the following instructors:</p>
+
+          <div class="instructors-container" id="instructorContainer">
+            <span
+              class="instructor-badge"
+              *ngFor="let instr of instructors"
+            >
+              {{ instr.firstName }} {{ instr.lastName }}
+            </span>
+          </div>
         </div>
-        
+
         <div class="profile-actions">
           <button class="btn btn-primary">
-            <i class="fas fa-edit"></i> Modifier le Profil
+            <i class="fas fa-edit"></i> Edit Profile
           </button>
           <button class="btn btn-outline">
-            <i class="fas fa-lock"></i> Changer le Mot de Passe
+            <i class="fas fa-lock"></i> Change Password
           </button>
           <button class="btn btn-outline">
-            <i class="fas fa-chart-line"></i> Statistiques
+            <i class="fas fa-cog"></i> Settings
           </button>
         </div>
       </div>
     </div>
-  </ng-container>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="userRole === 'INSTRUCTOR'">
+  <div class="instructor-container">
+    <div class="instructor-header">
+      <div class="profile-badge">
+        <i class="fas fa-chalkboard-teacher"></i> Certified Instructor
+      </div>
+      <h1>Instructor Profile</h1>
+      <p>Manage your account information and preferences</p>
+    </div>
+
+    <div class="instructor-content">
+      <div class="avatar-section">
+        <div class="avatar-container">
+          <div class="profile-avatar">
+            <img
+              [src]="
+                userProfile.gender === 'male'
+                  ? '/assets/images/male-avatar.png'
+                  : '/assets/images/female-avatar.png'
+              "
+              alt="Profile photo"
+              class="profile-avatar-img"
+            />
+            <div class="avatar-overlay">
+              <i class="fas fa-camera"></i> Change Photo
+            </div>
+          </div>
+        </div>
+
+        <div class="instructor-stats">
+          <div class="stat-card">
+            <i class="fas fa-book"></i>
+            <h3>24</h3>
+            <p>Courses Created</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-users"></i>
+            <h3>1.2K</h3>
+            <p>Students</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-star"></i>
+            <h3>4.8</h3>
+            <p>Rating</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="section-title">
+          <i class="fas fa-user-circle"></i>
+          <h2>Personal Information</h2>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">First Name</span>
+            <span class="info-value">{{ userProfile.firstName }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Last Name</span>
+            <span class="info-value">{{ userProfile.lastName }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Email</span>
+            <span class="info-value">{{ userProfile.email }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">User ID</span>
+            <span class="info-value">{{ userProfile.id }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Specialty</span>
+            <span class="info-value">Web Development</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Status</span>
+            <span class="info-value">
+              Active <i class="fas fa-check-circle" style="color: var(--success); margin-left: 5px;"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="section-title">
+          <i class="fas fa-info-circle"></i>
+          <h2>Bio</h2>
+        </div>
+        <p>{{ userProfile.bio || "No biography provided" }}</p>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn btn-primary">
+          <i class="fas fa-edit"></i> Edit Profile
+        </button>
+        <button class="btn btn-outline">
+          <i class="fas fa-lock"></i> Change Password
+        </button>
+        <button class="btn btn-outline">
+          <i class="fas fa-chart-line"></i> Statistics
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>

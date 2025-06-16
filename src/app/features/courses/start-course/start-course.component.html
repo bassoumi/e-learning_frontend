@@ -42,7 +42,7 @@
           <div
             class="instructor-subscriber-count"
             *ngIf="subscriberCount !== null">
-            {{ subscriberCount }} abonnés
+            {{ subscriberCount }} Subscribers
           </div>
         </div>
 
@@ -111,14 +111,14 @@
               }"
               (click)="toggleLike()"
             >
-              {{ isLiked ? 'deja J\'aime' : 'J\'aime' }} ({{ likeCount }})
+              {{ isLiked ? 'Already Liked' : 'Like' }} ({{ likeCount }})
             </button>
           </div>
           
 
           <!-- Comment count -->
           <div class="comment-count mb-2">
-            <strong>{{ commentCount }}</strong> commentaire(s)
+            <strong>{{ commentCount }}</strong> comments
           </div>
 
           <!-- Liste des commentaires -->

@@ -1,19 +1,21 @@
 <div class="notification-container">
-  <h2>Mes notifications</h2>
+  <h2>Notification Panel</h2>
 
   <!-- Affichage vide -->
   <div *ngIf="notifications.length === 0">
     <p>Aucune notification non lue.</p>
   </div>
 
-  <div class="instructors-line" *ngIf="uniqueInstructors.length > 0">
-    <img
-      *ngFor="let n of uniqueInstructors"
-      [src]="'http://localhost:8080/uploads/images/' + n.instructorProfileImages"
-      [alt]="'Avatar ' + n.instructorNames"
-      class="instructor-line-avatar"
-      (click)="goToInstructors(n.instructorId); $event.stopPropagation()"
-    />
+  <div *ngIf="uniqueInstructors.length > 0">
+    <div class="instructors-line">
+      <img
+        *ngFor="let n of uniqueInstructors"
+        [src]="'http://localhost:8080/uploads/images/' + n.instructorProfileImages"
+        [alt]="'Avatar ' + n.instructorNames"
+        class="instructor-line-avatar"
+        (click)="goToInstructors(n.instructorId); $event.stopPropagation()"
+      />
+    </div>
   </div>
   
   <!-- Vue en grille ou liste -->
@@ -81,7 +83,8 @@
         <div class="notification-date">
           <div class="icon-text-wrapper">
             <mat-icon class="aligned-icon">notifications</mat-icon>
-            <span>Date de sortie : {{ n.createdAt | date:'short' }}</span>
+            <span>Release Date:
+              {{ n.createdAt | date:'short' }}</span>
           </div>
         </div>
       </div>

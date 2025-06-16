@@ -292,10 +292,10 @@ export class StartCourseComponent implements OnInit {
       catchError(err => {
         if (err.status === 403) {
           this.summaryExists = false;
-          console.log('Résumé vidéo non trouvé, il faut le générer');
+          console.log('Video summary not found; it needs to be generated');
   
           this.messages.push({
-            text:   'Aucun résumé trouvé. Cliquez sur « Generate an AI résumé » pour en créer un.',
+            text:   'No summary found. Click "Generate an AI summary" to create one.',
             sender: 'bot',
             time:   new Date(),
           });
@@ -304,7 +304,7 @@ export class StartCourseComponent implements OnInit {
   
         console.error('Erreur vérif. résumé', err);
         this.messages.push({
-          text:   'Désolé, impossible de vérifier le résumé pour le moment.',
+          text:   'Sorry, unable to verify the summary at this time.',
           sender: 'bot',
           time:   new Date(),
         });

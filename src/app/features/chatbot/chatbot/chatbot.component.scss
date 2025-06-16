@@ -245,3 +245,27 @@ $border-color: #e0e0e0;
   0%, 40%, 100% { transform: translateY(0); }
   20% { transform: translateY(-5px); }
 }
+
+
+/* Container for the three dots */
+.typing-indicator .dots {
+  display: flex;
+  align-items: flex-end;   /* so they “bounce” up from the bottom */
+  height: 24px;
+}
+
+/* Each dot */
+.typing-indicator .dots span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin: 0 3px;
+  background: #ccc;
+  border-radius: 50%;
+  animation: dotBounce 1s infinite ease-in-out;
+}
+
+/* Stagger the animation on each dot */
+.typing-indicator .dots span:nth-child(1) { animation-delay: 0s; }
+.typing-indicator .dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator .dots span:nth-child(3) { animation-delay: 0.4s; }

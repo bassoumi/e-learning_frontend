@@ -26,7 +26,6 @@ export class QuizCourseComponent implements OnInit {
     private route: ActivatedRoute,
     private courseService: CourseService,
     private fb: FormBuilder,
-    private router: Router
   ) {}
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -122,9 +121,7 @@ onSubmit() {
   this.showAnswers = true;
   
   // Delay navigation to show feedback
-  setTimeout(() => {
-    this.router.navigate(['/courses', this.course.id, 'result']);
-  }, 3000); // Show feedback for 3 seconds before navigating
+ // Show feedback for 3 seconds before navigating
 }
 
 // Add helper methods for answer styling

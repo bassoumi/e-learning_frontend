@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ProgressionListComponent {
   isListView = false; // Control variable
-studentId: number | null = null; // Store the student ID
+  studentId: number | null = null; // Store the student ID
 
   inProgressCoursesWithLastContent: CourseWithLastContent[] = [];
 
@@ -60,7 +60,6 @@ goToInstructors(instructorId: number): void {
   this.router.navigate(['/instructors', instructorId]);
 }
 
-// In your component logic
 setProgressWidth() {
   this.inProgressCoursesWithLastContent = this.inProgressCoursesWithLastContent.map(c => {
     return {
