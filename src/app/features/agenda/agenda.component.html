@@ -74,7 +74,10 @@
     </div>
     
     <div class="modal-body">
-      <!-- Événements personnels -->
+
+
+
+
       <div *ngIf="selectedEvent.type === 'personal'" class="event-details-section">
         <div class="detail-item">
           <div class="detail-label">Description</div>
@@ -97,7 +100,7 @@
           </div>
           <div class="course-meta">
             <h4 class="course-title">{{ selectedEvent.courseTitle }}</h4>
-            <div class="course-id">ID: {{ selectedEvent.courseId }}</div>
+            <div class="course-id">Course ID: {{ selectedEvent.courseId }}</div>
           </div>
         </div>
     
