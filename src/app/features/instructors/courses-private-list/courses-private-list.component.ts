@@ -58,4 +58,21 @@ export class CoursesPrivateListComponent {
     this.router.navigate(['courses/course-update', courseId]);
   }
 
+
+
+  deleteCourse(id: number): void {
+    if (confirm('Are you sure you want to delete this course?')) {
+      this.courseService.deleteCourse(id).subscribe({
+        next: () => {
+          // Optionally refresh the course list or remove from local array
+          this.courses = this.courses.filter(course => course.id !== id);
+        },
+        error: (err) => {
+          console.error('Error deleting course:', err);
+        }
+      });
+    }
+  }
+  
+
 }

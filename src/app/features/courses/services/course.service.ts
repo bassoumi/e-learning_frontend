@@ -35,6 +35,18 @@ export class CourseService {
   
     return this.http.get<Course>(`${this.apiUrl}/${id}`, { headers });
   }
+
+
+  deleteCourse(id: number): Observable<void> {
+    const token = this.authService.getToken();
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
+  }
+  
   
 
   

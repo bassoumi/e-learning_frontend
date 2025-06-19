@@ -13,21 +13,29 @@
        [class.list-view]="isListView">
     <div *ngFor="let course of courses" class="course-card">
       <div class="card-header"
-           [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
-        <div class="course-category"
-             (click)="goToCategory(course.categoryId); $event.stopPropagation()">
-          {{ course.categoryName }}
-        </div>
-        
-        <!-- Déplacer le bouton d'édition ici -->
-        <div class="edit-button">
-          <button mat-icon-button (click)="goToUpdate(course.id); $event.stopPropagation()" 
-                  aria-label="Edit Course">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-      </div>
-      
+      [style.backgroundImage]="'url(http://localhost:8080/uploads/courses/' + course.coverImage + ')'">
+   <div class="course-category"
+        (click)="goToCategory(course.categoryId); $event.stopPropagation()">
+     {{ course.categoryName }}
+   </div>
+ 
+   <!-- Edit button -->
+   <div class="edit-button">
+     <button mat-icon-button (click)="goToUpdate(course.id); $event.stopPropagation()" 
+             aria-label="Edit Course">
+       <mat-icon>edit</mat-icon>
+     </button>
+   </div>
+ 
+   <!-- Delete button -->
+   <div class="delete-button">
+     <button mat-icon-button color="warn" (click)="deleteCourse(course.id); $event.stopPropagation()"
+             aria-label="Delete Course">
+       <mat-icon>delete</mat-icon>
+     </button>
+   </div>
+ </div>
+ 
       <div class="card-body">
         <h3 class="course-title">{{ course.title }}</h3>
         
